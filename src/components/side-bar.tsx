@@ -1,4 +1,4 @@
-import { LineChart, Package2, Settings, Users2 } from "lucide-react";
+import { Package2 } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -8,30 +8,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { AppRoute } from "@/config/app-route";
+import { menuItems } from "@/config/menu";
 import { cn } from "@/lib/utils";
 
 type Props = {
   className?: string;
 };
 export const SideBar = ({ className }: Props) => {
-  const items = [
-    {
-      title: "Dashboard",
-      href: AppRoute.home,
-      icon: LineChart,
-    },
-    {
-      title: "Members",
-      href: AppRoute.members,
-      icon: Users2,
-    },
-    {
-      title: "Settings",
-      href: AppRoute.settings,
-      icon: Settings,
-    },
-  ];
-
   return (
     <aside
       className={cn(
@@ -48,7 +31,7 @@ export const SideBar = ({ className }: Props) => {
           <span className="sr-only">Home Finance</span>
         </Link>
 
-        {items.map((item) => (
+        {menuItems.map((item) => (
           <Tooltip key={item.title}>
             <TooltipTrigger asChild>
               <Link

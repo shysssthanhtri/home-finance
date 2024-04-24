@@ -1,5 +1,6 @@
 import React from "react";
 
+import { Header } from "@/components/header";
 import { SideBar } from "@/components/side-bar";
 
 type Props = {
@@ -9,7 +10,10 @@ const PageLayout = ({ children }: Props) => {
   return (
     <div className="flex min-h-screen w-full">
       <SideBar />
-      <div className="min-h-screen grow bg-muted/40">{children}</div>
+      <div className="min-h-screen grow bg-muted/40 sm:pl-14">
+        <Header />
+        {children}
+      </div>
     </div>
   );
 };
