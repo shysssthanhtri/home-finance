@@ -3,7 +3,9 @@ import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 import React from "react";
 
+import PageLayout from "@/components/page-layout";
 import { ThemeProvider } from "@/components/theme-provider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { TRPCReactProvider } from "@/trpc/react";
 
@@ -37,7 +39,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <TooltipProvider>
+            <TRPCReactProvider>
+              <PageLayout>{children}</PageLayout>
+            </TRPCReactProvider>
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
