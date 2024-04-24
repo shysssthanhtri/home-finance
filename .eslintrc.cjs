@@ -14,6 +14,9 @@ const config = {
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended",
   ],
   rules: {
     "@typescript-eslint/array-type": "off",
@@ -56,6 +59,7 @@ const config = {
     "import/first": "error",
     "import/newline-after-import": "error",
     "import/no-duplicates": "error",
+    "react/react-in-jsx-scope": "off",
   },
 };
 module.exports = config;

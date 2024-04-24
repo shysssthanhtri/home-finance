@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 
 import { Inter } from "next/font/google";
+import React from "react";
 
 import { TRPCReactProvider } from "@/trpc/react";
 
@@ -18,7 +19,7 @@ export const metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  readonly children: React.ReactNode;
 }) {
   return (
     <html lang="en">
