@@ -9,8 +9,8 @@ export const menuItems = [
     icon: LineChart,
   },
   {
-    title: "Members",
-    href: AppRoute.members,
+    title: "Profiles",
+    href: AppRoute.profiles,
     icon: Users2,
   },
   {
