@@ -2,6 +2,7 @@ import React from "react";
 
 import { MoneySummaryCard } from "@/app/(dashboard)/_components/money-summary.card";
 import { TransactionItem } from "@/app/(dashboard)/_components/transaction";
+import { DatePickerWithRange } from "@/components/date-range-picker";
 import {
   Card,
   CardContent,
@@ -14,8 +15,8 @@ export const DashboardPage = () => {
   return (
     <div className="hidden space-y-6 sm:block">
       <Card className="flex justify-between p-6">
-        <CardTitle>Dashboard</CardTitle>
-        <div>Date picker</div>
+        <CardTitle className="flex items-center">Dashboard</CardTitle>
+        <DatePickerWithRange />
       </Card>
       <div className="flex flex-row gap-6">
         <div className="flex h-fit shrink-0 basis-1/2 flex-row gap-4">
