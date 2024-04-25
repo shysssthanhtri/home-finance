@@ -1,5 +1,6 @@
 import React from "react";
 
+import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { SideBar } from "@/components/side-bar";
 
@@ -13,6 +14,7 @@ const PageLayout = ({ children }: Props) => {
       <div className="min-h-screen grow bg-muted/40 sm:pl-14">
         <Header />
         {children}
+        <Footer />
       </div>
     </div>
   );
