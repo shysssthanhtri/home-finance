@@ -1,5 +1,8 @@
+"use client";
+
 import { Package2 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 import {
@@ -15,6 +18,8 @@ type Props = {
   className?: string;
 };
 export const SideBar = ({ className }: Props) => {
+  const pathName = usePathname();
+
   return (
     <aside
       className={cn(
@@ -36,7 +41,10 @@ export const SideBar = ({ className }: Props) => {
             <TooltipTrigger asChild>
               <Link
                 href={item.href}
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                className={cn(
+                  "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                  pathName === item.href && "text-foreground",
+                )}
               >
                 <item.icon className="h-5 w-5" />
                 <span className="sr-only">{item.title}</span>
