@@ -4,6 +4,7 @@ import { MoneySummaryCard } from "@/app/(dashboard)/_components/money-summary.ca
 import { OverviewChart } from "@/app/(dashboard)/_components/overview-chart";
 import { TransactionItem } from "@/app/(dashboard)/_components/transaction";
 import { DatePickerWithRange } from "@/components/date-range-picker";
+import { PageTitle } from "@/components/page-title";
 import {
   Card,
   CardContent,
@@ -15,10 +16,7 @@ import {
 export const DashboardPage = () => {
   return (
     <div className="hidden space-y-6 sm:block">
-      <Card className="flex justify-between p-6">
-        <CardTitle className="flex items-center">Dashboard</CardTitle>
-        <DatePickerWithRange />
-      </Card>
+      <PageTitle title="Dashboard" rightSide={<DatePickerWithRange />} />
       <div className="flex flex-row gap-6">
         <div className="shrink-0 basis-1/2 space-y-6">
           <div className="flex h-fit flex-row gap-4">
