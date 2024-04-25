@@ -10,16 +10,29 @@ type Props = {
   number: number;
   lastNumber?: number;
   shouldIncrease?: boolean;
+  differenceMessage?: string;
+  className?: string;
 };
 
 export const MoneySummaryCard = (props: Props) => {
-  const { name, number, lastNumber, shouldIncrease = true } = props;
+  const {
+    name,
+    number,
+    lastNumber,
+    shouldIncrease = true,
+    differenceMessage,
+    className,
+  } = props;
 
   const { isPositive, difference } = useMemo(() => {
-    const difference =
-      (lastNumber ? (number - lastNumber) / lastNumber : 0) * 100;
-    const formattedDifference = (Math.round(difference * 100) / 100).toFixed(2);
+    const difference = lastNumber ? (number - lastNumber) / lastNumber : 0;
+    const formattedDifference = Number(difference).toLocaleString(undefined, {
+      style: "percent",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
     const isPositive = shouldIncrease ? difference > 0 : difference < 0;
+
     return {
       difference: formattedDifference,
       isPositive,
@@ -27,7 +40,7 @@ export const MoneySummaryCard = (props: Props) => {
   }, [lastNumber, number, shouldIncrease]);
 
   return (
-    <Card>
+    <Card className={className}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{name}</CardTitle>
         <DollarIcon />
@@ -40,8 +53,8 @@ export const MoneySummaryCard = (props: Props) => {
             isPositive ? "text-green-500" : "text-red-500",
           )}
         >
-          {!isPositive && "-"}
           {difference}
+          {!!differenceMessage && ` ${differenceMessage}`}
         </p>
       </CardContent>
     </Card>

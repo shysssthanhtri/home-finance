@@ -1,41 +1,59 @@
 import React from "react";
 
 import { MoneySummaryCard } from "@/app/(dashboard)/_components/money-summary.card";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { TransactionItem } from "@/app/(dashboard)/_components/transaction";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export const DashboardPage = () => {
   return (
-    <div>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            className="h-4 w-4 text-muted-foreground"
-          >
-            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-          </svg>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold">$45,231.89</div>
-          <p className="text-xs text-muted-foreground">
-            +20.1% from last month
-          </p>
-        </CardContent>
+    <div className="hidden space-y-6 sm:block">
+      <Card className="flex justify-between p-6">
+        <CardTitle>Dashboard</CardTitle>
+        <div>Date picker</div>
       </Card>
-      <MoneySummaryCard name="Income" number={12000} lastNumber={10000} />
-      <MoneySummaryCard
-        name="Outcome"
-        number={12000}
-        lastNumber={10000}
-        shouldIncrease={false}
-      />
+      <div className="flex flex-row gap-6">
+        <div className="flex h-fit shrink-0 basis-1/2 flex-row gap-4">
+          <MoneySummaryCard
+            name="Income"
+            number={12000}
+            lastNumber={10000}
+            differenceMessage="from last day"
+            className="basis-1/2"
+          />
+          <MoneySummaryCard
+            name="Outcome"
+            number={12000}
+            lastNumber={10000}
+            shouldIncrease={false}
+            differenceMessage="from last month"
+            className="basis-1/2"
+          />
+        </div>
+        <Card className="basis-1/2">
+          <CardHeader>
+            <CardTitle className="text-base">Transaction list</CardTitle>
+            <CardDescription>You have 123 transactions</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <TransactionItem
+                key={index}
+                transaction={{
+                  type: index % 2 === 0 ? "Income" : "Outcome",
+                  number: 12000 * (index + 1),
+                }}
+                className="[&:not(:last-child)]:border-b [&:not(:last-child)]:pb-4"
+              />
+            ))}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
