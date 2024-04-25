@@ -14,7 +14,7 @@ export const SettingsPage = () => {
       <Card className="pt-6">
         <CardContent className="">
           <Tabs defaultValue={SettingsTab.PERSONAL}>
-            <TabsList>
+            <TabsList className="mb-4">
               {settingsTabs.map((tab) => (
                 <TabsTrigger key={tab.value} value={tab.value}>
                   {tab.title}
