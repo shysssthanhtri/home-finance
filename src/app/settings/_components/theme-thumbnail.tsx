@@ -1,30 +1,23 @@
+"use client";
+
+import { useTheme } from "next-themes";
 import React, { useCallback, useMemo } from "react";
 
+import { Theme, ThemeLabel } from "@/config/theme";
 import { cn } from "@/lib/utils";
 
 type Props = {
-  theme: "light" | "dark" | "system";
+  theme: Theme;
   className?: string;
   isActive?: boolean;
+  onClick?: () => void;
 };
 export const ThemeThumbnail = (props: Props) => {
-  const { theme, className, isActive } = props;
-
-  const label = useMemo(() => {
-    switch (theme) {
-      case "light":
-        return "Light";
-      case "dark":
-        return "Dark";
-      case "system":
-        return "System";
-      default:
-        return "";
-    }
-  }, [theme]);
+  const { theme, className, isActive, onClick } = props;
+  const { systemTheme } = useTheme();
 
   const genColor = useCallback((theme: Props["theme"]) => {
-    if (theme === "light") {
+    if (theme === Theme.LIGHT) {
       return {
         1: "bg-[#ecedef]",
         2: "bg-white",
@@ -53,9 +46,11 @@ export const ThemeThumbnail = (props: Props) => {
   }, []);
 
   const color = useMemo(() => {
-    if (theme === "light") return genColor("light");
-    return genColor("dark");
-  }, [theme, genColor]);
+    if (theme === Theme.LIGHT) return genColor(Theme.LIGHT);
+    if (theme === Theme.DARK) return genColor(Theme.DARK);
+    if (systemTheme === "dark") return genColor(Theme.DARK);
+    return genColor(Theme.LIGHT);
+  }, [theme, genColor, systemTheme]);
 
   return (
     <div
@@ -63,6 +58,7 @@ export const ThemeThumbnail = (props: Props) => {
         "w-[200px] cursor-pointer duration-300 hover:scale-110",
         className,
       )}
+      onClick={onClick}
     >
       <div
         className={cn(
@@ -95,7 +91,9 @@ export const ThemeThumbnail = (props: Props) => {
           </div>
         </div>
       </div>
-      <span className="block w-full p-2 text-center font-normal">{label}</span>
+      <span className="block w-full p-2 text-center font-normal">
+        {ThemeLabel[theme]}
+      </span>
     </div>
   );
 };
