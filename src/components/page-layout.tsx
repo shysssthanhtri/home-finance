@@ -13,7 +13,7 @@ const PageLayout = ({ children }: Props) => {
       <SideBar />
       <div className="min-h-screen grow bg-muted/40 sm:pl-14">
         <Header />
-        {children}
+        <div className="p-4">{children}</div>
         <Footer />
       </div>
     </div>
