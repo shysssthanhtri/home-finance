@@ -53,7 +53,7 @@ export const ThemeThumbnail = (props: Props) => {
   }, [theme, genColor, systemTheme]);
 
   return (
-    <div
+    <button
       className={cn(
         "w-[200px] cursor-pointer duration-300 hover:scale-110",
         className,
@@ -94,6 +94,6 @@ export const ThemeThumbnail = (props: Props) => {
       <span className="block w-full p-2 text-center font-normal">
         {ThemeLabel[theme]}
       </span>
-    </div>
+    </button>
   );
 };
