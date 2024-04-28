@@ -9,8 +9,8 @@ export const menuItems = [
     icon: LineChart,
   },
   {
-    title: "Profiles",
-    href: AppRoute.profiles,
+    title: "Teams",
+    href: AppRoute.teams,
     icon: Users2,
   },
   {
