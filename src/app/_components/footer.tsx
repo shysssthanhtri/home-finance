@@ -5,7 +5,7 @@ import { menuItems } from "@/config/menu";
 
 export const Footer = () => {
   return (
-    <nav className="fixed bottom-0 z-30 flex h-14 w-full items-center justify-around border-t bg-background p-4 sm:hidden">
+    <nav className="flex h-14 w-full items-center justify-around border-t bg-background p-4 sm:hidden">
       {menuItems.map((item) => (
         <Link key={item.title} href={item.href}>
           <item.icon className="h-5 w-5" />

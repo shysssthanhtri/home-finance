@@ -9,11 +9,11 @@ type Props = {
 };
 const PageLayout = ({ children }: Props) => {
   return (
-    <div className="flex min-h-screen w-full">
+    <div>
       <SideBar />
-      <div className="max-h-full min-h-screen grow overflow-hidden bg-muted/40 sm:pl-14">
+      <div className="flex max-h-screen min-h-screen w-full flex-col overflow-hidden sm:pl-14">
         <Header />
-        <div className="mb-16 max-h-[calc(100vh-theme(space.14))] overflow-auto p-4 sm:mb-0">
+        <div className="max-h-[calc(100vh-2*theme(space.14))] overflow-auto p-4 sm:max-h-[calc(100vh-theme(space.14))] sm:p-6">
           {children}
         </div>
         <Footer />
