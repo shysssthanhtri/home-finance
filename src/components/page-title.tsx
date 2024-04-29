@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 type Props = {
   title: string;
@@ -9,9 +9,11 @@ type Props = {
 export const PageTitle = (props: Props) => {
   const { title, rightSide } = props;
   return (
-    <Card className="flex justify-between p-6">
-      <CardTitle className="flex items-center">{title}</CardTitle>
-      {rightSide}
+    <Card className="flex justify-between">
+      <CardHeader>
+        <CardTitle className="flex items-center">{title}</CardTitle>
+        {rightSide}
+      </CardHeader>
     </Card>
   );
 };

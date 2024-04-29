@@ -79,7 +79,9 @@ export const UserInfo = () => {
               )}
             />
             <div className="flex w-full justify-end">
-              <Button type="submit">Submit</Button>
+              <Button type="submit" size="sm">
+                Submit
+              </Button>
             </div>
           </form>
         </Form>

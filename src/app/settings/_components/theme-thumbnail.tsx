@@ -9,12 +9,13 @@ import { cn } from "@/lib/utils";
 type Props = {
   theme: Theme;
   className?: string;
-  isActive?: boolean;
   onClick?: () => void;
 };
 export const ThemeThumbnail = (props: Props) => {
-  const { theme, className, isActive, onClick } = props;
-  const { systemTheme } = useTheme();
+  const { theme, className, onClick } = props;
+  const { systemTheme, theme: activeTheme } = useTheme();
+
+  const isActive = useMemo(() => activeTheme === theme, [activeTheme, theme]);
 
   const genColor = useCallback((theme: Props["theme"]) => {
     if (theme === Theme.LIGHT) {
@@ -55,7 +56,8 @@ export const ThemeThumbnail = (props: Props) => {
   return (
     <button
       className={cn(
-        "w-[200px] cursor-pointer duration-300 hover:scale-110",
+        "w-[200px] min-w-[200px] cursor-pointer p-1 duration-300 sm:p-2 sm:hover:scale-110",
+        isActive && "rounded-lg border border-red-400",
         className,
       )}
       onClick={onClick}
@@ -63,7 +65,6 @@ export const ThemeThumbnail = (props: Props) => {
       <div
         className={cn(
           "items-center rounded-md border-2 border-muted p-1 hover:border-accent",
-          isActive && "border border-primary",
         )}
       >
         <div className={cn("space-y-2 rounded-sm p-2", color[1])}>

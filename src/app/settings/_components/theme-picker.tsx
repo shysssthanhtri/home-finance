@@ -18,7 +18,7 @@ const ThemeThumbnailDynamic = dynamic(
 );
 
 export const ThemePicker = () => {
-  const { theme, setTheme } = useTheme();
+  const { setTheme } = useTheme();
   const themes = [Theme.LIGHT, Theme.DARK, Theme.SYSTEM];
 
   return (
@@ -26,14 +26,13 @@ export const ThemePicker = () => {
       <CardHeader>
         <CardTitle>Theme</CardTitle>
       </CardHeader>
-      <CardContent className="flex gap-6">
+      <CardContent className="flex gap-4 overflow-x-auto sm:gap-6 sm:overflow-visible">
         {themes.map((item) => {
           if (item === Theme.SYSTEM) {
             return (
               <ThemeThumbnailDynamic
                 key={item}
                 theme={item}
-                isActive={theme === item}
                 onClick={() => setTheme(item)}
               />
             );
@@ -42,7 +41,6 @@ export const ThemePicker = () => {
             <ThemeThumbnail
               key={item}
               theme={item}
-              isActive={theme === item}
               onClick={() => setTheme(item)}
             />
           );

@@ -13,7 +13,7 @@ const PageLayout = ({ children }: Props) => {
       <SideBar />
       <div className="max-h-full min-h-screen grow overflow-hidden bg-muted/40 sm:pl-14">
         <Header />
-        <div className="max-h-[calc(100vh-theme(space.14))] overflow-auto p-4">
+        <div className="mb-16 max-h-[calc(100vh-theme(space.14))] overflow-auto p-4 sm:mb-0">
           {children}
         </div>
         <Footer />
