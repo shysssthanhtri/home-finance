@@ -1,8 +1,8 @@
 import React from "react";
 
+import { PageTitle } from "@/app/(authed)/_components/page-title";
 import { TeamInfo } from "@/app/(authed)/teams/_components/team-info";
 import TeamSelector from "@/app/(authed)/teams/_components/teams-selector";
-import { PageTitle } from "@/components/page-title";
 import { Card } from "@/components/ui/card";
 
 export const TeamsPage = () => {

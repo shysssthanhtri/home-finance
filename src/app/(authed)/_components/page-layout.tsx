@@ -2,7 +2,7 @@ import React from "react";
 
 import { Footer } from "@/app/(authed)/_components/footer";
 import { Header } from "@/app/(authed)/_components/header";
-import { SideBar } from "@/components/side-bar";
+import { SideBar } from "@/app/(authed)/_components/side-bar";
 
 type Props = {
   children: React.ReactNode;

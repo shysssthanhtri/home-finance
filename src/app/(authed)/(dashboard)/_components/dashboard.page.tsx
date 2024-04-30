@@ -1,10 +1,10 @@
 import React from "react";
 
+import { PageTitle } from "@/app/(authed)/_components/page-title";
 import { MoneySummaryCard } from "@/app/(authed)/(dashboard)/_components/money-summary.card";
 import { OverviewChart } from "@/app/(authed)/(dashboard)/_components/overview-chart";
 import { TransactionItem } from "@/app/(authed)/(dashboard)/_components/transaction";
 import { DatePickerWithRange } from "@/components/date-range-picker";
-import { PageTitle } from "@/components/page-title";
 import {
   Card,
   CardContent,

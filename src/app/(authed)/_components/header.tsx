@@ -1,6 +1,6 @@
 import React from "react";
 
-import { UserButton } from "@/components/user-button";
+import { UserButton } from "@/app/(authed)/_components/user-button";
 
 export const Header = () => {
   return (
