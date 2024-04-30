@@ -9,6 +9,7 @@ import {
 import React, { type ReactNode, useCallback, useState } from "react";
 
 import CreateTeamDialog from "@/app/teams/_components/create-team-dialog";
+import { RequestJoinTeamDialog } from "@/app/teams/_components/request-join-team-dialog";
 import {
   Select,
   SelectContent,
@@ -23,6 +24,7 @@ const TeamSelector = () => {
     SelectActionOption.PERSONAL,
   );
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
 
   const renderSelectItem = useCallback(
     (value: string, label: ReactNode, extra?: { icon: LucideIcon }) => {
@@ -48,7 +50,7 @@ const TeamSelector = () => {
           break;
 
         case SelectActionOption.JOIN:
-          setIsCreateModalOpen(true);
+          setIsRequestModalOpen(true);
           break;
 
         case SelectActionOption.PERSONAL:
@@ -90,6 +92,10 @@ const TeamSelector = () => {
       <CreateTeamDialog
         open={isCreateModalOpen}
         close={() => setIsCreateModalOpen(false)}
+      />
+      <RequestJoinTeamDialog
+        open={isRequestModalOpen}
+        close={() => setIsRequestModalOpen(false)}
       />
     </>
   );
