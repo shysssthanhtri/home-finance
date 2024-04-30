@@ -52,7 +52,7 @@ const TeamSelector = () => {
           break;
 
         case SelectActionOption.PERSONAL:
-          setIsCreateModalOpen(true);
+          setSelectedOption(value);
           break;
 
         default:

@@ -4,9 +4,13 @@ import {
   type CompleteAccount,
   type CompletePost,
   type CompleteSession,
+  type CompleteTeam,
+  type CompleteTeamMember,
   RelatedAccountSchema,
   RelatedPostSchema,
   RelatedSessionSchema,
+  RelatedTeamMemberSchema,
+  RelatedTeamSchema,
 } from "./index";
 
 export const UserSchema = z.object({
@@ -21,6 +25,8 @@ export interface CompleteUser extends z.infer<typeof UserSchema> {
   accounts: CompleteAccount[];
   sessions: CompleteSession[];
   posts: CompletePost[];
+  createdTeams: CompleteTeam[];
+  joinedTeams: CompleteTeamMember[];
 }
 
 /**
@@ -33,5 +39,7 @@ export const RelatedUserSchema: z.ZodSchema<CompleteUser> = z.lazy(() =>
     accounts: RelatedAccountSchema.array(),
     sessions: RelatedSessionSchema.array(),
     posts: RelatedPostSchema.array(),
+    createdTeams: RelatedTeamSchema.array(),
+    joinedTeams: RelatedTeamMemberSchema.array(),
   }),
 );
