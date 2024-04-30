@@ -7,5 +7,5 @@ export const AppRoute = {
   teams: "/teams",
 
   //  PUBLIC
-  signIn: "/sign-in",
+  signIn: "/api/auth/signin",
 } as const;
