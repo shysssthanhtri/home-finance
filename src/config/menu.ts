@@ -1,4 +1,4 @@
-import { LineChart, Settings, Users2 } from "lucide-react";
+import { BarChart3, History, LineChart, Settings, Users2 } from "lucide-react";
 
 import { AppRoute } from "@/config/app-route";
 
@@ -7,6 +7,16 @@ export const menuItems = [
     title: "Dashboard",
     href: AppRoute.home,
     icon: LineChart,
+  },
+  {
+    title: "Analyst",
+    href: AppRoute.analyst,
+    icon: BarChart3,
+  },
+  {
+    title: "History",
+    href: AppRoute.history,
+    icon: History,
   },
   {
     title: "Teams",
