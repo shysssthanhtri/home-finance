@@ -3,7 +3,7 @@ import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 import React from "react";
 
-import PageLayout from "@/app/_components/page-layout";
+import PageLayout from "@/app/(authed)/_components/page-layout";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";

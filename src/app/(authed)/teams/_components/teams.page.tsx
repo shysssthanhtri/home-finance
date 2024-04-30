@@ -1,7 +1,7 @@
 import React from "react";
 
-import { TeamInfo } from "@/app/teams/_components/team-info";
-import TeamSelector from "@/app/teams/_components/teams-selector";
+import { TeamInfo } from "@/app/(authed)/teams/_components/team-info";
+import TeamSelector from "@/app/(authed)/teams/_components/teams-selector";
 import { PageTitle } from "@/components/page-title";
 import { Card } from "@/components/ui/card";
 

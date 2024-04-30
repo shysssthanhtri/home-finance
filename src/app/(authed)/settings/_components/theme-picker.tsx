@@ -4,13 +4,14 @@ import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
 import React from "react";
 
-import { ThemeThumbnail } from "@/app/settings/_components/theme-thumbnail";
+import { ThemeThumbnail } from "@/app/(authed)/settings/_components/theme-thumbnail";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Theme } from "@/config/theme";
 
 const ThemeThumbnailDynamic = dynamic(
   async () =>
-    (await import("@/app/settings/_components/theme-thumbnail")).ThemeThumbnail,
+    (await import("@/app/(authed)/settings/_components/theme-thumbnail"))
+      .ThemeThumbnail,
   {
     ssr: false,
     loading: () => <ThemeThumbnail theme={Theme.LIGHT} />,

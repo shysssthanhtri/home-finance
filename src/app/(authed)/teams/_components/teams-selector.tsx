@@ -8,8 +8,8 @@ import {
 } from "lucide-react";
 import React, { type ReactNode, useCallback, useState } from "react";
 
-import CreateTeamDialog from "@/app/teams/_components/create-team-dialog";
-import { RequestJoinTeamDialog } from "@/app/teams/_components/request-join-team-dialog";
+import CreateTeamDialog from "@/app/(authed)/teams/_components/create-team-dialog";
+import { RequestJoinTeamDialog } from "@/app/(authed)/teams/_components/request-join-team-dialog";
 import {
   Select,
   SelectContent,

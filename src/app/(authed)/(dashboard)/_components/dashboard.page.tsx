@@ -1,8 +1,8 @@
 import React from "react";
 
-import { MoneySummaryCard } from "@/app/(dashboard)/_components/money-summary.card";
-import { OverviewChart } from "@/app/(dashboard)/_components/overview-chart";
-import { TransactionItem } from "@/app/(dashboard)/_components/transaction";
+import { MoneySummaryCard } from "@/app/(authed)/(dashboard)/_components/money-summary.card";
+import { OverviewChart } from "@/app/(authed)/(dashboard)/_components/overview-chart";
+import { TransactionItem } from "@/app/(authed)/(dashboard)/_components/transaction";
 import { DatePickerWithRange } from "@/components/date-range-picker";
 import { PageTitle } from "@/components/page-title";
 import {

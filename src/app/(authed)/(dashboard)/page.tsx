@@ -1,6 +1,6 @@
 import React from "react";
 
-import { DashboardPage } from "@/app/(dashboard)/_components/dashboard.page";
+import { DashboardPage } from "@/app/(authed)/(dashboard)/_components/dashboard.page";
 
 const Page = () => {
   return <DashboardPage />;
