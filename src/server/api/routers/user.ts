@@ -7,13 +7,13 @@ export const userRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const user = await ctx.db.user.findFirstOrThrow({
         where: {
-          id: input.id,
+          id: ctx.session.user.id,
         },
       });
 
       user.name = input.name.trim();
       return ctx.db.user.update({
-        where: { id: input.id },
+        where: { id: ctx.session.user.id },
         data: user,
       });
     }),

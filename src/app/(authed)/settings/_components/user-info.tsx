@@ -59,10 +59,9 @@ export const UserInfo = ({ user }: Props) => {
     (values: FormData) => {
       mutate({
         name: values.name,
-        id: user.id,
       });
     },
-    [mutate, user],
+    [mutate],
   );
 
   return (

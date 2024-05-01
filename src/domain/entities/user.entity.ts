@@ -9,6 +9,5 @@ export const UserEntity = z.object(UserSchema.shape).extend({
 export type TUserEntity = z.infer<typeof UserEntity>;
 
 export const UpdateUserDto = UserEntity.pick({
-  id: true,
   name: true,
 });
