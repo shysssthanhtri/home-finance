@@ -25,8 +25,8 @@ export interface CompleteUser extends z.infer<typeof UserSchema> {
   accounts: CompleteAccount[];
   sessions: CompleteSession[];
   posts: CompletePost[];
-  createdTeams: CompleteTeam[];
   joinedTeams: CompleteTeamMember[];
+  personalTeam?: CompleteTeam | null;
 }
 
 /**
@@ -39,7 +39,7 @@ export const RelatedUserSchema: z.ZodSchema<CompleteUser> = z.lazy(() =>
     accounts: RelatedAccountSchema.array(),
     sessions: RelatedSessionSchema.array(),
     posts: RelatedPostSchema.array(),
-    createdTeams: RelatedTeamSchema.array(),
     joinedTeams: RelatedTeamMemberSchema.array(),
+    personalTeam: RelatedTeamSchema.nullish(),
   }),
 );

@@ -86,8 +86,8 @@ model User {
     accounts     Account[]
     sessions     Session[]
     posts        Post[]
-    createdTeams Team[]
     joinedTeams  TeamMember[]
+    personalTeam Team?        @relation(name: "personal_team")
 }
 
 model VerificationToken {
@@ -104,9 +104,12 @@ model Team {
     id   String @id @default(cuid())
     name String
 
-    createdBy   User         @relation(fields: [createdById], references: [id])
-    createdById String
-    members     TeamMember[]
+    belongToUserId String?
+
+    members      TeamMember[]
+    belongToUser User?        @relation(fields: [belongToUserId], references: [id], onDelete: Cascade, name: "personal_team", map: "personal_team_fk")
+
+    @@unique([belongToUserId])
 }
 
 enum TeamMemberRole {

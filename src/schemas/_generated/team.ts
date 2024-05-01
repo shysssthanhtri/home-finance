@@ -10,12 +10,12 @@ import {
 export const TeamSchema = z.object({
   id: z.string(),
   name: z.string(),
-  createdById: z.string(),
+  belongToUserId: z.string().nullish(),
 });
 
 export interface CompleteTeam extends z.infer<typeof TeamSchema> {
-  createdBy: CompleteUser;
   members: CompleteTeamMember[];
+  belongToUser?: CompleteUser | null;
 }
 
 /**
@@ -25,7 +25,7 @@ export interface CompleteTeam extends z.infer<typeof TeamSchema> {
  */
 export const RelatedTeamSchema: z.ZodSchema<CompleteTeam> = z.lazy(() =>
   TeamSchema.extend({
-    createdBy: RelatedUserSchema,
     members: RelatedTeamMemberSchema.array(),
+    belongToUser: RelatedUserSchema.nullish(),
   }),
 );
