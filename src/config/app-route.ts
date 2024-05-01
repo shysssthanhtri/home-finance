@@ -6,6 +6,7 @@ export const AppRoute = {
   settings: "/settings",
   teams: "/teams",
 
-  //  PUBLIC
+  //  NEXT_AUTH
   signIn: "/api/auth/signin",
+  signOut: "/api/auth/signout",
 } as const;
