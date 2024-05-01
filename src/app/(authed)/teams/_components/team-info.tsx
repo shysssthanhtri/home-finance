@@ -20,11 +20,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { api } from "@/trpc/server";
 
 export const TeamInfo = async () => {
-  const teams = await api.team.getTeams();
-  console.log({ teams });
   return (
     <Card className="space-y-2 p-4 sm:space-y-4 sm:p-6">
       <div className="flex items-center justify-between">

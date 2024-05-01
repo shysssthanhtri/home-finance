@@ -6,7 +6,7 @@ import {
   type LucideIcon,
   User,
 } from "lucide-react";
-import React, { type ReactNode, useCallback, useState } from "react";
+import React, { type ReactNode, useCallback, useMemo, useState } from "react";
 
 import CreateTeamDialog from "@/app/(authed)/teams/_components/create-team-dialog";
 import { RequestJoinTeamDialog } from "@/app/(authed)/teams/_components/request-join-team-dialog";
@@ -17,19 +17,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
+import { type TTeamEntity } from "@/domain/entities/team.entity";
+import { type TUserEntity } from "@/domain/entities/user.entity";
 
-const TeamSelector = () => {
-  const [selectedOption, setSelectedOption] = useState<string>(
-    SelectActionOption.PERSONAL,
-  );
+type Props = {
+  currentUser: TUserEntity;
+  teams: TTeamEntity[];
+};
+const TeamSelector = ({ teams, currentUser }: Props) => {
+  const [selectedOption, setSelectedOption] = useState<string>();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
 
   const renderSelectItem = useCallback(
     (value: string, label: ReactNode, extra?: { icon: LucideIcon }) => {
       return (
-        <SelectItem value={value}>
+        <SelectItem value={value} key={value}>
           <span className="flex items-center gap-2">
             {extra && <extra.icon size="16px" />}
             {label}
@@ -47,23 +50,47 @@ const TeamSelector = () => {
       switch (value as SelectActionOption) {
         case SelectActionOption.CREATE:
           setIsCreateModalOpen(true);
-          break;
+          return;
 
         case SelectActionOption.JOIN:
           setIsRequestModalOpen(true);
-          break;
-
-        case SelectActionOption.PERSONAL:
-          setSelectedOption(value);
-          break;
-
-        default:
-          break;
+          return;
       }
-      return;
     }
     setSelectedOption(value);
   }, []);
+
+  const options = useMemo(() => {
+    const result: ReactNode[] = [];
+
+    const personalTeam = teams.find((t) => t.belongToUserId === currentUser.id);
+    if (personalTeam) {
+      result.push(
+        renderSelectItem(personalTeam.id, personalTeam.name, {
+          icon: User,
+        }),
+      );
+    }
+
+    result.push(
+      renderSelectItem(SelectActionOption.CREATE, "Create new", {
+        icon: CirclePlus,
+      }),
+    );
+    result.push(
+      renderSelectItem(SelectActionOption.JOIN, "Request join", {
+        icon: GitPullRequestArrow,
+      }),
+    );
+
+    teams
+      .filter((t) => t.id !== personalTeam?.id)
+      .forEach((t) => {
+        result.push(renderSelectItem(t.id, t.name));
+      });
+
+    return result;
+  }, [currentUser.id, renderSelectItem, teams]);
 
   return (
     <>
@@ -74,20 +101,7 @@ const TeamSelector = () => {
             <SelectValue placeholder="Your team" />
           </SelectTrigger>
         </div>
-        <SelectContent>
-          {renderSelectItem(SelectActionOption.PERSONAL, "Personal", {
-            icon: User,
-          })}
-          {renderSelectItem(SelectActionOption.CREATE, "Create new", {
-            icon: CirclePlus,
-          })}
-          {renderSelectItem(SelectActionOption.JOIN, "Request join", {
-            icon: GitPullRequestArrow,
-          })}
-          <Separator className="my-1" />
-          {renderSelectItem("team-1", "Team 1")}
-          {renderSelectItem("team-2", "Team 2")}
-        </SelectContent>
+        <SelectContent>{options}</SelectContent>
       </Select>
       <CreateTeamDialog
         open={isCreateModalOpen}
@@ -104,7 +118,6 @@ const TeamSelector = () => {
 export default TeamSelector;
 
 enum SelectActionOption {
-  PERSONAL = "personal",
   CREATE = "create",
   JOIN = "join",
 }
