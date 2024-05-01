@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { RequestJoinTeamDto } from "@/domain/team.entity";
+import { RequestJoinTeamDto } from "@/domain/entities/team.entity";
 
 type Props = {
   open?: boolean;

@@ -57,7 +57,7 @@ export const ThemeThumbnail = (props: Props) => {
     <button
       className={cn(
         "w-[200px] min-w-[200px] cursor-pointer p-1 duration-300 sm:p-2 sm:hover:scale-110",
-        isActive && "rounded-lg border border-red-400",
+        isActive && "rounded-lg border-2 border-primary",
         className,
       )}
       onClick={onClick}

@@ -1,6 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -17,25 +19,50 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { UserEntity } from "@/domain/user.entity";
+import { useToast } from "@/components/ui/use-toast";
+import { type TUserEntity, UserEntity } from "@/domain/entities/user.entity";
+import { api } from "@/trpc/react";
 
-const userFormSchema = z.object(UserEntity.shape).pick({
-  email: true,
-  name: true,
-});
-
-export const UserInfo = () => {
-  const form = useForm<z.infer<typeof userFormSchema>>({
-    resolver: zodResolver(userFormSchema),
-    defaultValues: {
-      email: "",
-      name: "",
+type Props = {
+  user: TUserEntity;
+};
+export const UserInfo = ({ user }: Props) => {
+  const router = useRouter();
+  const { toast } = useToast();
+  const { mutate, isPending } = api.user.updateUser.useMutation({
+    onSuccess: () => {
+      router.refresh();
+      toast({
+        variant: "successful",
+        title: "Saved",
+      });
+    },
+    onError: (err) => {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description: err.message,
+      });
     },
   });
 
-  const onSubmit = useCallback((values: z.infer<typeof userFormSchema>) => {
-    console.log({ values });
-  }, []);
+  const form = useForm<FormData>({
+    resolver: zodResolver(userFormSchema),
+    defaultValues: {
+      email: user.email,
+      name: user.name,
+    },
+  });
+
+  const onSubmit = useCallback(
+    (values: FormData) => {
+      mutate({
+        name: values.name,
+        id: user.id,
+      });
+    },
+    [mutate, user],
+  );
 
   return (
     <Card>
@@ -69,7 +96,11 @@ export const UserInfo = () => {
                 <FormItem>
                   <FormLabel>Display name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your name is here" {...field} />
+                    <Input
+                      placeholder="Your name is here"
+                      {...field}
+                      disabled={isPending}
+                    />
                   </FormControl>
                   <FormDescription>
                     This is your public display name.
@@ -79,7 +110,8 @@ export const UserInfo = () => {
               )}
             />
             <div className="flex w-full justify-end">
-              <Button type="submit" size="sm">
+              <Button type="submit" size="sm" disabled={isPending}>
+                {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Submit
               </Button>
             </div>
@@ -89,3 +121,9 @@ export const UserInfo = () => {
     </Card>
   );
 };
+
+const userFormSchema = z.object(UserEntity.shape).pick({
+  email: true,
+  name: true,
+});
+type FormData = z.infer<typeof userFormSchema>;

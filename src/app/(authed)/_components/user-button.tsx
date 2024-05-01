@@ -12,11 +12,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { AppRoute } from "@/config/app-route";
-import { getServerAuthSession } from "@/server/auth";
+import { getCurrentUser } from "@/server/auth";
 
 export const UserButton = async () => {
-  const session = await getServerAuthSession();
-  if (!session) return null;
+  const user = await getCurrentUser();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -26,13 +26,13 @@ export const UserButton = async () => {
           className="overflow-hidden rounded-full"
         >
           <Avatar>
-            <AvatarImage src={session.user.image ?? ""} />
+            <AvatarImage src={user.image ?? ""} />
             <AvatarFallback>N/A</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[200px]">
-        <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
+        <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <Link className="w-full" href={AppRoute.settings}>

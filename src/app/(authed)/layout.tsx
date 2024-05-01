@@ -6,6 +6,7 @@ import React from "react";
 import AuthGuard from "@/app/(authed)/_components/auth-guard";
 import PageLayout from "@/app/(authed)/_components/page-layout";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { TRPCReactProvider } from "@/trpc/react";
@@ -47,6 +48,7 @@ export default function RootLayout({
               </AuthGuard>
             </TRPCReactProvider>
           </TooltipProvider>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

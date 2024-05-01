@@ -7,6 +7,8 @@ import {
 import { type Adapter } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
 
+import { UserEntity } from "@/domain/entities/user.entity";
+import { Unauthorized } from "@/domain/errors/unauthorization.error";
 import { env } from "@/env";
 import { db } from "@/server/db";
 
@@ -70,3 +72,10 @@ export const authOptions: NextAuthOptions = {
  * @see https://next-auth.js.org/configuration/nextjs
  */
 export const getServerAuthSession = () => getServerSession(authOptions);
+
+export const getCurrentUser = async () => {
+  const session = await getServerAuthSession();
+  if (!session) throw new Unauthorized();
+  const user = UserEntity.parse(session.user);
+  return user;
+};
