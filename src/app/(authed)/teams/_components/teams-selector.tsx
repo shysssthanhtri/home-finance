@@ -6,8 +6,15 @@ import {
   type LucideIcon,
   User,
 } from "lucide-react";
-import React, { type ReactNode, useCallback, useMemo, useState } from "react";
+import React, {
+  type ReactNode,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
+import { TeamContext } from "@/app/(authed)/_contexts/team.context";
 import CreateTeamDialog from "@/app/(authed)/teams/_components/create-team-dialog";
 import { RequestJoinTeamDialog } from "@/app/(authed)/teams/_components/request-join-team-dialog";
 import {
@@ -17,15 +24,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { type TTeamEntity } from "@/domain/entities/team.entity";
-import { type TUserEntity } from "@/domain/entities/user.entity";
 
-type Props = {
-  currentUser: TUserEntity;
-  teams: TTeamEntity[];
-};
-const TeamSelector = ({ teams, currentUser }: Props) => {
-  const [selectedOption, setSelectedOption] = useState<string>();
+const TeamSelector = () => {
+  const { teams, team, user } = useContext(TeamContext);
+
+  const [selectedOption, setSelectedOption] = useState<string | undefined>(
+    team?.id,
+  );
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
 
@@ -63,7 +68,7 @@ const TeamSelector = ({ teams, currentUser }: Props) => {
   const options = useMemo(() => {
     const result: ReactNode[] = [];
 
-    const personalTeam = teams.find((t) => t.belongToUserId === currentUser.id);
+    const personalTeam = teams.find((t) => t.belongToUserId === user?.id);
     if (personalTeam) {
       result.push(
         renderSelectItem(personalTeam.id, personalTeam.name, {
@@ -90,7 +95,7 @@ const TeamSelector = ({ teams, currentUser }: Props) => {
       });
 
     return result;
-  }, [currentUser.id, renderSelectItem, teams]);
+  }, [user?.id, renderSelectItem, teams]);
 
   return (
     <>

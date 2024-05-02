@@ -12,7 +12,7 @@ const AuthGuard = async ({ children }: Props) => {
   if (!session) {
     redirect(AppRoute.signIn);
   }
-  return <div>{children}</div>;
+  return <>{children}</>;
 };
 
 export default AuthGuard;
