@@ -15,8 +15,8 @@ import React, {
 } from "react";
 
 import { TeamContext } from "@/app/(authed)/_contexts/team.context";
-import CreateTeamDialog from "@/app/(authed)/teams/_components/create-team-dialog";
-import { RequestJoinTeamDialog } from "@/app/(authed)/teams/_components/request-join-team-dialog";
+import CreateTeamDialog from "@/app/(authed)/(teams)/teams/_components/create-team-dialog";
+import { RequestJoinTeamDialog } from "@/app/(authed)/(teams)/teams/_components/request-join-team-dialog";
 import {
   Select,
   SelectContent,

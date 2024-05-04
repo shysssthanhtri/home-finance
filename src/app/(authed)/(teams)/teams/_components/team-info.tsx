@@ -1,7 +1,7 @@
 import { Settings } from "lucide-react";
 import React from "react";
 
-import { InviteMemberButton } from "@/app/(authed)/teams/_components/invite-member-button";
+import { InviteMemberButton } from "@/app/(authed)/(teams)/teams/_components/invite-member-button";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
