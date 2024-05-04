@@ -26,11 +26,8 @@ import {
 } from "@/components/ui/select";
 
 const TeamSelector = () => {
-  const { teams, team, user } = useContext(TeamContext);
+  const { teams, team, user, setTeam } = useContext(TeamContext);
 
-  const [selectedOption, setSelectedOption] = useState<string | undefined>(
-    team?.id,
-  );
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
 
@@ -48,22 +45,25 @@ const TeamSelector = () => {
     [],
   );
 
-  const onValueChange = useCallback((value: string) => {
-    if (
-      Object.values(SelectActionOption).includes(value as SelectActionOption)
-    ) {
-      switch (value as SelectActionOption) {
-        case SelectActionOption.CREATE:
-          setIsCreateModalOpen(true);
-          return;
+  const onValueChange = useCallback(
+    (value: string) => {
+      if (
+        Object.values(SelectActionOption).includes(value as SelectActionOption)
+      ) {
+        switch (value as SelectActionOption) {
+          case SelectActionOption.CREATE:
+            setIsCreateModalOpen(true);
+            return;
 
-        case SelectActionOption.JOIN:
-          setIsRequestModalOpen(true);
-          return;
+          case SelectActionOption.JOIN:
+            setIsRequestModalOpen(true);
+            return;
+        }
       }
-    }
-    setSelectedOption(value);
-  }, []);
+      setTeam(teams.find((t) => t.id === value));
+    },
+    [teams, setTeam],
+  );
 
   const options = useMemo(() => {
     const result: ReactNode[] = [];
@@ -99,7 +99,7 @@ const TeamSelector = () => {
 
   return (
     <>
-      <Select value={selectedOption} onValueChange={onValueChange}>
+      <Select value={team?.id} onValueChange={onValueChange}>
         <div className="space-y-2">
           <span>Select your team:</span>
           <SelectTrigger className="w-full sm:w-96">

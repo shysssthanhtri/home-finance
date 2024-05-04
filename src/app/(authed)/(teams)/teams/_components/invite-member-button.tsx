@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 export const InviteMemberButton = () => {
   return (
-    <Button className="space-x-2" size="sm">
+    <Button className="w-full space-x-2 sm:w-fit" size="sm">
       <UserRoundPlus />
       <span className="hidden sm:block">Invite member</span>
     </Button>

@@ -95,6 +95,7 @@ export const UserInfo = ({ user }: Props) => {
                   <Input
                     placeholder="Your name is here"
                     {...field}
+                    value={field.value ?? undefined}
                     disabled={isPending}
                   />
                 </FormControl>

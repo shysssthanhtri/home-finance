@@ -35,7 +35,31 @@ const isUserHasPersonalTeam = async (
   return !!user.personalTeam;
 };
 
+const isUserCanActionOnTeam = async (
+  role: TeamMemberRole,
+  requiredRole: TeamMemberRole,
+): Promise<boolean> => {
+  return (
+    (teamRolePriorityDict[role] ?? 0) >=
+    (teamRolePriorityDict[requiredRole] ?? 999)
+  );
+};
+
 export const teamService = {
   createPersonalTeam,
   isUserHasPersonalTeam,
+  isUserCanActionOnTeam,
 };
+
+const teamRolePriority = [
+  TeamMemberRole.ADMIN,
+  TeamMemberRole.MEMBER,
+  TeamMemberRole.VIEWER,
+];
+const teamRolePriorityDict = teamRolePriority.reduce<Record<string, number>>(
+  (prev, curr, index) => {
+    prev[curr] = teamRolePriority.length - index;
+    return prev;
+  },
+  {},
+);
