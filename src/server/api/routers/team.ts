@@ -1,9 +1,9 @@
 import { TeamMemberRole } from "@prisma/client";
 
 import {
+  CreateTeamDto,
   TeamDetailDto,
   TeamEntity,
-  type TTeamDetailDto,
 } from "@/domain/entities/team.entity";
 import { Forbidden } from "@/domain/errors/forbidden.error";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
@@ -53,30 +53,18 @@ export const teamRouter = createTRPCRouter({
           throw new Forbidden();
         }
 
-        const team = await tx.team.findFirstOrThrow({
-          where: { id: teamId },
-          include: {
-            members: {
-              include: {
-                user: true,
-              },
-            },
-            belongToUser: true,
-          },
-        });
+        return teamService.getTeamInfo(teamId, tx);
+      });
+    }),
 
-        const members: TTeamDetailDto["members"] = team.members.map((m) => ({
-          id: m.userId,
-          name: m.user.name,
-          email: m.user.email,
-          role: m.role,
-        }));
-
-        const formattedTeam: TTeamDetailDto = {
-          ...team,
-          members,
-        };
-        return formattedTeam;
+  createTeam: protectedProcedure
+    .input(CreateTeamDto)
+    .output(TeamDetailDto)
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      return ctx.db.$transaction(async (tx) => {
+        const team = await teamService.createTeam(userId, input, tx);
+        return teamService.getTeamInfo(team.id, tx);
       });
     }),
 });

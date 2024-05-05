@@ -1,6 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
@@ -25,12 +27,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { CreateTeamDto } from "@/domain/entities/team.entity";
+import { api } from "@/trpc/react";
 
 type Props = {
   open?: boolean;
   close?: () => void;
 };
 const CreateTeamDialog = ({ open, close }: Props) => {
+  const router = useRouter();
+  const { mutate, isPending } = api.team.createTeam.useMutation({
+    onSuccess: () => {
+      router.refresh();
+      onClose();
+    },
+  });
   const form = useForm<z.infer<typeof CreateTeamDto>>({
     resolver: zodResolver(CreateTeamDto),
     defaultValues: {
@@ -38,9 +48,12 @@ const CreateTeamDialog = ({ open, close }: Props) => {
     },
   });
 
-  const onSubmit = useCallback((values: z.infer<typeof CreateTeamDto>) => {
-    console.log({ values });
-  }, []);
+  const onSubmit = useCallback(
+    (values: z.infer<typeof CreateTeamDto>) => {
+      mutate(values);
+    },
+    [mutate],
+  );
 
   const onClose = useCallback(() => {
     form.reset();
@@ -70,6 +83,7 @@ const CreateTeamDialog = ({ open, close }: Props) => {
                       placeholder="Your new team's name"
                       {...field}
                       value={field.value ?? ""}
+                      disabled={isPending}
                     />
                   </FormControl>
                   <FormMessage />
@@ -77,7 +91,8 @@ const CreateTeamDialog = ({ open, close }: Props) => {
               )}
             />
             <DialogFooter>
-              <Button type="submit" size="sm">
+              <Button type="submit" size="sm" disabled={isPending}>
+                {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Create
               </Button>
             </DialogFooter>

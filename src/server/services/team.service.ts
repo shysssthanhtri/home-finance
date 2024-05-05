@@ -1,6 +1,11 @@
 import { type PrismaClient, TeamMemberRole } from "@prisma/client";
 import { type ITXClientDenyList } from "@prisma/client/runtime/library";
 
+import {
+  type TCreateTeamDto,
+  type TTeamDetailDto,
+  type TTeamEntity,
+} from "@/domain/entities/team.entity";
 import { type TUserEntity } from "@/domain/entities/user.entity";
 
 const createPersonalTeam = async (
@@ -11,6 +16,25 @@ const createPersonalTeam = async (
     data: {
       name: "Personal",
       belongToUserId: userId,
+      members: {
+        create: {
+          userId: userId,
+          role: TeamMemberRole.ADMIN,
+        },
+      },
+    },
+  });
+  return team;
+};
+
+const createTeam = async (
+  userId: TUserEntity["id"],
+  dto: TCreateTeamDto,
+  transaction: Omit<PrismaClient, ITXClientDenyList>,
+) => {
+  const team = await transaction.team.create({
+    data: {
+      name: dto.name,
       members: {
         create: {
           userId: userId,
@@ -45,10 +69,42 @@ const isUserCanActionOnTeam = async (
   );
 };
 
+const getTeamInfo = async (
+  teamId: TTeamEntity["id"],
+  transaction: Omit<PrismaClient, ITXClientDenyList>,
+): Promise<TTeamDetailDto> => {
+  const team = await transaction.team.findFirstOrThrow({
+    where: { id: teamId },
+    include: {
+      members: {
+        include: {
+          user: true,
+        },
+      },
+      belongToUser: true,
+    },
+  });
+
+  const members: TTeamDetailDto["members"] = team.members.map((m) => ({
+    id: m.userId,
+    name: m.user.name,
+    email: m.user.email,
+    role: m.role,
+  }));
+
+  const formattedTeam: TTeamDetailDto = {
+    ...team,
+    members,
+  };
+  return formattedTeam;
+};
+
 export const teamService = {
   createPersonalTeam,
   isUserHasPersonalTeam,
   isUserCanActionOnTeam,
+  createTeam,
+  getTeamInfo,
 };
 
 const teamRolePriority = [

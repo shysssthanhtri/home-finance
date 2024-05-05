@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 
 const TeamSelector = () => {
   const { teams, team, user, setTeam } = useContext(TeamContext);
@@ -87,6 +88,8 @@ const TeamSelector = () => {
         icon: GitPullRequestArrow,
       }),
     );
+
+    result.push(<Separator key="separator" />);
 
     teams
       .filter((t) => t.id !== personalTeam?.id)
