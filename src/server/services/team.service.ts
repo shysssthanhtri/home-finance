@@ -9,6 +9,7 @@ import {
   type TUpdateTeamDto,
 } from "@/domain/entities/team.entity";
 import { type TUserEntity } from "@/domain/entities/user.entity";
+import { Forbidden } from "@/domain/errors/forbidden.error";
 
 const createPersonalTeam = async (
   userId: TUserEntity["id"],
@@ -129,14 +130,32 @@ const updateTeam = async (
   return team;
 };
 
+const checkUserCan = async (
+  userId: TUserEntity["id"],
+  teamId: TTeamEntity["id"],
+  role: TeamMemberRole,
+  transaction: Omit<PrismaClient, ITXClientDenyList>,
+) => {
+  const teamMember = await transaction.teamMember.findFirstOrThrow({
+    where: {
+      userId,
+      teamId,
+    },
+  });
+
+  if (!(await isUserCanActionOnTeam(teamMember.role, TeamMemberRole.VIEWER))) {
+    throw new Forbidden();
+  }
+};
+
 export const teamService = {
   createPersonalTeam,
   isUserHasPersonalTeam,
-  isUserCanActionOnTeam,
   createTeam,
   getTeamInfo,
   joinTeam,
   updateTeam,
+  checkUserCan,
 };
 
 const teamRolePriority = [

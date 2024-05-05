@@ -7,7 +7,6 @@ import {
   TeamEntity,
   UpdateTeamDto,
 } from "@/domain/entities/team.entity";
-import { Forbidden } from "@/domain/errors/forbidden.error";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { teamService } from "@/server/services/team.service";
 
@@ -39,21 +38,12 @@ export const teamRouter = createTRPCRouter({
       const teamId = input.id;
 
       return ctx.db.$transaction(async (tx) => {
-        const teamMember = await tx.teamMember.findFirstOrThrow({
-          where: {
-            userId,
-            teamId,
-          },
-        });
-
-        if (
-          !(await teamService.isUserCanActionOnTeam(
-            teamMember.role,
-            TeamMemberRole.VIEWER,
-          ))
-        ) {
-          throw new Forbidden();
-        }
+        await teamService.checkUserCan(
+          userId,
+          teamId,
+          TeamMemberRole.VIEWER,
+          tx,
+        );
 
         return teamService.getTeamInfo(teamId, tx);
       });
@@ -89,21 +79,12 @@ export const teamRouter = createTRPCRouter({
       const teamId = input.id;
 
       return ctx.db.$transaction(async (tx) => {
-        const teamMember = await tx.teamMember.findFirstOrThrow({
-          where: {
-            userId,
-            teamId,
-          },
-        });
-
-        if (
-          !(await teamService.isUserCanActionOnTeam(
-            teamMember.role,
-            TeamMemberRole.ADMIN,
-          ))
-        ) {
-          throw new Forbidden();
-        }
+        await teamService.checkUserCan(
+          userId,
+          teamId,
+          TeamMemberRole.ADMIN,
+          tx,
+        );
 
         const team = await teamService.updateTeam(userId, input, tx);
         return teamService.getTeamInfo(team.id, tx);
