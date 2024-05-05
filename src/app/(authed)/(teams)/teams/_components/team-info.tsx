@@ -1,10 +1,12 @@
 "use client";
 
 import { Loader2, Settings } from "lucide-react";
-import React, { useContext } from "react";
+import React from "react";
 
-import { TeamContext } from "@/app/(authed)/_contexts/team.context";
+import { EditTeamInfoButton } from "@/app/(authed)/(teams)/teams/_components/edit-team-info-button";
 import { InviteMemberButton } from "@/app/(authed)/(teams)/teams/_components/invite-member-button";
+import { TeamIdBadge } from "@/app/(authed)/(teams)/teams/_components/team-id-badge";
+import { useTeamInfoControl } from "@/app/(authed)/(teams)/teams/_contexts/use-team-info-control";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -25,16 +27,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { teamMemberRoleDisplay } from "@/config/team-member-role";
-import { api } from "@/trpc/react";
 
 export const TeamInfo = () => {
-  const { team, user } = useContext(TeamContext);
-  const { isLoading, data } = api.team.getTeam.useQuery(
-    { id: team?.id ?? "" },
-    {
-      enabled: !!team,
-    },
-  );
+  const { team, user, isLoading } = useTeamInfoControl();
 
   if (!team) {
     return null;
@@ -51,23 +46,20 @@ export const TeamInfo = () => {
   return (
     <Card className="space-y-2 p-4 sm:space-y-4 sm:p-6">
       <div className="block items-center justify-between space-y-2 sm:flex sm:space-y-0">
-        <div className="space-y-1 text-sm sm:space-y-2 sm:text-base">
-          <div className="space-x-2">
-            <span className="text-gray-400">Team id:</span>
-            <span>{data?.id}</span>
-          </div>
-          <div className="space-x-2">
-            <span className="text-gray-400">Team name:</span>
-            <span>{data?.name}</span>
-          </div>
+        <div className="flex flex-row items-center gap-x-2 text-base sm:text-lg">
+          <span>{team.name}</span>
+          <TeamIdBadge id={team.id} />
         </div>
-        <InviteMemberButton />
+        <div className="flex gap-2">
+          <EditTeamInfoButton />
+          <InviteMemberButton />
+        </div>
       </div>
 
       <Separator />
 
       <div className="block sm:hidden">
-        {data?.members.map((member, index) => (
+        {team.members.map((member, index) => (
           <div key={member.id} className="space-y-2">
             <div>
               <div className="text-base">{member.name}</div>
@@ -76,7 +68,7 @@ export const TeamInfo = () => {
             <Badge variant="outline">
               {teamMemberRoleDisplay[member.role]}
             </Badge>
-            {index !== data.members.length - 1 && <Separator />}
+            {index !== team.members.length - 1 && <Separator />}
           </div>
         ))}
       </div>
@@ -92,7 +84,7 @@ export const TeamInfo = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data?.members.map((member) => (
+            {team.members.map((member) => (
               <TableRow key={member.id}>
                 <TableCell className="space-x-2 font-medium">
                   <span>{member.name}</span>
