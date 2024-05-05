@@ -2,14 +2,17 @@ import dynamic from "next/dynamic";
 import React from "react";
 
 import { PageTitle } from "@/app/(authed)/_components/page-title";
-import { UserInfo } from "@/app/(authed)/settings/_components/user-info";
+import { UserInfo } from "@/app/(authed)/(settings)/settings/_components/user-info";
 import { Card, CardContent } from "@/components/ui/card";
 import { getCurrentUser } from "@/server/auth";
 
 const ThemePickerDynamic = dynamic(
   async () =>
-    (await import("@/app/(authed)/settings/_components/theme-picker"))
-      .ThemePicker,
+    (
+      await import(
+        "@/app/(authed)/(settings)/settings/_components/theme-picker"
+      )
+    ).ThemePicker,
   {
     ssr: false,
   },

@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import React from "react";
 
-import { ThemeThumbnail } from "@/app/(authed)/settings/_components/theme-thumbnail";
+import { ThemeThumbnail } from "@/app/(authed)/(settings)/settings/_components/theme-thumbnail";
 import { CollapsibleCard } from "@/components/collapsible-card";
 import { Theme } from "@/config/theme";
 
