@@ -6,6 +6,7 @@ import {
   type TRequestJoinTeamDto,
   type TTeamDetailDto,
   type TTeamEntity,
+  type TUpdateTeamDto,
 } from "@/domain/entities/team.entity";
 import { type TUserEntity } from "@/domain/entities/user.entity";
 
@@ -114,6 +115,20 @@ const getTeamInfo = async (
   return formattedTeam;
 };
 
+const updateTeam = async (
+  userId: TUserEntity["id"],
+  dto: TUpdateTeamDto,
+  transaction: Omit<PrismaClient, ITXClientDenyList>,
+) => {
+  const team = await transaction.team.update({
+    where: { id: dto.id },
+    data: {
+      name: dto.name,
+    },
+  });
+  return team;
+};
+
 export const teamService = {
   createPersonalTeam,
   isUserHasPersonalTeam,
@@ -121,6 +136,7 @@ export const teamService = {
   createTeam,
   getTeamInfo,
   joinTeam,
+  updateTeam,
 };
 
 const teamRolePriority = [

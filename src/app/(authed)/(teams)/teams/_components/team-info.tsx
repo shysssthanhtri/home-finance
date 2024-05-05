@@ -51,7 +51,7 @@ export const TeamInfo = () => {
           <TeamIdBadge id={team.id} />
         </div>
         <div className="flex gap-2">
-          <EditTeamInfoButton />
+          <EditTeamInfoButton team={team} />
           <InviteMemberButton />
         </div>
       </div>

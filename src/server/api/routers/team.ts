@@ -5,6 +5,7 @@ import {
   RequestJoinTeamDto,
   TeamDetailDto,
   TeamEntity,
+  UpdateTeamDto,
 } from "@/domain/entities/team.entity";
 import { Forbidden } from "@/domain/errors/forbidden.error";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
@@ -77,6 +78,35 @@ export const teamRouter = createTRPCRouter({
       return ctx.db.$transaction(async (tx) => {
         await teamService.joinTeam(userId, input, tx);
         return teamService.getTeamInfo(input.id, tx);
+      });
+    }),
+
+  updateTeam: protectedProcedure
+    .input(UpdateTeamDto)
+    .output(TeamDetailDto)
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const teamId = input.id;
+
+      return ctx.db.$transaction(async (tx) => {
+        const teamMember = await tx.teamMember.findFirstOrThrow({
+          where: {
+            userId,
+            teamId,
+          },
+        });
+
+        if (
+          !(await teamService.isUserCanActionOnTeam(
+            teamMember.role,
+            TeamMemberRole.ADMIN,
+          ))
+        ) {
+          throw new Forbidden();
+        }
+
+        const team = await teamService.updateTeam(userId, input, tx);
+        return teamService.getTeamInfo(team.id, tx);
       });
     }),
 });
