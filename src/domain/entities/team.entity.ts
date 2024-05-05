@@ -16,7 +16,8 @@ export type TCreateTeamDto = z.infer<typeof CreateTeamDto>;
 
 export const RequestJoinTeamDto = TeamEntity.pick({
   id: true,
-});
+}).and(TeamMemberSchema.pick({ role: true }));
+export type TRequestJoinTeamDto = z.infer<typeof RequestJoinTeamDto>;
 
 export const TeamDetailDto = z.object(TeamEntity.shape).extend({
   belongToUser: UserEntity.nullish(),

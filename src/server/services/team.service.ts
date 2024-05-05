@@ -3,6 +3,7 @@ import { type ITXClientDenyList } from "@prisma/client/runtime/library";
 
 import {
   type TCreateTeamDto,
+  type TRequestJoinTeamDto,
   type TTeamDetailDto,
   type TTeamEntity,
 } from "@/domain/entities/team.entity";
@@ -44,6 +45,20 @@ const createTeam = async (
     },
   });
   return team;
+};
+
+const joinTeam = async (
+  userId: TUserEntity["id"],
+  dto: TRequestJoinTeamDto,
+  transaction: Omit<PrismaClient, ITXClientDenyList>,
+) => {
+  return transaction.teamMember.create({
+    data: {
+      teamId: dto.id,
+      role: dto.role,
+      userId,
+    },
+  });
 };
 
 const isUserHasPersonalTeam = async (
@@ -105,6 +120,7 @@ export const teamService = {
   isUserCanActionOnTeam,
   createTeam,
   getTeamInfo,
+  joinTeam,
 };
 
 const teamRolePriority = [

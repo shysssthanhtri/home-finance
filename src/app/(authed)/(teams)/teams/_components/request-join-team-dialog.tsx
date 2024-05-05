@@ -1,9 +1,11 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { TeamMemberRole } from "@prisma/client";
+import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { type z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,24 +25,48 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { RequestJoinTeamDto } from "@/domain/entities/team.entity";
+import { teamMemberRoleDisplay } from "@/config/team-member-role";
+import {
+  RequestJoinTeamDto,
+  type TRequestJoinTeamDto,
+} from "@/domain/entities/team.entity";
+import { api } from "@/trpc/react";
 
 type Props = {
   open?: boolean;
   close?: () => void;
 };
 export const RequestJoinTeamDialog = ({ open, close }: Props) => {
-  const form = useForm<z.infer<typeof RequestJoinTeamDto>>({
-    resolver: zodResolver(RequestJoinTeamDto),
-    defaultValues: {
-      id: "",
+  const router = useRouter();
+  const { mutate, isPending } = api.team.requestJoin.useMutation({
+    onSuccess: () => {
+      router.refresh();
+      onClose();
     },
   });
 
-  const onSubmit = useCallback((values: z.infer<typeof RequestJoinTeamDto>) => {
-    console.log({ values });
-  }, []);
+  const form = useForm<TRequestJoinTeamDto>({
+    resolver: zodResolver(RequestJoinTeamDto),
+    defaultValues: {
+      id: "",
+      role: TeamMemberRole.VIEWER,
+    },
+  });
+
+  const onSubmit = useCallback(
+    (values: TRequestJoinTeamDto) => {
+      mutate(values);
+    },
+    [mutate],
+  );
 
   const onClose = useCallback(() => {
     form.reset();
@@ -53,8 +79,9 @@ export const RequestJoinTeamDialog = ({ open, close }: Props) => {
         <DialogHeader>
           <DialogTitle>Request to join a team</DialogTitle>
           <DialogDescription>
-            Request to join a team. You can ask for team id from team&apos;s
-            members
+            Request to join a team.
+            <br />
+            You can ask team&apos;s members for the id.
           </DialogDescription>
         </DialogHeader>
         <Separator />
@@ -71,14 +98,46 @@ export const RequestJoinTeamDialog = ({ open, close }: Props) => {
                       placeholder="Team's id"
                       {...field}
                       value={field.value ?? ""}
+                      disabled={isPending}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Role</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={isPending}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select your role" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {Object.values(TeamMemberRole).map((role) => (
+                        <SelectItem value={role} key={role}>
+                          {teamMemberRoleDisplay[role]}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <DialogFooter>
-              <Button type="submit" size="sm">
+              <Button type="submit" size="sm" disabled={isPending}>
+                {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Request
               </Button>
             </DialogFooter>

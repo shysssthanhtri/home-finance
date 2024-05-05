@@ -2,6 +2,7 @@ import { TeamMemberRole } from "@prisma/client";
 
 import {
   CreateTeamDto,
+  RequestJoinTeamDto,
   TeamDetailDto,
   TeamEntity,
 } from "@/domain/entities/team.entity";
@@ -65,6 +66,17 @@ export const teamRouter = createTRPCRouter({
       return ctx.db.$transaction(async (tx) => {
         const team = await teamService.createTeam(userId, input, tx);
         return teamService.getTeamInfo(team.id, tx);
+      });
+    }),
+
+  requestJoin: protectedProcedure
+    .input(RequestJoinTeamDto)
+    .output(TeamDetailDto)
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      return ctx.db.$transaction(async (tx) => {
+        await teamService.joinTeam(userId, input, tx);
+        return teamService.getTeamInfo(input.id, tx);
       });
     }),
 });
