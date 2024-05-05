@@ -30,3 +30,12 @@ export const TeamDetailDto = z.object(TeamEntity.shape).extend({
   members: z.array(UserEntity.and(TeamMemberSchema.pick({ role: true }))),
 });
 export type TTeamDetailDto = z.infer<typeof TeamDetailDto>;
+
+export const InviteMemberDto = TeamEntity.pick({
+  id: true,
+})
+  .extend({
+    email: z.string().email().nullish(),
+  })
+  .and(TeamMemberSchema.pick({ role: true }));
+export type TInviteMemberDto = z.infer<typeof InviteMemberDto>;

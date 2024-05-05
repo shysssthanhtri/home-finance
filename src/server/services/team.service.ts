@@ -143,7 +143,7 @@ const checkUserCan = async (
     },
   });
 
-  if (!(await isUserCanActionOnTeam(teamMember.role, TeamMemberRole.VIEWER))) {
+  if (!(await isUserCanActionOnTeam(teamMember.role, role))) {
     throw new Forbidden();
   }
 };

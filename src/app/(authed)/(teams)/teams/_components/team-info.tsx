@@ -52,7 +52,7 @@ export const TeamInfo = () => {
         </div>
         <div className="flex gap-2">
           <EditTeamInfoButton team={team} />
-          <InviteMemberButton />
+          <InviteMemberButton team={team} />
         </div>
       </div>
 
