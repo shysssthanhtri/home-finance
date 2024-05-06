@@ -1,21 +1,15 @@
 "use client";
 
-import { Loader2, Settings } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import React from "react";
 
 import { EditTeamInfoButton } from "@/app/(authed)/(teams)/teams/_components/edit-team-info-button";
 import { InviteMemberButton } from "@/app/(authed)/(teams)/teams/_components/invite-member-button";
+import { MemberActionsButton } from "@/app/(authed)/(teams)/teams/_components/member-actions-button";
 import { TeamIdBadge } from "@/app/(authed)/(teams)/teams/_components/team-id-badge";
 import { useTeamInfoControl } from "@/app/(authed)/(teams)/teams/_contexts/use-team-info-control";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import {
   Table,
@@ -98,17 +92,9 @@ export const TeamInfo = () => {
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="sm">
-                        <Settings />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem>Update role</DropdownMenuItem>
-                      <DropdownMenuItem>Remove</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  {team.belongToUserId !== member.id && (
+                    <MemberActionsButton team={team} member={member} />
+                  )}
                 </TableCell>
               </TableRow>
             ))}
