@@ -39,3 +39,8 @@ export const InviteMemberDto = TeamEntity.pick({
   })
   .and(TeamMemberSchema.pick({ role: true }));
 export type TInviteMemberDto = z.infer<typeof InviteMemberDto>;
+
+export const UpdateMemberRoleDto = TeamEntity.pick({
+  id: true,
+}).and(TeamMemberSchema.pick({ role: true, userId: true }));
+export type TUpdateMemberRoleDto = z.infer<typeof UpdateMemberRoleDto>;

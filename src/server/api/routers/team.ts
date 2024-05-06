@@ -6,6 +6,7 @@ import {
   RequestJoinTeamDto,
   TeamDetailDto,
   TeamEntity,
+  UpdateMemberRoleDto,
   UpdateTeamDto,
 } from "@/domain/entities/team.entity";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
@@ -97,9 +98,38 @@ export const teamRouter = createTRPCRouter({
     .input(InviteMemberDto)
     .output(TeamDetailDto)
     .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const teamId = input.id;
+
       return ctx.db.$transaction(async (tx) => {
+        await teamService.checkUserCan(
+          userId,
+          teamId,
+          TeamMemberRole.ADMIN,
+          tx,
+        );
         const user = await userService.getUserByEmail(input.email, tx);
         await teamService.joinTeam(user.id, input, tx);
+        return teamService.getTeamInfo(input.id, tx);
+      });
+    }),
+
+  updateMemberRole: protectedProcedure
+    .input(UpdateMemberRoleDto)
+    .output(TeamDetailDto)
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const teamId = input.id;
+
+      return ctx.db.$transaction(async (tx) => {
+        await teamService.checkUserCan(
+          userId,
+          teamId,
+          TeamMemberRole.ADMIN,
+          tx,
+        );
+
+        await teamService.updateMemberRole(input, tx);
         return teamService.getTeamInfo(input.id, tx);
       });
     }),
