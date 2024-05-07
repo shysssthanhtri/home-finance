@@ -5,7 +5,7 @@ import React from "react";
 
 import { EditTeamInfoButton } from "@/app/(authed)/(teams)/teams/_components/edit-team-info-button";
 import { InviteMemberButton } from "@/app/(authed)/(teams)/teams/_components/invite-member-button";
-import { MemberActionsButton } from "@/app/(authed)/(teams)/teams/_components/member-actions-button";
+import { RemoveMemberAlert } from "@/app/(authed)/(teams)/teams/_components/remove-member-alert";
 import { TeamIdBadge } from "@/app/(authed)/(teams)/teams/_components/team-id-badge";
 import { useTeamInfoControl } from "@/app/(authed)/(teams)/teams/_contexts/use-team-info-control";
 import { Badge } from "@/components/ui/badge";
@@ -52,17 +52,33 @@ export const TeamInfo = () => {
 
       <Separator />
 
-      <div className="block sm:hidden">
+      <div className="flex flex-col gap-y-2 sm:hidden">
         {team.members.map((member, index) => (
-          <div key={member.id} className="space-y-2">
-            <div>
-              <div className="text-base">{member.name}</div>
-              <div className="text-xs text-gray-500">{member.email}</div>
+          <div key={member.id}>
+            <div className="flex items-center justify-between">
+              <div className="space-y-2">
+                <div>
+                  <div className="space-x-2 text-base">
+                    <span>{member.name}</span>
+                    {member.id === user?.id && (
+                      <Badge variant="default">You</Badge>
+                    )}
+                  </div>
+                  <div className="text-xs text-gray-500">{member.email}</div>
+                </div>
+                <Badge variant="outline">
+                  {teamMemberRoleDisplay[member.role]}
+                </Badge>
+              </div>
+              <div>
+                {member.id !== user?.id && (
+                  <RemoveMemberAlert teamId={team.id} userId={member.id} />
+                )}
+              </div>
             </div>
-            <Badge variant="outline">
-              {teamMemberRoleDisplay[member.role]}
-            </Badge>
-            {index !== team.members.length - 1 && <Separator />}
+            {index !== team.members.length - 1 && (
+              <Separator className="mt-2" />
+            )}
           </div>
         ))}
       </div>
@@ -92,8 +108,8 @@ export const TeamInfo = () => {
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right">
-                  {team.belongToUserId !== member.id && (
-                    <MemberActionsButton team={team} member={member} />
+                  {member.id !== user?.id && (
+                    <RemoveMemberAlert teamId={team.id} userId={member.id} />
                   )}
                 </TableCell>
               </TableRow>

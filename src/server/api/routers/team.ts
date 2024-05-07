@@ -3,6 +3,7 @@ import { TeamMemberRole } from "@prisma/client";
 import {
   CreateTeamDto,
   InviteMemberDto,
+  RemoveMemberDto,
   RequestJoinTeamDto,
   TeamDetailDto,
   TeamEntity,
@@ -130,6 +131,25 @@ export const teamRouter = createTRPCRouter({
         );
 
         await teamService.updateMemberRole(input, tx);
+        return teamService.getTeamInfo(input.id, tx);
+      });
+    }),
+
+  removeMember: protectedProcedure
+    .input(RemoveMemberDto)
+    .output(TeamDetailDto)
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const teamId = input.id;
+
+      return ctx.db.$transaction(async (tx) => {
+        await teamService.checkUserCan(
+          userId,
+          teamId,
+          TeamMemberRole.ADMIN,
+          tx,
+        );
+        await teamService.removeMember(input, tx);
         return teamService.getTeamInfo(input.id, tx);
       });
     }),

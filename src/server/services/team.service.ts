@@ -3,6 +3,7 @@ import { type ITXClientDenyList } from "@prisma/client/runtime/library";
 
 import {
   type TCreateTeamDto,
+  type TRemoveMemberDto,
   type TRequestJoinTeamDto,
   type TTeamDetailDto,
   type TTeamEntity,
@@ -77,6 +78,20 @@ const updateMemberRole = async (
     },
     data: {
       role: dto.role,
+    },
+  });
+};
+
+const removeMember = async (
+  dto: TRemoveMemberDto,
+  transaction: Omit<PrismaClient, ITXClientDenyList>,
+) => {
+  return transaction.teamMember.delete({
+    where: {
+      teamId_userId: {
+        teamId: dto.id,
+        userId: dto.userId,
+      },
     },
   });
 };
@@ -175,6 +190,7 @@ export const teamService = {
   updateTeam,
   checkUserCan,
   updateMemberRole,
+  removeMember,
 };
 
 const teamRolePriority = [
