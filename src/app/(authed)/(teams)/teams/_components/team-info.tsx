@@ -3,6 +3,7 @@
 import { Loader2 } from "lucide-react";
 import React from "react";
 
+import { EditMemberRolePopover } from "@/app/(authed)/(teams)/teams/_components/edit-member-role-popover";
 import { EditTeamInfoButton } from "@/app/(authed)/(teams)/teams/_components/edit-team-info-button";
 import { InviteMemberButton } from "@/app/(authed)/(teams)/teams/_components/invite-member-button";
 import { RemoveMemberAlert } from "@/app/(authed)/(teams)/teams/_components/remove-member-alert";
@@ -20,12 +21,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { teamMemberRoleDisplay } from "@/config/team-member-role";
 
 export const TeamInfo = () => {
   const { team, user, isLoading } = useTeamInfoControl();
 
-  if (!team) {
+  if (!team || !user) {
     return null;
   }
 
@@ -38,7 +38,7 @@ export const TeamInfo = () => {
   }
 
   return (
-    <Card className="space-y-2 p-4 sm:space-y-4 sm:p-6">
+    <Card className="space-y-4 p-4 sm:p-6">
       <div className="block items-center justify-between space-y-2 sm:flex sm:space-y-0">
         <div className="flex flex-row items-center gap-x-2 text-base sm:text-lg">
           <span>{team.name}</span>
@@ -52,11 +52,11 @@ export const TeamInfo = () => {
 
       <Separator />
 
-      <div className="flex flex-col gap-y-2 sm:hidden">
+      <div className="flex flex-col gap-y-4 sm:hidden">
         {team.members.map((member, index) => (
           <div key={member.id}>
             <div className="flex items-center justify-between">
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <div>
                   <div className="space-x-2 text-base">
                     <span>{member.name}</span>
@@ -66,9 +66,11 @@ export const TeamInfo = () => {
                   </div>
                   <div className="text-xs text-gray-500">{member.email}</div>
                 </div>
-                <Badge variant="outline">
-                  {teamMemberRoleDisplay[member.role]}
-                </Badge>
+                <EditMemberRolePopover
+                  team={team}
+                  member={member}
+                  curUser={user}
+                />
               </div>
               <div>
                 {member.id !== user?.id && (
@@ -77,7 +79,7 @@ export const TeamInfo = () => {
               </div>
             </div>
             {index !== team.members.length - 1 && (
-              <Separator className="mt-2" />
+              <Separator className="mt-4" />
             )}
           </div>
         ))}
@@ -103,9 +105,11 @@ export const TeamInfo = () => {
                   )}
                 </TableCell>
                 <TableCell>
-                  <Badge variant="outline">
-                    {teamMemberRoleDisplay[member.role]}
-                  </Badge>
+                  <EditMemberRolePopover
+                    team={team}
+                    member={member}
+                    curUser={user}
+                  />
                 </TableCell>
                 <TableCell className="text-right">
                   {member.id !== user?.id && (
