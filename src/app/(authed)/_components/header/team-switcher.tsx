@@ -1,9 +1,10 @@
 "use client";
 
 import { CirclePlus, GitPullRequestArrow, User } from "lucide-react";
-import { useRouter } from "next/navigation";
-import React, { type ReactNode } from "react";
+import React, { type ReactNode, useCallback } from "react";
 
+import { CreateTeamDialog } from "@/app/(authed)/_components/header/create-team-dialog";
+import { useControlTeamSwitcher } from "@/app/(authed)/_components/header/hooks/use-control-team-switcher";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -15,12 +16,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useToast } from "@/components/ui/use-toast";
 import {
   type TTeamDetailDto,
   type TTeamEntity,
 } from "@/domain/entities/team.entity";
-import { api } from "@/trpc/react";
 
 type Props = {
   activeTeam: TTeamDetailDto;
@@ -32,82 +31,78 @@ export const TeamSwitcher = ({
   personalTeam,
   joinedTeams,
 }: Props) => {
-  const router = useRouter();
-  const { toast } = useToast();
+  const { createTeamDialog, setActiveTeam, select } = useControlTeamSwitcher();
 
-  const { mutate: setActiveTeam, isPending: isSettingActiveTeam } =
-    api.team.setActiveTeam.useMutation({
-      onSuccess: () => {
-        router.refresh();
-      },
-      onError: (err) => {
-        toast({
-          title: "Something went wrong",
-          variant: "destructive",
-          description: err.message,
-        });
-      },
-    });
-
-  const label = (child: ReactNode) => (
-    <SelectLabel className="text-xs text-gray-400">{child}</SelectLabel>
+  const label = useCallback(
+    (child: ReactNode) => (
+      <SelectLabel className="text-xs text-gray-400">{child}</SelectLabel>
+    ),
+    [],
   );
 
-  const onValueChange = async (newActiveTeam: TTeamEntity["id"]) => {
-    setActiveTeam({
-      id: newActiveTeam,
-    });
-  };
+  const onValueChange = useCallback(
+    (newActiveTeam: TTeamEntity["id"]) => {
+      setActiveTeam.mutate({
+        id: newActiveTeam,
+      });
+    },
+    [setActiveTeam],
+  );
 
   return (
-    <Select
-      value={activeTeam.id}
-      onValueChange={onValueChange}
-      disabled={isSettingActiveTeam}
-    >
-      <SelectTrigger className="w-[200px]">
-        <SelectValue placeholder="Select a team" />
-      </SelectTrigger>
-      <SelectContent>
-        {!!personalTeam && (
-          <SelectGroup>
-            {label("Personal team")}
-            <SelectItem value={personalTeam.id}>
-              <span className="flex items-center gap-x-2">
-                <User size="16px" />
-                {personalTeam.name}
-              </span>
-            </SelectItem>
-          </SelectGroup>
-        )}
-        {!!joinedTeams.length && (
-          <SelectGroup>
-            {label("Joined teams")}
-            {joinedTeams.map((team) => (
-              <SelectItem key={team.id} value={team.id}>
-                {team.name}
+    <>
+      <Select
+        value={activeTeam.id}
+        onValueChange={onValueChange}
+        disabled={setActiveTeam.isPending}
+        {...select}
+      >
+        <SelectTrigger className="h-8 w-[200px]">
+          <SelectValue placeholder="Select a team" />
+        </SelectTrigger>
+        <SelectContent>
+          {!!personalTeam && (
+            <SelectGroup>
+              {label("Personal team")}
+              <SelectItem value={personalTeam.id}>
+                <span className="flex items-center gap-x-2">
+                  <User size="16px" />
+                  {personalTeam.name}
+                </span>
               </SelectItem>
-            ))}
+            </SelectGroup>
+          )}
+          {!!joinedTeams.length && (
+            <SelectGroup>
+              {label("Joined teams")}
+              {joinedTeams.map((team) => (
+                <SelectItem key={team.id} value={team.id}>
+                  {team.name}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          )}
+          <SelectSeparator />
+          <SelectGroup>
+            <Button
+              variant="ghost"
+              className="flex h-8 w-full justify-start gap-2 text-sm font-normal"
+              onClick={() => createTeamDialog.onOpenChange(true)}
+            >
+              <CirclePlus size="16px" />
+              Create new
+            </Button>
+            <Button
+              variant="ghost"
+              className="flex h-8 w-full justify-start gap-2 text-sm font-normal"
+            >
+              <GitPullRequestArrow size="16px" />
+              Request join
+            </Button>
           </SelectGroup>
-        )}
-        <SelectSeparator />
-        <SelectGroup>
-          <Button
-            variant="ghost"
-            className="flex h-8 w-full justify-start gap-2 text-sm font-normal"
-          >
-            <CirclePlus size="16px" />
-            Create new
-          </Button>
-          <Button
-            variant="ghost"
-            className="flex h-8 w-full justify-start gap-2 text-sm font-normal"
-          >
-            <GitPullRequestArrow size="16px" />
-            Request join
-          </Button>
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+        </SelectContent>
+      </Select>
+      <CreateTeamDialog {...createTeamDialog} />
+    </>
   );
 };
