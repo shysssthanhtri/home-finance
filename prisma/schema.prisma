@@ -83,12 +83,14 @@ model User {
     emailVerified DateTime?
     image         String?
 
-    accounts     Account[]
-    sessions     Session[]
-    posts        Post[]
-    joinedTeams  TeamMember[]
-    personalTeam Team?        @relation(name: "personal_team")
-    activeTeam   ActiveTeam?  @relation(name: "active_team_user")
+    accounts         Account[]
+    sessions         Session[]
+    posts            Post[]
+    joinedTeams      TeamMember[]
+    personalTeam     Team?             @relation(name: "personal_team")
+    activeTeam       ActiveTeam?       @relation(name: "active_team_user")
+    joinTeamRequests RequestJoinTeam[]
+    joinTeamInvites  InviteJoinTeam[]
 }
 
 model VerificationToken {
@@ -117,9 +119,11 @@ model Team {
 
     belongToUserId String?
 
-    members      TeamMember[]
-    belongToUser User?        @relation(fields: [belongToUserId], references: [id], onDelete: Cascade, name: "personal_team", map: "personal_team_fk")
-    activeTeams  ActiveTeam[] @relation(name: "active_team_team")
+    members          TeamMember[]
+    belongToUser     User?             @relation(fields: [belongToUserId], references: [id], onDelete: Cascade, name: "personal_team", map: "personal_team_fk")
+    activeTeams      ActiveTeam[]      @relation(name: "active_team_team")
+    joinTeamRequests RequestJoinTeam[]
+    joinTeamInvites  InviteJoinTeam[]
 
     @@unique([belongToUserId])
 }
@@ -134,6 +138,26 @@ model TeamMember {
     teamId String
     userId String
     role   TeamMemberRole
+
+    team Team @relation(fields: [teamId], references: [id])
+    user User @relation(fields: [userId], references: [id])
+
+    @@id([teamId, userId])
+}
+
+model RequestJoinTeam {
+    userId String
+    teamId String
+
+    team Team @relation(fields: [teamId], references: [id])
+    user User @relation(fields: [userId], references: [id])
+
+    @@id([teamId, userId])
+}
+
+model InviteJoinTeam {
+    userId String
+    teamId String
 
     team Team @relation(fields: [teamId], references: [id])
     user User @relation(fields: [userId], references: [id])
