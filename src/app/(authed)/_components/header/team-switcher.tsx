@@ -57,7 +57,10 @@ export const TeamSwitcher = ({
         disabled={setActiveTeam.isPending}
         {...select}
       >
-        <SelectTrigger className="h-8 w-[200px]">
+        <SelectTrigger
+          className="h-8 w-[200px]"
+          isLoading={setActiveTeam.isPending}
+        >
           <SelectValue placeholder="Select a team" />
         </SelectTrigger>
         <SelectContent>
