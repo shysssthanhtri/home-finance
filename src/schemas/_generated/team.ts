@@ -1,8 +1,10 @@
 import * as z from "zod";
 
 import {
+  type CompleteActiveTeam,
   type CompleteTeamMember,
   type CompleteUser,
+  RelatedActiveTeamSchema,
   RelatedTeamMemberSchema,
   RelatedUserSchema,
 } from "./index";
@@ -16,6 +18,7 @@ export const TeamSchema = z.object({
 export interface CompleteTeam extends z.infer<typeof TeamSchema> {
   members: CompleteTeamMember[];
   belongToUser?: CompleteUser | null;
+  activeTeams: CompleteActiveTeam[];
 }
 
 /**
@@ -27,5 +30,6 @@ export const RelatedTeamSchema: z.ZodSchema<CompleteTeam> = z.lazy(() =>
   TeamSchema.extend({
     members: RelatedTeamMemberSchema.array(),
     belongToUser: RelatedUserSchema.nullish(),
+    activeTeams: RelatedActiveTeamSchema.array(),
   }),
 );

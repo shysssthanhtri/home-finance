@@ -2,11 +2,13 @@ import * as z from "zod";
 
 import {
   type CompleteAccount,
+  type CompleteActiveTeam,
   type CompletePost,
   type CompleteSession,
   type CompleteTeam,
   type CompleteTeamMember,
   RelatedAccountSchema,
+  RelatedActiveTeamSchema,
   RelatedPostSchema,
   RelatedSessionSchema,
   RelatedTeamMemberSchema,
@@ -27,6 +29,7 @@ export interface CompleteUser extends z.infer<typeof UserSchema> {
   posts: CompletePost[];
   joinedTeams: CompleteTeamMember[];
   personalTeam?: CompleteTeam | null;
+  activeTeam?: CompleteActiveTeam | null;
 }
 
 /**
@@ -41,5 +44,6 @@ export const RelatedUserSchema: z.ZodSchema<CompleteUser> = z.lazy(() =>
     posts: RelatedPostSchema.array(),
     joinedTeams: RelatedTeamMemberSchema.array(),
     personalTeam: RelatedTeamSchema.nullish(),
+    activeTeam: RelatedActiveTeamSchema.nullish(),
   }),
 );

@@ -58,7 +58,7 @@ export const UserInfo = ({ user }: Props) => {
   const onSubmit = useCallback(
     (values: FormData) => {
       mutate({
-        name: values.name,
+        name: values.name ?? "",
       });
     },
     [mutate],

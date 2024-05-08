@@ -8,6 +8,6 @@ export const UserEntity = z.object(UserSchema.shape).extend({
 });
 export type TUserEntity = z.infer<typeof UserEntity>;
 
-export const UpdateUserDto = UserEntity.pick({
-  name: true,
+export const UpdateUserDto = z.object({
+  name: z.string().min(3).max(30),
 });

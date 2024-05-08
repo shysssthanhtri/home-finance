@@ -88,6 +88,7 @@ model User {
     posts        Post[]
     joinedTeams  TeamMember[]
     personalTeam Team?        @relation(name: "personal_team")
+    activeTeam   ActiveTeam?  @relation(name: "active_team_user")
 }
 
 model VerificationToken {
@@ -99,6 +100,16 @@ model VerificationToken {
 }
 
 //  Application logic
+model ActiveTeam {
+    userId String
+    teamId String
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade, name: "active_team_user", map: "active_team_user_fk")
+    team Team @relation(fields: [teamId], references: [id], onDelete: Cascade, name: "active_team_team", map: "active_team_team_fk")
+
+    @@id([userId, teamId])
+    @@unique([userId])
+}
 
 model Team {
     id   String @id @default(cuid())
@@ -108,6 +119,7 @@ model Team {
 
     members      TeamMember[]
     belongToUser User?        @relation(fields: [belongToUserId], references: [id], onDelete: Cascade, name: "personal_team", map: "personal_team_fk")
+    activeTeams  ActiveTeam[] @relation(name: "active_team_team")
 
     @@unique([belongToUserId])
 }
