@@ -1,7 +1,7 @@
 import React from "react";
 
-import { TeamSwitcher } from "@/app/(authed)/_components/team-switcher";
-import { UserButton } from "@/app/(authed)/_components/user-button";
+import { TeamSwitcher } from "@/app/(authed)/_components/header/team-switcher";
+import { UserButton } from "@/app/(authed)/_components/header/user-button";
 import { getCurrentUser } from "@/server/auth";
 import { api } from "@/trpc/server";
 
