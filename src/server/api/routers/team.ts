@@ -5,6 +5,7 @@ import {
   InviteMemberDto,
   RemoveMemberDto,
   RequestJoinTeamDto,
+  SetActiveTeamDto,
   TeamDetailDto,
   TeamEntity,
   UpdateMemberRoleDto,
@@ -21,16 +22,7 @@ export const teamRouter = createTRPCRouter({
       if (!(await teamService.isUserHasPersonalTeam(userId, tx))) {
         await teamService.createPersonalTeam(userId, tx);
       }
-      const teams = await tx.team.findMany({
-        where: {
-          members: {
-            some: {
-              userId: ctx.session.user.id,
-            },
-          },
-        },
-      });
-      return teams;
+      return teamService.getTeams(userId, tx);
     });
   }),
 
@@ -151,6 +143,53 @@ export const teamRouter = createTRPCRouter({
         );
         await teamService.removeMember(input, tx);
         return teamService.getTeamInfo(input.id, tx);
+      });
+    }),
+
+  getActiveTeam: protectedProcedure
+    .output(TeamDetailDto)
+    .query(async ({ ctx }) => {
+      const userId = ctx.session.user.id;
+
+      return ctx.db.$transaction(async (tx) => {
+        const activeTeam = await teamService.getActiveTeam(userId, tx);
+        await teamService.checkUserCan(
+          userId,
+          activeTeam.teamId,
+          TeamMemberRole.VIEWER,
+          tx,
+        );
+
+        return teamService.getTeamInfo(activeTeam.teamId, tx);
+      });
+    }),
+
+  setActiveTeam: protectedProcedure
+    .input(SetActiveTeamDto)
+    .output(TeamDetailDto)
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+
+      return ctx.db.$transaction(async (tx) => {
+        await teamService.setActiveTeam(input.id, userId, tx);
+        return teamService.getTeamInfo(input.id, tx);
+      });
+    }),
+
+  getPersonalTeam: protectedProcedure
+    .output(TeamDetailDto)
+    .query(async ({ ctx }) => {
+      const userId = ctx.session.user.id;
+
+      return ctx.db.$transaction(async (tx) => {
+        const team = await teamService.getPersonalTeam(userId, tx);
+        await teamService.checkUserCan(
+          userId,
+          team.id,
+          TeamMemberRole.VIEWER,
+          tx,
+        );
+        return teamService.getTeamInfo(team.id, tx);
       });
     }),
 });
