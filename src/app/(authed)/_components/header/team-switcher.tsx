@@ -1,10 +1,16 @@
 "use client";
 
-import { CirclePlus, GitPullRequestArrow, User } from "lucide-react";
+import {
+  CirclePlus,
+  GitPullRequestArrow,
+  type LucideIcon,
+  User,
+} from "lucide-react";
 import React, { type ReactNode, useCallback } from "react";
 
 import { CreateTeamDialog } from "@/app/(authed)/_components/header/create-team-dialog";
 import { useControlTeamSwitcher } from "@/app/(authed)/_components/header/hooks/use-control-team-switcher";
+import { RequestJoinTeamDialog } from "@/app/(authed)/_components/header/request-join-team-dialog";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -31,7 +37,8 @@ export const TeamSwitcher = ({
   personalTeam,
   joinedTeams,
 }: Props) => {
-  const { createTeamDialog, setActiveTeam, select } = useControlTeamSwitcher();
+  const { createTeamDialog, setActiveTeam, select, requestJoinTeamDialog } =
+    useControlTeamSwitcher();
 
   const label = useCallback(
     (child: ReactNode) => (
@@ -47,6 +54,20 @@ export const TeamSwitcher = ({
       });
     },
     [setActiveTeam],
+  );
+
+  const actionButton = useCallback(
+    (props: ActionButtonProps) => (
+      <Button
+        variant="ghost"
+        className="flex h-8 w-full justify-start gap-2 text-sm font-normal"
+        onClick={props.onClick}
+      >
+        <props.icon size="16px" />
+        {props.children}
+      </Button>
+    ),
+    [],
   );
 
   return (
@@ -87,25 +108,27 @@ export const TeamSwitcher = ({
           )}
           <SelectSeparator />
           <SelectGroup>
-            <Button
-              variant="ghost"
-              className="flex h-8 w-full justify-start gap-2 text-sm font-normal"
-              onClick={() => createTeamDialog.onOpenChange(true)}
-            >
-              <CirclePlus size="16px" />
-              Create new
-            </Button>
-            <Button
-              variant="ghost"
-              className="flex h-8 w-full justify-start gap-2 text-sm font-normal"
-            >
-              <GitPullRequestArrow size="16px" />
-              Request join
-            </Button>
+            {actionButton({
+              icon: CirclePlus,
+              children: <>Create new</>,
+              onClick: () => createTeamDialog.onOpenChange(true),
+            })}
+            {actionButton({
+              icon: GitPullRequestArrow,
+              children: <>Request join</>,
+              onClick: () => requestJoinTeamDialog.onOpenChange(true),
+            })}
           </SelectGroup>
         </SelectContent>
       </Select>
       <CreateTeamDialog {...createTeamDialog} />
+      <RequestJoinTeamDialog {...requestJoinTeamDialog} />
     </>
   );
+};
+
+type ActionButtonProps = {
+  children: ReactNode;
+  icon: LucideIcon;
+  onClick?: () => void;
 };

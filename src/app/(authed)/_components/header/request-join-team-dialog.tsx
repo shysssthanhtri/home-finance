@@ -1,9 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import React, { useRef } from "react";
 
-import { TeamForm } from "@/app/(authed)/_components/header/forms/team-form";
+import { JoinTeamRequestForm } from "@/app/(authed)/_components/header/forms/join-team-request-form";
 import { ButtonLoading } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,15 +20,17 @@ type Props = {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 };
-export const CreateTeamDialog = ({ open, onOpenChange }: Props) => {
-  const router = useRouter();
+export const RequestJoinTeamDialog = ({ open, onOpenChange }: Props) => {
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 
-  const { isPending, mutate } = api.team.createTeam.useMutation({
+  const { isPending, mutate } = api.team.requestJoin.useMutation({
     onSuccess: () => {
-      router.refresh();
       onOpenChange?.(false);
+      toast({
+        title: "Sent",
+        variant: "successful",
+      });
     },
     onError: (err) => {
       toast({
@@ -44,14 +45,18 @@ export const CreateTeamDialog = ({ open, onOpenChange }: Props) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create a new team</DialogTitle>
+          <DialogTitle>Request join team</DialogTitle>
           <DialogDescription>
-            Create a new team, to separate data from your personal.
+            Request to join team with specific role.
           </DialogDescription>
         </DialogHeader>
         <Separator />
 
-        <TeamForm formRef={formRef} isPending={isPending} onSubmit={mutate} />
+        <JoinTeamRequestForm
+          formRef={formRef}
+          isPending={isPending}
+          onSubmit={mutate}
+        />
 
         <DialogFooter>
           <ButtonLoading
@@ -62,7 +67,7 @@ export const CreateTeamDialog = ({ open, onOpenChange }: Props) => {
               formRef.current?.requestSubmit();
             }}
           >
-            Create
+            Request
           </ButtonLoading>
         </DialogFooter>
       </DialogContent>

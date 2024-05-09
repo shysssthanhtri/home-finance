@@ -148,6 +148,7 @@ model TeamMember {
 model RequestJoinTeam {
     userId String
     teamId String
+    role   TeamMemberRole
 
     team Team @relation(fields: [teamId], references: [id])
     user User @relation(fields: [userId], references: [id])
@@ -158,6 +159,7 @@ model RequestJoinTeam {
 model InviteJoinTeam {
     userId String
     teamId String
+    role   TeamMemberRole
 
     team Team @relation(fields: [teamId], references: [id])
     user User @relation(fields: [userId], references: [id])

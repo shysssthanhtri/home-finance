@@ -1,3 +1,4 @@
+import { TeamMemberRole } from "@prisma/client";
 import * as z from "zod";
 
 import {
@@ -10,6 +11,7 @@ import {
 export const InviteJoinTeamSchema = z.object({
   userId: z.string(),
   teamId: z.string(),
+  role: z.nativeEnum(TeamMemberRole),
 });
 
 export interface CompleteInviteJoinTeam

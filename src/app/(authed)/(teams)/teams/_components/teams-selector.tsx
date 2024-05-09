@@ -16,7 +16,6 @@ import React, {
 
 import { TeamContext } from "@/app/(authed)/_contexts/team.context";
 import CreateTeamDialog from "@/app/(authed)/(teams)/teams/_components/create-team-dialog";
-import { RequestJoinTeamDialog } from "@/app/(authed)/(teams)/teams/_components/request-join-team-dialog";
 import {
   Select,
   SelectContent,
@@ -30,7 +29,6 @@ const TeamSelector = () => {
   const { teams, team, user, setTeam } = useContext(TeamContext);
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [isRequestModalOpen, setIsRequestModalOpen] = useState(false);
 
   const renderSelectItem = useCallback(
     (value: string, label: ReactNode, extra?: { icon: LucideIcon }) => {
@@ -54,10 +52,6 @@ const TeamSelector = () => {
         switch (value as SelectActionOption) {
           case SelectActionOption.CREATE:
             setIsCreateModalOpen(true);
-            return;
-
-          case SelectActionOption.JOIN:
-            setIsRequestModalOpen(true);
             return;
         }
       }
@@ -114,10 +108,6 @@ const TeamSelector = () => {
       <CreateTeamDialog
         open={isCreateModalOpen}
         close={() => setIsCreateModalOpen(false)}
-      />
-      <RequestJoinTeamDialog
-        open={isRequestModalOpen}
-        close={() => setIsRequestModalOpen(false)}
       />
     </>
   );

@@ -10,6 +10,8 @@ export const useControlTeamSwitcher = () => {
 
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [isCreateTeamDialogOpen, _setIsCreateTeamDialogOpen] = useState(false);
+  const [isRequestJoinTeamDialogOpen, _setIsRequestJoinTeamDialogOpen] =
+    useState(false);
 
   const { mutate, isPending } = api.team.setActiveTeam.useMutation({
     onSuccess: () => {
@@ -32,6 +34,14 @@ export const useControlTeamSwitcher = () => {
     [_setIsCreateTeamDialogOpen],
   );
 
+  const setIsRequestJoinTeamDialogOpen = useCallback(
+    (flag: boolean) => {
+      setIsSelectOpen(false);
+      _setIsRequestJoinTeamDialogOpen(flag);
+    },
+    [_setIsRequestJoinTeamDialogOpen],
+  );
+
   return {
     select: {
       open: isSelectOpen,
@@ -40,6 +50,10 @@ export const useControlTeamSwitcher = () => {
     createTeamDialog: {
       open: isCreateTeamDialogOpen,
       onOpenChange: setIsCreateTeamDialogOpen,
+    },
+    requestJoinTeamDialog: {
+      open: isRequestJoinTeamDialogOpen,
+      onOpenChange: setIsRequestJoinTeamDialogOpen,
     },
     setActiveTeam: {
       isPending,

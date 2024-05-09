@@ -20,11 +20,6 @@ export const UpdateTeamDto = TeamEntity.pick({
 });
 export type TUpdateTeamDto = z.infer<typeof UpdateTeamDto>;
 
-export const RequestJoinTeamDto = TeamEntity.pick({
-  id: true,
-}).and(TeamMemberSchema.pick({ role: true }));
-export type TRequestJoinTeamDto = z.infer<typeof RequestJoinTeamDto>;
-
 export const TeamDetailDto = z.object(TeamEntity.shape).extend({
   belongToUser: UserEntity.nullish(),
   members: z.array(UserEntity.and(TeamMemberSchema.pick({ role: true }))),

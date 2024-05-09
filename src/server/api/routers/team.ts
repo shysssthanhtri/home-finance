@@ -1,10 +1,11 @@
 import { TeamMemberRole } from "@prisma/client";
 
+import { OkResponseDto } from "@/domain/dtos/response.dto";
+import { RequestJoinTeamDto } from "@/domain/dtos/team";
 import {
   CreateTeamDto,
   InviteMemberDto,
   RemoveMemberDto,
-  RequestJoinTeamDto,
   SetActiveTeamDto,
   TeamDetailDto,
   TeamEntity,
@@ -13,7 +14,6 @@ import {
 } from "@/domain/entities/team.entity";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { teamService } from "@/server/services/team.service";
-import { userService } from "@/server/services/user.service";
 
 export const teamRouter = createTRPCRouter({
   getTeams: protectedProcedure.query(async ({ ctx }) => {
@@ -58,12 +58,12 @@ export const teamRouter = createTRPCRouter({
 
   requestJoin: protectedProcedure
     .input(RequestJoinTeamDto)
-    .output(TeamDetailDto)
+    .output(OkResponseDto)
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
       return ctx.db.$transaction(async (tx) => {
         await teamService.joinTeam(userId, input, tx);
-        return teamService.getTeamInfo(input.id, tx);
+        return {};
       });
     }),
 
@@ -101,8 +101,6 @@ export const teamRouter = createTRPCRouter({
           TeamMemberRole.ADMIN,
           tx,
         );
-        const user = await userService.getUserByEmail(input.email, tx);
-        await teamService.joinTeam(user.id, input, tx);
         return teamService.getTeamInfo(input.id, tx);
       });
     }),
