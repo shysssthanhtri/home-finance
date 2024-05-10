@@ -5,6 +5,7 @@ import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { CopyButton } from "@/components/copy-button";
 import {
   Form,
   FormControl,
@@ -54,7 +55,12 @@ export const TeamInfoForm = (props: Props) => {
           name="id"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Team id</FormLabel>
+              <FormLabel className="space-x-2">
+                <span>Team id</span>
+                <CopyButton text={team.id}>
+                  <span className="text-xs">Copy id</span>
+                </CopyButton>
+              </FormLabel>
               <FormControl>
                 <Input {...field} disabled />
               </FormControl>
