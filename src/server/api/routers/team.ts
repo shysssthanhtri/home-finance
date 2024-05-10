@@ -1,13 +1,14 @@
 import { TeamMemberRole } from "@prisma/client";
 
+import { OkResponseDto } from "@/domain/dtos/response.dto";
 import { RemoveMemberDto } from "@/domain/dtos/team/remove-member.dto";
+import { UpdateMemberRoleDto } from "@/domain/dtos/team/update-member-role.dto";
 import {
   CreateTeamDto,
   InviteMemberDto,
   SetActiveTeamDto,
   TeamDetailDto,
   TeamEntity,
-  UpdateMemberRoleDto,
   UpdateTeamDto,
 } from "@/domain/entities/team.entity";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
@@ -76,7 +77,7 @@ export const teamRouter = createTRPCRouter({
 
   inviteMember: protectedProcedure
     .input(InviteMemberDto)
-    .output(TeamDetailDto)
+    .output(OkResponseDto)
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
       const teamId = input.id;
@@ -88,16 +89,16 @@ export const teamRouter = createTRPCRouter({
           TeamMemberRole.ADMIN,
           tx,
         );
-        return teamService.getTeamInfo(input.id, tx);
+        return {};
       });
     }),
 
   updateMemberRole: protectedProcedure
     .input(UpdateMemberRoleDto)
-    .output(TeamDetailDto)
+    .output(OkResponseDto)
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
-      const teamId = input.id;
+      const teamId = input.teamId;
 
       return ctx.db.$transaction(async (tx) => {
         await teamService.checkUserCan(
@@ -108,13 +109,13 @@ export const teamRouter = createTRPCRouter({
         );
 
         await teamService.updateMemberRole(input, tx);
-        return teamService.getTeamInfo(input.id, tx);
+        return {};
       });
     }),
 
   removeMember: protectedProcedure
     .input(RemoveMemberDto)
-    .output(TeamDetailDto)
+    .output(OkResponseDto)
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
       const teamId = input.teamId;
@@ -127,7 +128,7 @@ export const teamRouter = createTRPCRouter({
           tx,
         );
         await teamService.removeMember(input, tx);
-        return teamService.getTeamInfo(teamId, tx);
+        return {};
       });
     }),
 

@@ -1,21 +1,21 @@
-import { type PrismaClient, TeamMemberRole } from "@prisma/client";
-import { type ITXClientDenyList } from "@prisma/client/runtime/library";
+import { TeamMemberRole } from "@prisma/client";
 
 import { type TCreateRequestJoinTeamDto } from "@/domain/dtos/team";
 import { type TRemoveMemberDto } from "@/domain/dtos/team/remove-member.dto";
+import { type TUpdateMemberRoleDto } from "@/domain/dtos/team/update-member-role.dto";
 import {
   type TCreateTeamDto,
   type TTeamDetailDto,
   type TTeamEntity,
-  type TUpdateMemberRoleDto,
   type TUpdateTeamDto,
 } from "@/domain/entities/team.entity";
 import { type TUserEntity } from "@/domain/entities/user.entity";
 import { Forbidden } from "@/domain/errors/forbidden.error";
+import { type Transaction } from "@/server/db";
 
 const createPersonalTeam = async (
   userId: TUserEntity["id"],
-  transaction: Omit<PrismaClient, ITXClientDenyList>,
+  transaction: Transaction,
 ) => {
   const team = await transaction.team.create({
     data: {
@@ -35,7 +35,7 @@ const createPersonalTeam = async (
 const createTeam = async (
   userId: TUserEntity["id"],
   dto: TCreateTeamDto,
-  transaction: Omit<PrismaClient, ITXClientDenyList>,
+  transaction: Transaction,
 ) => {
   const team = await transaction.team.create({
     data: {
@@ -54,7 +54,7 @@ const createTeam = async (
 const joinTeam = async (
   userId: TUserEntity["id"],
   dto: TCreateRequestJoinTeamDto,
-  transaction: Omit<PrismaClient, ITXClientDenyList>,
+  transaction: Transaction,
 ) => {
   return transaction.requestJoinTeam.create({
     data: {
@@ -67,10 +67,10 @@ const joinTeam = async (
 
 const updateMemberRole = async (
   dto: TUpdateMemberRoleDto,
-  transaction: Omit<PrismaClient, ITXClientDenyList>,
+  transaction: Transaction,
 ) => {
   const team = await transaction.team.findFirstOrThrow({
-    where: { id: dto.id },
+    where: { id: dto.teamId },
   });
   if (team.belongToUserId === dto.userId) {
     throw new Error("Cannot change role of personal's team owner");
@@ -79,7 +79,7 @@ const updateMemberRole = async (
   return transaction.teamMember.update({
     where: {
       teamId_userId: {
-        teamId: dto.id,
+        teamId: dto.teamId,
         userId: dto.userId,
       },
     },
@@ -91,7 +91,7 @@ const updateMemberRole = async (
 
 const removeMember = async (
   dto: TRemoveMemberDto,
-  transaction: Omit<PrismaClient, ITXClientDenyList>,
+  transaction: Transaction,
 ) => {
   const team = await transaction.team.findFirstOrThrow({
     where: { id: dto.teamId },
@@ -112,7 +112,7 @@ const removeMember = async (
 
 const isUserHasPersonalTeam = async (
   userId: TUserEntity["id"],
-  transaction: Omit<PrismaClient, ITXClientDenyList>,
+  transaction: Transaction,
 ): Promise<boolean> => {
   const team = await transaction.team.findFirst({
     select: { id: true },
@@ -133,7 +133,7 @@ const isUserCanActionOnTeam = async (
 
 const getPersonalTeam = async (
   userId: TUserEntity["id"],
-  transaction: Omit<PrismaClient, ITXClientDenyList>,
+  transaction: Transaction,
 ) => {
   if (!(await isUserHasPersonalTeam(userId, transaction))) {
     await createPersonalTeam(userId, transaction);
@@ -147,7 +147,7 @@ const getPersonalTeam = async (
 const setActiveTeam = async (
   teamId: TTeamEntity["id"],
   userId: TUserEntity["id"],
-  transaction: Omit<PrismaClient, ITXClientDenyList>,
+  transaction: Transaction,
 ) => {
   if (
     await transaction.activeTeam.findFirst({
@@ -170,7 +170,7 @@ const setActiveTeam = async (
 
 const getActiveTeam = async (
   userId: TUserEntity["id"],
-  transaction: Omit<PrismaClient, ITXClientDenyList>,
+  transaction: Transaction,
 ) => {
   const _getActiveTeam = async () =>
     transaction.activeTeam.findFirst({
@@ -195,7 +195,7 @@ const getActiveTeam = async (
 
 const getTeamInfo = async (
   teamId: TTeamEntity["id"],
-  transaction: Omit<PrismaClient, ITXClientDenyList>,
+  transaction: Transaction,
 ): Promise<TTeamDetailDto> => {
   const team = await transaction.team.findFirstOrThrow({
     where: { id: teamId },
@@ -226,7 +226,7 @@ const getTeamInfo = async (
 const updateTeam = async (
   userId: TUserEntity["id"],
   dto: TUpdateTeamDto,
-  transaction: Omit<PrismaClient, ITXClientDenyList>,
+  transaction: Transaction,
 ) => {
   const team = await transaction.team.update({
     where: { id: dto.id },
@@ -241,7 +241,7 @@ const checkUserCan = async (
   userId: TUserEntity["id"],
   teamId: TTeamEntity["id"],
   role: TeamMemberRole,
-  transaction: Omit<PrismaClient, ITXClientDenyList>,
+  transaction: Transaction,
 ) => {
   const teamMember = await transaction.teamMember.findFirstOrThrow({
     where: {
@@ -257,7 +257,7 @@ const checkUserCan = async (
 
 const getTeams = async (
   userId: TUserEntity["id"],
-  transaction: Omit<PrismaClient, ITXClientDenyList>,
+  transaction: Transaction,
 ) => {
   return transaction.team.findMany({
     where: {
