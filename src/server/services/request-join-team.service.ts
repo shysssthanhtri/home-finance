@@ -42,7 +42,43 @@ const acceptRequestJoinTeam = async (
   return relationship;
 };
 
+const rejectRequestJoinTeam = async (
+  teamId: TTeamEntity["id"],
+  userId: TUserEntity["id"],
+  transaction: Transaction,
+) => {
+  await transaction.requestJoinTeam.findFirstOrThrow({
+    where: {
+      teamId,
+      userId,
+    },
+  });
+  await transaction.requestJoinTeam.delete({
+    where: {
+      teamId_userId: {
+        teamId,
+        userId,
+      },
+    },
+  });
+};
+
+const getRequestsJoinTeamByTeamIdUserId = async (
+  teamId: TTeamEntity["id"],
+  userId: TUserEntity["id"],
+  transaction: Transaction,
+) => {
+  return transaction.requestJoinTeam.findMany({
+    where: {
+      teamId,
+      userId,
+    },
+  });
+};
+
 export const requestJoinTeamService = {
   getRequestsJoinTeam,
   acceptRequestJoinTeam,
+  rejectRequestJoinTeam,
+  getRequestsJoinTeamByTeamIdUserId,
 };

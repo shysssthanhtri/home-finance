@@ -24,22 +24,23 @@ export const RequestJoinTeamDialog = ({ open, onOpenChange }: Props) => {
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 
-  const { isPending, mutate } = api.team.requestJoin.useMutation({
-    onSuccess: () => {
-      onOpenChange?.(false);
-      toast({
-        title: "Sent",
-        variant: "successful",
-      });
-    },
-    onError: (err) => {
-      toast({
-        title: "Something went wrong",
-        variant: "destructive",
-        description: err.message,
-      });
-    },
-  });
+  const { isPending, mutate } =
+    api.requestJoinTeam.createRequestJoin.useMutation({
+      onSuccess: () => {
+        onOpenChange?.(false);
+        toast({
+          title: "Sent",
+          variant: "successful",
+        });
+      },
+      onError: (err) => {
+        toast({
+          title: "Something went wrong",
+          variant: "destructive",
+          description: err.message,
+        });
+      },
+    });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

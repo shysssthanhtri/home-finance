@@ -38,7 +38,28 @@ export const RequestJoinTeamNotification = ({ request }: Props) => {
       },
     });
 
-  const isDisabled = useMemo(() => isAcceptingRequest, [isAcceptingRequest]);
+  const { mutate: rejectRequest, isPending: isRejectingRequest } =
+    clientApi.requestJoinTeam.rejectRequest.useMutation({
+      onSuccess: () => {
+        router.refresh();
+        toast({
+          variant: "successful",
+          title: "Rejected",
+        });
+      },
+      onError: (err) => {
+        toast({
+          variant: "destructive",
+          title: "Something went wrong",
+          description: err.message,
+        });
+      },
+    });
+
+  const isDisabled = useMemo(
+    () => isAcceptingRequest || isRejectingRequest,
+    [isAcceptingRequest, isRejectingRequest],
+  );
 
   return (
     <Card>
@@ -51,6 +72,9 @@ export const RequestJoinTeamNotification = ({ request }: Props) => {
             className="h-6 w-6 text-xs"
             variant="outline"
             disabled={isDisabled}
+            onClick={() =>
+              rejectRequest({ teamId: request.teamId, userId: request.userId })
+            }
           >
             No
           </Button>
