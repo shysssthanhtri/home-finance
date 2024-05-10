@@ -5,11 +5,13 @@ import {
   type CompleteInviteJoinTeam,
   type CompleteRequestJoinTeam,
   type CompleteTeamMember,
+  type CompleteTransaction,
   type CompleteUser,
   RelatedActiveTeamSchema,
   RelatedInviteJoinTeamSchema,
   RelatedRequestJoinTeamSchema,
   RelatedTeamMemberSchema,
+  RelatedTransactionSchema,
   RelatedUserSchema,
 } from "./index";
 
@@ -25,6 +27,7 @@ export interface CompleteTeam extends z.infer<typeof TeamSchema> {
   activeTeams: CompleteActiveTeam[];
   joinTeamRequests: CompleteRequestJoinTeam[];
   joinTeamInvites: CompleteInviteJoinTeam[];
+  transactions: CompleteTransaction[];
 }
 
 /**
@@ -39,5 +42,6 @@ export const RelatedTeamSchema: z.ZodSchema<CompleteTeam> = z.lazy(() =>
     activeTeams: RelatedActiveTeamSchema.array(),
     joinTeamRequests: RelatedRequestJoinTeamSchema.array(),
     joinTeamInvites: RelatedInviteJoinTeamSchema.array(),
+    transactions: RelatedTransactionSchema.array(),
   }),
 );

@@ -1,6 +1,7 @@
 import React from "react";
 
 import { PageTitle } from "@/app/(authed)/_components/page-title";
+import { AddTransactionButton } from "@/app/(authed)/(dashboard)/_components/add-transaction-button";
 import { MoneySummaryCard } from "@/app/(authed)/(dashboard)/_components/money-summary.card";
 import { OverviewChart } from "@/app/(authed)/(dashboard)/_components/overview-chart";
 import { TransactionItem } from "@/app/(authed)/(dashboard)/_components/transaction";
@@ -39,24 +40,27 @@ const Page = () => {
             <OverviewChart />
           </Card>
         </div>
-        <Card className="h-fit basis-1/2">
-          <CardHeader>
-            <CardTitle className="text-base">Transaction list</CardTitle>
-            <CardDescription>You have 123 transactions</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <TransactionItem
-                key={index}
-                transaction={{
-                  type: index % 2 === 0 ? "Income" : "Outcome",
-                  number: 12000 * (index + 1),
-                }}
-                className="[&:not(:last-child)]:border-b [&:not(:last-child)]:pb-4"
-              />
-            ))}
-          </CardContent>
-        </Card>
+        <div className="w-full space-y-6">
+          <AddTransactionButton />
+          <Card className="h-fit basis-1/2">
+            <CardHeader>
+              <CardTitle className="text-base">Transaction list</CardTitle>
+              <CardDescription>You have 123 transactions</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <TransactionItem
+                  key={index}
+                  transaction={{
+                    type: index % 2 === 0 ? "Income" : "Outcome",
+                    number: 12000 * (index + 1),
+                  }}
+                  className="[&:not(:last-child)]:border-b [&:not(:last-child)]:pb-4"
+                />
+              ))}
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

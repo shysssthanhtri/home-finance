@@ -124,6 +124,7 @@ model Team {
     activeTeams      ActiveTeam[]      @relation(name: "active_team_team")
     joinTeamRequests RequestJoinTeam[]
     joinTeamInvites  InviteJoinTeam[]
+    transactions     Transaction[]
 
     @@unique([belongToUserId])
 }
@@ -165,4 +166,22 @@ model InviteJoinTeam {
     user User @relation(fields: [userId], references: [id])
 
     @@id([teamId, userId])
+}
+
+enum TransactionType {
+    IN
+    OUT
+}
+
+model Transaction {
+    id     String          @id @default(cuid())
+    teamId String
+    time   DateTime
+    type   TransactionType
+
+    title String
+    description String?
+    note String?
+
+    team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }

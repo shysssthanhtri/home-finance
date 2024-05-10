@@ -6,5 +6,6 @@ export * from "./requestjointeam";
 export * from "./session";
 export * from "./team";
 export * from "./teammember";
+export * from "./transaction";
 export * from "./user";
 export * from "./verificationtoken";
