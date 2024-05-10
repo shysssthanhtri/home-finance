@@ -4,15 +4,13 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 type Props = {
   title: string;
-  rightSide?: React.ReactNode;
 };
 export const PageTitle = (props: Props) => {
-  const { title, rightSide } = props;
+  const { title } = props;
   return (
-    <Card className="flex justify-between">
+    <Card>
       <CardHeader>
-        <CardTitle className="flex items-center">{title}</CardTitle>
-        {rightSide}
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
     </Card>
   );
