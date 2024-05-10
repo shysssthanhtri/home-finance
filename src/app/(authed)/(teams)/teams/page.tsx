@@ -3,6 +3,7 @@ import React from "react";
 import { PageTitle } from "@/app/(authed)/_components/page-title";
 import { TeamInfo } from "@/app/(authed)/(teams)/teams/_components/team-info";
 import { TeamMembers } from "@/app/(authed)/(teams)/teams/_components/team-members";
+import { TeamMembersSp } from "@/app/(authed)/(teams)/teams/_components/team-members/team-members-sp";
 import { api } from "@/trpc/server";
 
 const Page = async () => {
@@ -12,6 +13,7 @@ const Page = async () => {
       <PageTitle title="Teams" />
       <TeamInfo team={team} />
       <TeamMembers members={team.members} team={team} />
+      <TeamMembersSp members={team.members} team={team} />
     </div>
   );
 };

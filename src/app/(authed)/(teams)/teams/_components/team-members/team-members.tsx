@@ -27,7 +27,7 @@ export const TeamMembers = async ({ members, team }: Props) => {
   const curUser = await getCurrentUser();
 
   return (
-    <Card className="pt-4 sm:pt-6">
+    <Card className="hidden pt-4 sm:block sm:pt-6">
       <CardContent>
         <Table>
           <TableCaption>A list of team members.</TableCaption>
@@ -41,14 +41,13 @@ export const TeamMembers = async ({ members, team }: Props) => {
           </TableHeader>
           <TableBody>
             {members.map((member) => {
+              const isCurUser = curUser.id === member.id;
               const isTeamOwner = team.belongToUserId === member.id;
               return (
                 <TableRow key={member.id}>
                   <TableCell className="space-x-2">
                     <span>{member.name}</span>
-                    {curUser.id === member.id && (
-                      <Badge className="h-4 text-xs">You</Badge>
-                    )}
+                    {isCurUser && <Badge className="h-4 text-xs">You</Badge>}
                   </TableCell>
                   <TableCell>{member.email}</TableCell>
                   <TableCell>
