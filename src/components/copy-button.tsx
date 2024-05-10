@@ -29,7 +29,7 @@ export const CopyButton = ({ children, text }: Props) => {
     <Button
       variant="outline"
       onClick={copyToClipboard}
-      className="h-fit w-fit p-0 px-1"
+      className="h-fit w-fit p-1"
       type="button"
     >
       {children}

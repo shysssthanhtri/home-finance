@@ -1,9 +1,9 @@
 import { TeamMemberRole } from "@prisma/client";
 
+import { RemoveMemberDto } from "@/domain/dtos/team/remove-member.dto";
 import {
   CreateTeamDto,
   InviteMemberDto,
-  RemoveMemberDto,
   SetActiveTeamDto,
   TeamDetailDto,
   TeamEntity,
@@ -117,7 +117,7 @@ export const teamRouter = createTRPCRouter({
     .output(TeamDetailDto)
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
-      const teamId = input.id;
+      const teamId = input.teamId;
 
       return ctx.db.$transaction(async (tx) => {
         await teamService.checkUserCan(
@@ -127,7 +127,7 @@ export const teamRouter = createTRPCRouter({
           tx,
         );
         await teamService.removeMember(input, tx);
-        return teamService.getTeamInfo(input.id, tx);
+        return teamService.getTeamInfo(teamId, tx);
       });
     }),
 

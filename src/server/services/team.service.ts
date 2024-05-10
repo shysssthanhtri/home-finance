@@ -2,9 +2,9 @@ import { type PrismaClient, TeamMemberRole } from "@prisma/client";
 import { type ITXClientDenyList } from "@prisma/client/runtime/library";
 
 import { type TCreateRequestJoinTeamDto } from "@/domain/dtos/team";
+import { type TRemoveMemberDto } from "@/domain/dtos/team/remove-member.dto";
 import {
   type TCreateTeamDto,
-  type TRemoveMemberDto,
   type TTeamDetailDto,
   type TTeamEntity,
   type TUpdateMemberRoleDto,
@@ -94,7 +94,7 @@ const removeMember = async (
   transaction: Omit<PrismaClient, ITXClientDenyList>,
 ) => {
   const team = await transaction.team.findFirstOrThrow({
-    where: { id: dto.id },
+    where: { id: dto.teamId },
   });
   if (team.belongToUserId === dto.userId) {
     throw new Error("Cannot remove personal's team owner");
@@ -103,7 +103,7 @@ const removeMember = async (
   return transaction.teamMember.delete({
     where: {
       teamId_userId: {
-        teamId: dto.id,
+        teamId: dto.teamId,
         userId: dto.userId,
       },
     },

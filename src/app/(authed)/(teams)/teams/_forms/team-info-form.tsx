@@ -48,7 +48,7 @@ export const TeamInfoForm = (props: Props) => {
       <form
         ref={formRef}
         onSubmit={form.handleSubmit(handleSubmit)}
-        className={cn("space-y-4", formClassName)}
+        className={cn("space-y-2 sm:space-y-4", formClassName)}
       >
         <FormField
           control={form.control}

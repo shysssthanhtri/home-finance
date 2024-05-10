@@ -1,5 +1,8 @@
-import { CircleX, Loader2 } from "lucide-react";
-import React, { useCallback } from "react";
+"use client";
+
+import { Loader2, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React from "react";
 
 import {
   AlertDialog,
@@ -14,44 +17,42 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { type TTeamEntity } from "@/domain/entities/team.entity";
-import { type TUserEntity } from "@/domain/entities/user.entity";
+import {
+  type TTeamDetailDto,
+  type TTeamEntity,
+} from "@/domain/entities/team.entity";
 import { api } from "@/trpc/react";
 
 type Props = {
   teamId: TTeamEntity["id"];
-  userId: TUserEntity["id"];
+  memberId: TTeamDetailDto["members"][0]["id"];
 };
-export const RemoveMemberAlert = ({ teamId, userId }: Props) => {
+export const RemoveMemberButton = ({ teamId, memberId }: Props) => {
+  const router = useRouter();
   const { toast } = useToast();
-  const utils = api.useUtils();
-  const { mutate, isPending } = api.team.removeMember.useMutation({
-    onSuccess: async () => {
-      toast({
-        title: "Removed",
-        variant: "successful",
-      });
 
-      void utils.team.getTeam.refetch({ id: teamId });
+  const { mutate, isPending } = api.team.removeMember.useMutation({
+    onSuccess: () => {
+      router.refresh();
+      toast({
+        variant: "successful",
+        title: "Done",
+      });
     },
     onError: (err) => {
       toast({
-        title: "Something wrong",
         variant: "destructive",
+        title: "Something went wrong",
         description: err.message,
       });
     },
   });
 
-  const onContinue = useCallback(() => {
-    mutate({ userId, id: teamId });
-  }, [teamId, userId, mutate]);
-
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button size="sm" variant="ghost">
-          <CircleX />
+        <Button variant="ghost" className="h-8 w-8 rounded-full p-1">
+          <X />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -62,10 +63,18 @@ export const RemoveMemberAlert = ({ teamId, userId }: Props) => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onContinue}>
+          <AlertDialogCancel disabled={isPending}>No</AlertDialogCancel>
+          <AlertDialogAction
+            disabled={isPending}
+            onClick={() =>
+              mutate({
+                teamId,
+                userId: memberId,
+              })
+            }
+          >
             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Continue
+            Yes
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

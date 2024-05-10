@@ -60,13 +60,15 @@ export const requestJoinTeamRouter = createTRPCRouter({
       const userId = ctx.session.user.id;
       return ctx.db.$transaction(async (tx) => {
         if (
-          await requestJoinTeamService.getRequestsJoinTeamByTeamIdUserId(
-            input.teamId,
-            input.teamId,
-            tx,
-          )
+          (
+            await requestJoinTeamService.getRequestsJoinTeamByTeamIdUserId(
+              input.teamId,
+              input.teamId,
+              tx,
+            )
+          ).length
         ) {
-          throw new Error("User is already in team");
+          throw new Error("User has already requested");
         }
         await teamService.joinTeam(userId, input, tx);
         return {};
