@@ -1,13 +1,8 @@
 import { Bell, BellDot, CircleOff } from "lucide-react";
 import React, { type ReactNode } from "react";
 
+import { getRequestJoinTeamNotifications } from "@/app/(authed)/_components/header/notification-button/get-request-join-team-notification";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
@@ -24,26 +19,8 @@ export const NotificationButton = async () => {
 
   const activeTeam = await api.team.getActiveTeam();
 
-  const requestJoinTeams = await api.requestJoinTeam.getRequests({
-    id: activeTeam.id,
-  });
-  requestJoinTeams.forEach((request) =>
-    notifications.push(
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-sm sm:text-base">
-            {request.userName} want to join.
-          </CardTitle>
-          <CardDescription className="space-x-2 text-right">
-            <Button className="h-8 w-10" variant="outline">
-              No
-            </Button>
-            <Button className="h-8 w-10">Yes</Button>
-          </CardDescription>
-        </CardHeader>
-      </Card>,
-    ),
-  );
+  const requestJoinTeams = await getRequestJoinTeamNotifications(activeTeam.id);
+  notifications.push(...requestJoinTeams);
 
   const hasNotification = !!notifications.length;
 
