@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { type ITXClientDenyList } from "@prisma/client/runtime/library";
 
 import { env } from "@/env";
 
@@ -15,3 +16,5 @@ const createPrismaClient = () =>
 export const db = globalThis.prisma ?? createPrismaClient();
 
 if (env.NODE_ENV !== "production") globalThis.prisma = db;
+
+export type Transaction = Omit<PrismaClient, ITXClientDenyList>;

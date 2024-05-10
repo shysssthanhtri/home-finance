@@ -1,7 +1,7 @@
 import { TeamMemberRole } from "@prisma/client";
 
 import { OkResponseDto } from "@/domain/dtos/response.dto";
-import { RequestJoinTeamDto } from "@/domain/dtos/team";
+import { CreateRequestJoinTeamDto } from "@/domain/dtos/team";
 import {
   CreateTeamDto,
   InviteMemberDto,
@@ -57,7 +57,7 @@ export const teamRouter = createTRPCRouter({
     }),
 
   requestJoin: protectedProcedure
-    .input(RequestJoinTeamDto)
+    .input(CreateRequestJoinTeamDto)
     .output(OkResponseDto)
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;

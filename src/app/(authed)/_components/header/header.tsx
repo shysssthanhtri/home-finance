@@ -1,5 +1,6 @@
 import React from "react";
 
+import { NotificationButton } from "@/app/(authed)/_components/header/notification-button";
 import { TeamSwitcher } from "@/app/(authed)/_components/header/team-switcher";
 import { UserButton } from "@/app/(authed)/_components/header/user-button";
 import { getCurrentUser } from "@/server/auth";
@@ -24,7 +25,10 @@ export const Header = async () => {
           personalTeam={personalTeam}
           joinedTeams={joinedTeams}
         />
-        <UserButton />
+        <div className="flex items-center gap-x-4">
+          <NotificationButton />
+          <UserButton />
+        </div>
       </div>
     </header>
   );

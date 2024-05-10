@@ -1,7 +1,7 @@
 import { type PrismaClient, TeamMemberRole } from "@prisma/client";
 import { type ITXClientDenyList } from "@prisma/client/runtime/library";
 
-import { type TRequestJoinTeamDto } from "@/domain/dtos/team";
+import { type TCreateRequestJoinTeamDto } from "@/domain/dtos/team";
 import {
   type TCreateTeamDto,
   type TRemoveMemberDto,
@@ -53,7 +53,7 @@ const createTeam = async (
 
 const joinTeam = async (
   userId: TUserEntity["id"],
-  dto: TRequestJoinTeamDto,
+  dto: TCreateRequestJoinTeamDto,
   transaction: Omit<PrismaClient, ITXClientDenyList>,
 ) => {
   return transaction.requestJoinTeam.create({

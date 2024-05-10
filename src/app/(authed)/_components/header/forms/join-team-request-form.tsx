@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { teamMemberRoleDisplay } from "@/config/team-member-role";
-import { RequestJoinTeamDto } from "@/domain/dtos/team";
+import { CreateRequestJoinTeamDto } from "@/domain/dtos/team";
 
 type Props = {
   isPending?: boolean;
@@ -108,5 +108,5 @@ export const JoinTeamRequestForm = (props: Props) => {
   );
 };
 
-const formSchema = RequestJoinTeamDto;
+const formSchema = CreateRequestJoinTeamDto;
 type FormSchema = z.infer<typeof formSchema>;
