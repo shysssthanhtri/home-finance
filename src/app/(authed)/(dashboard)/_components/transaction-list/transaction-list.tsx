@@ -1,6 +1,6 @@
 import React from "react";
 
-import { TransactionItemV1 } from "@/app/(authed)/(dashboard)/_components/transaction-v1";
+import { TransactionItem } from "@/app/(authed)/(dashboard)/_components/transaction-list/transaction-item";
 import {
   Card,
   CardContent,
@@ -19,22 +19,20 @@ export const TransactionList = async ({ team }: Props) => {
     id: team.id,
   });
 
-  console.log({ transactions });
-
   return (
     <Card className="h-fit basis-1/2">
       <CardHeader>
         <CardTitle className="text-base">Transaction list</CardTitle>
-        <CardDescription>You have 123 transactions</CardDescription>
+        <CardDescription>
+          <span className="font-semibold text-black">Today</span> you have{" "}
+          {transactions.length} transaction(s).
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {Array.from({ length: 5 }).map((_, index) => (
-          <TransactionItemV1
-            key={index}
-            transaction={{
-              type: index % 2 === 0 ? "Income" : "Outcome",
-              number: 12000 * (index + 1),
-            }}
+        {transactions.map((t) => (
+          <TransactionItem
+            key={t.id}
+            transaction={t}
             className="[&:not(:last-child)]:border-b [&:not(:last-child)]:pb-4"
           />
         ))}

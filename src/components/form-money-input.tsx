@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { vndFormatter } from "@/lib/vnd-formatter";
 
 type TextInputProps<FormValue extends FieldValues> = {
   form: UseFormReturn<FormValue>;
@@ -23,24 +24,16 @@ type TextInputProps<FormValue extends FieldValues> = {
   placeholder: string;
 };
 
-// Brazilian currency config
-const moneyFormatter = Intl.NumberFormat("vi-VN", {
-  currency: "VND",
-  currencyDisplay: "symbol",
-  currencySign: "standard",
-  style: "currency",
-});
-
 export default function MoneyInput<FormValue extends FieldValues>(
   props: TextInputProps<FormValue>,
 ) {
   const initialValue = props.form.getValues()[props.name]
-    ? moneyFormatter.format(props.form.getValues()[props.name])
+    ? vndFormatter(props.form.getValues()[props.name])
     : "";
 
   const [value, setValue] = useReducer((_: unknown, next: string) => {
     const digits = next.replace(/\D/g, "");
-    return moneyFormatter.format(Number(digits));
+    return vndFormatter(Number(digits));
   }, initialValue);
 
   function handleChange(
