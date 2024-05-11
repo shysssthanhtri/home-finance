@@ -15,7 +15,7 @@ const Page = async () => {
       <PageTitle title="Dashboard" />
       <div className="flex flex-row gap-6">
         <div className="basis-1/2 space-y-6">
-          <MonthlySummary />
+          <MonthlySummary teamId={team.id} />
           <Card className="h-[400px] p-4">
             <OverviewChart />
           </Card>

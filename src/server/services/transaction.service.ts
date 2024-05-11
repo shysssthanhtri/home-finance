@@ -1,6 +1,7 @@
-import { endOfDay, startOfDay } from "date-fns";
+import { endOfDay, endOfMonth, startOfDay, startOfMonth } from "date-fns";
 
 import { type TCreateTransactionDto } from "@/domain/dtos/transaction/create-transaction.dto";
+import { type TGetMonthlyAmountDto } from "@/domain/dtos/transaction/get-monthy-amount.dto";
 import { type TTeamEntity } from "@/domain/entities/team.entity";
 import { type TUserEntity } from "@/domain/entities/user.entity";
 import { type Transaction } from "@/server/db";
@@ -40,7 +41,28 @@ const getTodayTransactions = async (
   return transactions;
 };
 
+const getMonthlyAmount = async (dto: TGetMonthlyAmountDto, tx: Transaction) => {
+  const now = new Date(dto.time);
+  const start = startOfMonth(now);
+  const end = endOfMonth(now);
+  const result = await tx.transaction.aggregate({
+    where: {
+      teamId: dto.teamId,
+      type: dto.type,
+      time: {
+        gte: start,
+        lte: end,
+      },
+    },
+    _sum: {
+      amount: true,
+    },
+  });
+  return result._sum.amount ?? 0;
+};
+
 export const transactionService = {
   createTransaction,
   getTodayTransactions,
+  getMonthlyAmount,
 };
