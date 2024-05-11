@@ -20,7 +20,7 @@ export const TransactionList = async ({ team }: Props) => {
   });
 
   return (
-    <Card className="h-fit basis-1/2">
+    <Card>
       <CardHeader>
         <CardTitle className="text-base">Transaction list</CardTitle>
         <CardDescription>

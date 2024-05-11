@@ -6,7 +6,7 @@ import React, { useRef, useState } from "react";
 import {
   TransactionForm,
   type TransactionFormRef,
-} from "@/app/(authed)/(dashboard)/_components/forms/transaction-form";
+} from "@/app/(authed)/(dashboard)/_forms/transaction-form";
 import { ButtonLoading } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
