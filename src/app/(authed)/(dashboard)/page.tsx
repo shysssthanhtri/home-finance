@@ -12,8 +12,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { api } from "@/trpc/server";
 
-const Page = () => {
+const Page = async () => {
+  const team = await api.team.getActiveTeam();
   return (
     <div className="hidden space-y-6 sm:block">
       <PageTitle title="Dashboard" />
@@ -41,7 +43,7 @@ const Page = () => {
           </Card>
         </div>
         <div className="w-full space-y-6">
-          <AddTransactionButton />
+          <AddTransactionButton teamId={team.id} />
           <Card className="h-fit basis-1/2">
             <CardHeader>
               <CardTitle className="text-base">Transaction list</CardTitle>

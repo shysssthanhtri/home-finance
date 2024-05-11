@@ -8,5 +8,6 @@ export const CreateTransactionDto = TransactionEntity.pick({
   type: true,
   title: true,
   description: true,
+  amount: true,
 });
 export type TCreateTransactionDto = z.infer<typeof CreateTransactionDto>;

@@ -45,6 +45,7 @@ export const TransactionForm = (props: Props) => {
       time: new Date(),
       type: TransactionType.OUT,
       title: "",
+      amount: 0,
       description: undefined,
     },
   });
@@ -92,6 +93,28 @@ export const TransactionForm = (props: Props) => {
                   placeholder="Transaction's description"
                   {...field}
                   value={field.value ?? undefined}
+                  disabled={isPending}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="amount"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Amount</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Transaction's amount"
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(parseInt(e.currentTarget.value));
+                  }}
+                  type="number"
                   disabled={isPending}
                 />
               </FormControl>

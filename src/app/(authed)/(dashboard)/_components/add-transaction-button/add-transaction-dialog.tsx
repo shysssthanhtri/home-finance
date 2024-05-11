@@ -1,8 +1,10 @@
 "use client";
-import React, { useState } from "react";
+
+import { useRouter } from "next/navigation";
+import React, { useRef, useState } from "react";
 
 import { TransactionForm } from "@/app/(authed)/(dashboard)/_components/forms/transaction-form";
-import { Button } from "@/components/ui/button";
+import { ButtonLoading } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
@@ -13,13 +15,37 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/components/ui/use-toast";
+import { type TTeamEntity } from "@/domain/entities/team.entity";
+import { api } from "@/trpc/react";
 
 type Props = {
+  teamId: TTeamEntity["id"];
   children: React.ReactNode;
 };
-export const AddTransactionDialog = ({ children }: Props) => {
+export const AddTransactionDialog = ({ teamId, children }: Props) => {
+  const router = useRouter();
+  const { toast } = useToast();
+  const formRef = useRef<HTMLFormElement>(null);
   const [open, setOpen] = useState(false);
   const [keepCreating, setKeepCreating] = useState(false);
+
+  const { mutate, isPending } = api.transaction.create.useMutation({
+    onSuccess: () => {
+      router.refresh();
+      toast({
+        variant: "successful",
+        title: "Saved",
+      });
+    },
+    onError: (err) => {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description: err.message,
+      });
+    },
+  });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -29,7 +55,16 @@ export const AddTransactionDialog = ({ children }: Props) => {
           <DialogTitle>Add transaction</DialogTitle>
         </DialogHeader>
         <Separator />
-        <TransactionForm />
+        <TransactionForm
+          onSubmit={(value) => {
+            mutate({
+              ...value,
+              teamId,
+            });
+          }}
+          isPending={isPending}
+          formRef={formRef}
+        />
         <Separator />
         <DialogFooter>
           <div className="mt-2 flex items-center space-x-2 sm:mt-0">
@@ -44,7 +79,15 @@ export const AddTransactionDialog = ({ children }: Props) => {
               Save to create another one.
             </label>
           </div>
-          <Button size="sm">Add</Button>
+          <ButtonLoading
+            size="sm"
+            isLoading={isPending}
+            onClick={() => {
+              formRef.current?.requestSubmit();
+            }}
+          >
+            Add
+          </ButtonLoading>
         </DialogFooter>
       </DialogContent>
     </Dialog>

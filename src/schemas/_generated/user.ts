@@ -9,6 +9,7 @@ import {
   type CompleteSession,
   type CompleteTeam,
   type CompleteTeamMember,
+  type CompleteTransaction,
   RelatedAccountSchema,
   RelatedActiveTeamSchema,
   RelatedInviteJoinTeamSchema,
@@ -17,6 +18,7 @@ import {
   RelatedSessionSchema,
   RelatedTeamMemberSchema,
   RelatedTeamSchema,
+  RelatedTransactionSchema,
 } from "./index";
 
 export const UserSchema = z.object({
@@ -36,6 +38,7 @@ export interface CompleteUser extends z.infer<typeof UserSchema> {
   activeTeam?: CompleteActiveTeam | null;
   joinTeamRequests: CompleteRequestJoinTeam[];
   joinTeamInvites: CompleteInviteJoinTeam[];
+  transaction: CompleteTransaction[];
 }
 
 /**
@@ -53,5 +56,6 @@ export const RelatedUserSchema: z.ZodSchema<CompleteUser> = z.lazy(() =>
     activeTeam: RelatedActiveTeamSchema.nullish(),
     joinTeamRequests: RelatedRequestJoinTeamSchema.array(),
     joinTeamInvites: RelatedInviteJoinTeamSchema.array(),
+    transaction: RelatedTransactionSchema.array(),
   }),
 );
