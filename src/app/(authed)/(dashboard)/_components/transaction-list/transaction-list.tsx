@@ -1,6 +1,6 @@
 import React from "react";
 
-import { TransactionItem } from "@/app/(authed)/(dashboard)/_components/transaction";
+import { TransactionItemV1 } from "@/app/(authed)/(dashboard)/_components/transaction-v1";
 import {
   Card,
   CardContent,
@@ -9,11 +9,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { type TTeamDetailDto } from "@/domain/entities/team.entity";
+import { api } from "@/trpc/server";
 
 type Props = {
   team: TTeamDetailDto;
 };
-export const TransactionList = ({ team }: Props) => {
+export const TransactionList = async ({ team }: Props) => {
+  const transactions = await api.transaction.getTodayTransactions({
+    id: team.id,
+  });
+
+  console.log({ transactions });
+
   return (
     <Card className="h-fit basis-1/2">
       <CardHeader>
@@ -22,7 +29,7 @@ export const TransactionList = ({ team }: Props) => {
       </CardHeader>
       <CardContent className="space-y-4">
         {Array.from({ length: 5 }).map((_, index) => (
-          <TransactionItem
+          <TransactionItemV1
             key={index}
             transaction={{
               type: index % 2 === 0 ? "Income" : "Outcome",

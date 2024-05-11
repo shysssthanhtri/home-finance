@@ -14,7 +14,7 @@ type Props = {
   className?: string;
 };
 
-export const TransactionItem = ({ transaction, className }: Props) => {
+export const TransactionItemV1 = ({ transaction, className }: Props) => {
   return (
     <div className={cn("flex items-center", className)}>
       <Avatar className="h-9 w-9">
