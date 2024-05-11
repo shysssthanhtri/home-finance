@@ -3,7 +3,10 @@
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 
-import { TransactionForm } from "@/app/(authed)/(dashboard)/_components/forms/transaction-form";
+import {
+  TransactionForm,
+  type TransactionFormRef,
+} from "@/app/(authed)/(dashboard)/_components/forms/transaction-form";
 import { ButtonLoading } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -29,6 +32,7 @@ export const AddTransactionDialog = ({ teamId, children }: Props) => {
   const formRef = useRef<HTMLFormElement>(null);
   const [open, setOpen] = useState(false);
   const [keepCreating, setKeepCreating] = useState(false);
+  const ref = useRef<TransactionFormRef>(null);
 
   const { mutate, isPending } = api.transaction.create.useMutation({
     onSuccess: () => {
@@ -37,6 +41,11 @@ export const AddTransactionDialog = ({ teamId, children }: Props) => {
         variant: "successful",
         title: "Saved",
       });
+      if (!keepCreating) {
+        setOpen(false);
+      } else {
+        ref.current?.refresh();
+      }
     },
     onError: (err) => {
       toast({
@@ -64,6 +73,7 @@ export const AddTransactionDialog = ({ teamId, children }: Props) => {
           }}
           isPending={isPending}
           formRef={formRef}
+          ref={ref}
         />
         <Separator />
         <DialogFooter>
