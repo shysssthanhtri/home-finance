@@ -8,6 +8,7 @@ import React, { forwardRef, useCallback, useImperativeHandle } from "react";
 import { useForm } from "react-hook-form";
 import { type z } from "zod";
 
+import MoneyInput from "@/components/form-money-input";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -116,26 +117,11 @@ export const TransactionForm = forwardRef<TransactionFormRef, Props>(
             )}
           />
 
-          <FormField
-            control={form.control}
+          <MoneyInput
+            form={form}
+            label="Amount"
             name="amount"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Amount</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Transaction's amount"
-                    {...field}
-                    onChange={(e) => {
-                      field.onChange(parseInt(e.currentTarget.value));
-                    }}
-                    type="number"
-                    disabled={isPending}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            placeholder="Transaction's amount"
           />
 
           <FormField
