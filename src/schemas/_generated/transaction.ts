@@ -10,7 +10,6 @@ export const TransactionSchema = z.object({
   type: z.nativeEnum(TransactionType),
   title: z.string(),
   description: z.string().nullish(),
-  note: z.string().nullish(),
 });
 
 export interface CompleteTransaction extends z.infer<typeof TransactionSchema> {

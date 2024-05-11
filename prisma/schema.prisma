@@ -181,7 +181,6 @@ model Transaction {
 
     title String
     description String?
-    note String?
 
     team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
 }
