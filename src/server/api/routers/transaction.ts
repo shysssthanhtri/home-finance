@@ -4,7 +4,9 @@ import { z } from "zod";
 import { TeamIdDto } from "@/domain/dtos/team";
 import { AmountDto } from "@/domain/dtos/transaction/amount.dto";
 import { CreateTransactionDto } from "@/domain/dtos/transaction/create-transaction.dto";
+import { GetMonthlyAmountInDurationDto } from "@/domain/dtos/transaction/get-monthly-amount-in-duration.dto";
 import { GetMonthlyAmountDto } from "@/domain/dtos/transaction/get-monthy-amount.dto";
+import { MonthlyAmountDto } from "@/domain/dtos/transaction/monthly-amount.dto";
 import { TransactionEntity } from "@/domain/entities/transaction.entity";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { teamService } from "@/server/services/team.service";
@@ -73,6 +75,23 @@ export const transactionRouter = createTRPCRouter({
         return {
           amount,
         };
+      });
+    }),
+
+  getMonthlyAmountInDuration: protectedProcedure
+    .input(GetMonthlyAmountInDurationDto)
+    .output(z.array(MonthlyAmountDto))
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const teamId = input.teamId;
+      return ctx.db.$transaction(async (tx) => {
+        await teamService.checkUserCan(
+          userId,
+          teamId,
+          TeamMemberRole.VIEWER,
+          tx,
+        );
+        return transactionService.getMonthlyAmountInDuration(input, tx);
       });
     }),
 });
