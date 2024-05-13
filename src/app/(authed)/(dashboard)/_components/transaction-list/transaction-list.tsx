@@ -15,8 +15,9 @@ type Props = {
   team: TTeamDetailDto;
 };
 export const TransactionList = async ({ team }: Props) => {
-  const transactions = await api.transaction.getTodayTransactions({
-    id: team.id,
+  const transactions = await api.transaction.getMonthlyTransactions({
+    teamId: team.id,
+    time: new Date(),
   });
 
   return (
@@ -24,7 +25,7 @@ export const TransactionList = async ({ team }: Props) => {
       <CardHeader>
         <CardTitle className="text-base">Transaction list</CardTitle>
         <CardDescription>
-          <span className="font-semibold text-black">Today</span> you have{" "}
+          <span className="font-semibold">This month</span> you have{" "}
           {transactions.length} transaction(s).
         </CardDescription>
       </CardHeader>

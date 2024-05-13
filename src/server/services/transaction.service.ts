@@ -1,18 +1,11 @@
 import { type TransactionType } from "@prisma/client";
-import {
-  endOfDay,
-  endOfMonth,
-  getMonth,
-  getYear,
-  startOfDay,
-  startOfMonth,
-} from "date-fns";
+import { endOfMonth, getMonth, getYear, startOfMonth } from "date-fns";
 
 import { type TCreateTransactionDto } from "@/domain/dtos/transaction/create-transaction.dto";
 import { type TGetMonthlyAmountInDurationDto } from "@/domain/dtos/transaction/get-monthly-amount-in-duration.dto";
+import { type TGetMonthlyTransactionDto } from "@/domain/dtos/transaction/get-monthly-transaction.dto";
 import { type TGetMonthlyAmountDto } from "@/domain/dtos/transaction/get-monthy-amount.dto";
 import { type TMonthlyAmountDto } from "@/domain/dtos/transaction/monthly-amount.dto";
-import { type TTeamEntity } from "@/domain/entities/team.entity";
 import { type TUserEntity } from "@/domain/entities/user.entity";
 import { type Transaction } from "@/server/db";
 
@@ -29,16 +22,15 @@ const createTransaction = async (
   });
 };
 
-const getTodayTransactions = async (
-  teamId: TTeamEntity["id"],
+const getMonthlyTransactions = async (
+  dto: TGetMonthlyTransactionDto,
   tx: Transaction,
 ) => {
-  const now = new Date();
-  const start = startOfDay(now);
-  const end = endOfDay(now);
+  const start = startOfMonth(dto.time);
+  const end = endOfMonth(dto.time);
   const transactions = await tx.transaction.findMany({
     where: {
-      teamId,
+      teamId: dto.teamId,
       time: {
         gte: start,
         lte: end,
@@ -109,7 +101,7 @@ const getMonthlyAmountInDuration = async (
 
 export const transactionService = {
   createTransaction,
-  getTodayTransactions,
+  getMonthlyTransactions,
   getMonthlyAmount,
   getMonthlyAmountInDuration,
 };

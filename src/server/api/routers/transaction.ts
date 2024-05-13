@@ -1,10 +1,10 @@
 import { TeamMemberRole } from "@prisma/client";
 import { z } from "zod";
 
-import { TeamIdDto } from "@/domain/dtos/team";
 import { AmountDto } from "@/domain/dtos/transaction/amount.dto";
 import { CreateTransactionDto } from "@/domain/dtos/transaction/create-transaction.dto";
 import { GetMonthlyAmountInDurationDto } from "@/domain/dtos/transaction/get-monthly-amount-in-duration.dto";
+import { GetMonthlyTransactionDto } from "@/domain/dtos/transaction/get-monthly-transaction.dto";
 import { GetMonthlyAmountDto } from "@/domain/dtos/transaction/get-monthy-amount.dto";
 import { MonthlyAmountDto } from "@/domain/dtos/transaction/monthly-amount.dto";
 import { TransactionEntity } from "@/domain/entities/transaction.entity";
@@ -36,12 +36,12 @@ export const transactionRouter = createTRPCRouter({
       });
     }),
 
-  getTodayTransactions: protectedProcedure
-    .input(TeamIdDto)
+  getMonthlyTransactions: protectedProcedure
+    .input(GetMonthlyTransactionDto)
     .output(z.array(TransactionEntity))
     .query(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
-      const teamId = input.id;
+      const teamId = input.teamId;
       return ctx.db.$transaction(async (tx) => {
         await teamService.checkUserCan(
           userId,
@@ -50,8 +50,8 @@ export const transactionRouter = createTRPCRouter({
           tx,
         );
 
-        const transactions = await transactionService.getTodayTransactions(
-          teamId,
+        const transactions = await transactionService.getMonthlyTransactions(
+          input,
           tx,
         );
         return transactions;
