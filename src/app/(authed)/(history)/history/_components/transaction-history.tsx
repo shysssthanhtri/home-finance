@@ -1,6 +1,7 @@
 "use client";
 
 import { endOfDay, startOfMonth } from "date-fns";
+import { Loader2 } from "lucide-react";
 import React, { useCallback, useState } from "react";
 
 import { AddTransactionButton } from "@/app/(authed)/_components/add-transaction-button";
@@ -19,7 +20,7 @@ export const TransactionHistory = ({ team }: Props) => {
     to: endOfDay(new Date()),
   });
 
-  const { data: transactions = [] } =
+  const { data: transactions = [], isPending } =
     api.transaction.getTransactionsInDuration.useQuery({
       teamId: team.id,
       from: date.from ?? new Date(),
@@ -52,6 +53,11 @@ export const TransactionHistory = ({ team }: Props) => {
       </CardHeader>
       <CardContent>
         <TransactionTable transactions={transactions} onSuccess={refetch} />
+        {isPending && (
+          <div className="flex h-[200px] items-center justify-center">
+            <Loader2 className="animate-spin" size={32} />
+          </div>
+        )}
       </CardContent>
     </Card>
   );
