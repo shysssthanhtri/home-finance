@@ -9,11 +9,13 @@ import {
 } from "date-fns";
 
 import { type TCreateTransactionDto } from "@/domain/dtos/transaction/create-transaction.dto";
+import { type TEditTransactionDto } from "@/domain/dtos/transaction/edit-transaction.dto";
 import { type TGetMonthlyAmountInDurationDto } from "@/domain/dtos/transaction/get-monthly-amount-in-duration.dto";
 import { type TGetMonthlyTransactionDto } from "@/domain/dtos/transaction/get-monthly-transaction.dto";
 import { type TGetMonthlyAmountDto } from "@/domain/dtos/transaction/get-monthy-amount.dto";
 import { type TGetTransactionInDurationDto } from "@/domain/dtos/transaction/get-transaction-in-duration.dto";
 import { type TMonthlyAmountDto } from "@/domain/dtos/transaction/monthly-amount.dto";
+import { type TTransactionEntity } from "@/domain/entities/transaction.entity";
 import { type TUserEntity } from "@/domain/entities/user.entity";
 import { type Transaction } from "@/server/db";
 
@@ -27,6 +29,22 @@ const createTransaction = async (
       ...dto,
       createdById: userId,
     },
+  });
+};
+
+const editTransaction = async (dto: TEditTransactionDto, tx: Transaction) => {
+  return tx.transaction.update({
+    where: { id: dto.id },
+    data: dto,
+  });
+};
+
+const removeTransaction = async (
+  id: TTransactionEntity["id"],
+  tx: Transaction,
+) => {
+  return tx.transaction.delete({
+    where: { id },
   });
 };
 
@@ -134,4 +152,6 @@ export const transactionService = {
   getMonthlyAmount,
   getMonthlyAmountInDuration,
   getTransactionsInDuration,
+  editTransaction,
+  removeTransaction,
 };

@@ -30,6 +30,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { transactionTypeDisplay } from "@/config/transaction-type";
 import { CreateTransactionDto } from "@/domain/dtos/transaction/create-transaction.dto";
+import { type TTransactionEntity } from "@/domain/entities/transaction.entity";
 import { cn } from "@/lib/utils";
 
 export type TransactionFormRef = {
@@ -40,19 +41,20 @@ type Props = {
   isPending?: boolean;
   onSubmit?: (value: FormSchema) => void;
   formRef?: React.RefAttributes<HTMLFormElement>["ref"];
+  transaction?: TTransactionEntity;
 };
 export const TransactionForm = forwardRef<TransactionFormRef, Props>(
   (props: Props, ref) => {
-    const { onSubmit, isPending, formRef } = props;
+    const { onSubmit, isPending, formRef, transaction } = props;
 
     const form = useForm<FormSchema>({
       resolver: zodResolver(formSchema),
       defaultValues: {
-        time: new Date(),
-        type: TransactionType.OUT,
-        title: "",
-        amount: 0,
-        description: undefined,
+        time: transaction?.time ?? new Date(),
+        type: transaction?.type ?? TransactionType.OUT,
+        title: transaction?.title ?? "",
+        amount: transaction?.amount ?? 0,
+        description: transaction?.description ?? undefined,
       },
     });
 

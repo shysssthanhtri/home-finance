@@ -1,7 +1,7 @@
 import React from "react";
 
+import { AddTransactionButton } from "@/app/(authed)/_components/add-transaction-button";
 import { PageTitle } from "@/app/(authed)/_components/page-title";
-import { AddTransactionButton } from "@/app/(authed)/(dashboard)/_components/add-transaction-button";
 import { MonthlyChart } from "@/app/(authed)/(dashboard)/_components/monthly-chart";
 import { MonthlySummary } from "@/app/(authed)/(dashboard)/_components/monthly-summary";
 import { TransactionList } from "@/app/(authed)/(dashboard)/_components/transaction-list";

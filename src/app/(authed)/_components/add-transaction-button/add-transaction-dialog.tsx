@@ -6,7 +6,7 @@ import React, { useRef, useState } from "react";
 import {
   TransactionForm,
   type TransactionFormRef,
-} from "@/app/(authed)/(dashboard)/_forms/transaction-form";
+} from "@/app/(authed)/_forms/transaction-form";
 import { ButtonLoading } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -25,8 +25,13 @@ import { api } from "@/trpc/react";
 type Props = {
   teamId: TTeamEntity["id"];
   children: React.ReactNode;
+  onSuccess?: () => void;
 };
-export const AddTransactionDialog = ({ teamId, children }: Props) => {
+export const AddTransactionDialog = ({
+  teamId,
+  children,
+  onSuccess,
+}: Props) => {
   const router = useRouter();
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
@@ -46,6 +51,7 @@ export const AddTransactionDialog = ({ teamId, children }: Props) => {
       } else {
         ref.current?.refresh();
       }
+      onSuccess?.();
     },
     onError: (err) => {
       toast({
