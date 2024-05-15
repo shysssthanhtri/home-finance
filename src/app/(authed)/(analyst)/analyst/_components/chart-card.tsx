@@ -11,7 +11,7 @@ const ChartCard = (props: Props) => {
   const { className, children } = props;
   return (
     <Card className={cn("pt-4 sm:pt-6", className)}>
-      <CardContent>{children}</CardContent>
+      <CardContent className="h-full">{children}</CardContent>
     </Card>
   );
 };
