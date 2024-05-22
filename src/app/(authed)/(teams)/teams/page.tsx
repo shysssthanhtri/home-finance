@@ -1,8 +1,10 @@
 import React from "react";
 
 import { TeamInfo } from "@/app/(authed)/(teams)/teams/_components/team-info";
-import { TeamMembers } from "@/app/(authed)/(teams)/teams/_components/team-members";
-import { TeamMembersSp } from "@/app/(authed)/(teams)/teams/_components/team-members/team-members-sp";
+import {
+  TeamMembers,
+  TeamMembersSp,
+} from "@/app/(authed)/(teams)/teams/_components/team-members";
 import { api } from "@/trpc/server";
 
 const Page = async () => {

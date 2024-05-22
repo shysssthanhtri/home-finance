@@ -214,6 +214,7 @@ const getTeamInfo = async (
     name: m.user.name,
     email: m.user.email,
     role: m.role,
+    image: m.user.image,
   }));
 
   const formattedTeam: TTeamDetailDto = {

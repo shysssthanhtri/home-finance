@@ -2,6 +2,7 @@ import React from "react";
 
 import { MemberRoleBadge } from "@/app/(authed)/(teams)/teams/_components/team-members/member-role-badge";
 import { RemoveMemberButton } from "@/app/(authed)/(teams)/teams/_components/team-members/remove-member-button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -33,6 +34,7 @@ export const TeamMembers = async ({ members, team }: Props) => {
           <TableCaption>A list of team members.</TableCaption>
           <TableHeader>
             <TableRow>
+              <TableHead></TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
               <TableHead>Role</TableHead>
@@ -45,6 +47,12 @@ export const TeamMembers = async ({ members, team }: Props) => {
               const isTeamOwner = team.belongToUserId === member.id;
               return (
                 <TableRow key={member.id}>
+                  <TableCell className="space-x-2">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={member.image ?? ""} />
+                      <AvatarFallback>N/A</AvatarFallback>
+                    </Avatar>
+                  </TableCell>
                   <TableCell className="space-x-2">
                     <span>{member.name}</span>
                     {isCurUser && <Badge className="h-4 text-xs">You</Badge>}
