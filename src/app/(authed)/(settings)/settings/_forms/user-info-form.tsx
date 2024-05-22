@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useCallback } from "react";
+import React, { forwardRef, useCallback, useImperativeHandle } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -20,10 +20,13 @@ type Props = {
   user?: TUserEntity;
   isPending?: boolean;
   onSubmit?: (value: FormSchema) => void;
-  formRef?: React.RefAttributes<HTMLFormElement>["ref"];
 };
-export const UserInfoForm = (props: Props) => {
-  const { user, isPending, onSubmit, formRef } = props;
+export type UserInfoFormRef = {
+  reset: () => void;
+  submit: () => void;
+};
+export const UserInfoForm = forwardRef<UserInfoFormRef, Props>((props, ref) => {
+  const { user, isPending, onSubmit } = props;
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -40,13 +43,18 @@ export const UserInfoForm = (props: Props) => {
     [onSubmit],
   );
 
+  useImperativeHandle(ref, () => ({
+    reset: () => {
+      form.reset();
+    },
+    submit: () => {
+      void form.handleSubmit(handleSubmit)();
+    },
+  }));
+
   return (
     <Form {...form}>
-      <form
-        ref={formRef}
-        onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-4"
-      >
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="email"
@@ -85,7 +93,9 @@ export const UserInfoForm = (props: Props) => {
       </form>
     </Form>
   );
-};
+});
+
+UserInfoForm.displayName = "UserInfoForm";
 
 const formSchema = UserEntity.pick({
   email: true,

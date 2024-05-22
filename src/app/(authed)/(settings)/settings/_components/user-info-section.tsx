@@ -3,7 +3,10 @@
 import { useRouter } from "next/navigation";
 import React, { useRef } from "react";
 
-import { UserInfoForm } from "@/app/(authed)/(settings)/settings/_forms/user-info.form";
+import {
+  UserInfoForm,
+  type UserInfoFormRef,
+} from "@/app/(authed)/(settings)/settings/_forms/user-info-form";
 import { Button, ButtonLoading } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { type TUserEntity } from "@/domain/entities/user.entity";
@@ -15,7 +18,7 @@ type Props = {
 export const UserInfoSection = ({ user }: Props) => {
   const router = useRouter();
   const { toast } = useToast();
-  const formRef = useRef<HTMLFormElement>(null);
+  const ref = useRef<UserInfoFormRef>(null);
 
   const { isPending, mutate } = api.user.updateUser.useMutation({
     onSuccess: () => {
@@ -38,17 +41,17 @@ export const UserInfoSection = ({ user }: Props) => {
     <div className="space-y-4">
       <UserInfoForm
         user={user}
-        formRef={formRef}
         isPending={isPending}
         onSubmit={mutate}
+        ref={ref}
       />
       <div className="flex justify-end gap-x-4">
         <Button
           size="sm"
-          variant="secondary"
+          variant="outline"
           disabled={isPending}
           onClick={() => {
-            formRef.current?.reset();
+            ref.current?.reset();
           }}
         >
           Discard
@@ -57,7 +60,8 @@ export const UserInfoSection = ({ user }: Props) => {
           size="sm"
           isLoading={isPending}
           onClick={() => {
-            formRef.current?.requestSubmit();
+            // formRef.current?.requestSubmit();
+            ref.current?.submit();
           }}
         >
           Save
