@@ -36,23 +36,26 @@ export const SideBar = ({ className }: Props) => {
           <span className="sr-only">Home Finance</span>
         </Link>
 
-        {menuItems.map((item) => (
-          <Tooltip key={item.title}>
-            <TooltipTrigger asChild>
-              <Link
-                href={item.href}
-                className={cn(
-                  "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
-                  pathName === item.href && "text-foreground",
-                )}
-              >
-                <item.icon className="h-5 w-5" />
-                <span className="sr-only">{item.title}</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">{item.title}</TooltipContent>
-          </Tooltip>
-        ))}
+        {menuItems.map((item) => {
+          const isActive = pathName.split("/")[1] === item.href.split("/")[1];
+          return (
+            <Tooltip key={item.title}>
+              <TooltipTrigger asChild>
+                <Link
+                  href={item.href}
+                  className={cn(
+                    "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+                    isActive && "text-foreground",
+                  )}
+                >
+                  <item.icon className="h-5 w-5" />
+                  <span className="sr-only">{item.title}</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">{item.title}</TooltipContent>
+            </Tooltip>
+          );
+        })}
       </nav>
     </aside>
   );

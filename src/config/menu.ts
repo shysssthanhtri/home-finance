@@ -25,7 +25,7 @@ export const menuItems = [
   },
   {
     title: "Settings",
-    href: AppRoute.settings,
+    href: AppRoute.settings.personal,
     icon: Settings,
   },
 ] as const;

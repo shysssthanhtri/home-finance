@@ -35,7 +35,7 @@ export const UserButton = async () => {
         <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <Link className="w-full" href={AppRoute.settings}>
+          <Link className="w-full" href={AppRoute.settings.personal}>
             Settings
           </Link>
         </DropdownMenuItem>

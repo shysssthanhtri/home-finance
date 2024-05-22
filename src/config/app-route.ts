@@ -3,8 +3,11 @@ export const AppRoute = {
   home: "/",
   analyst: "/analyst",
   history: "/history",
-  settings: "/settings",
   teams: "/teams",
+  settings: {
+    personal: "/settings/personal",
+    profiles: "/settings/profiles",
+  },
 
   //  NEXT_AUTH
   signIn: "/api/auth/signin",

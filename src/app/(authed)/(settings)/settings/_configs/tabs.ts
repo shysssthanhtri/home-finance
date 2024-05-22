@@ -1,15 +1,12 @@
-export enum SettingsTab {
-  PERSONAL = "personal",
-  PROFILES = "profiles",
-}
+import { AppRoute } from "@/config/app-route";
 
 export const settingsTabs = [
   {
-    value: SettingsTab.PERSONAL,
+    href: AppRoute.settings.personal,
     title: "Personal",
   },
   {
-    value: SettingsTab.PROFILES,
+    href: AppRoute.settings.profiles,
     title: "Profiles",
   },
 ];
