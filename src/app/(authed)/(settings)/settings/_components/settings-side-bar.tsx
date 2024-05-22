@@ -16,7 +16,7 @@ export const SettingsSideBar = (props: Props) => {
   const pathname = usePathname();
 
   return (
-    <nav className={cn("flex w-[250px] flex-col", className)}>
+    <nav className={cn("flex flex-row sm:w-[250px] sm:flex-col", className)}>
       {settingsTabs.map((tab) => (
         <Link
           key={tab.href}

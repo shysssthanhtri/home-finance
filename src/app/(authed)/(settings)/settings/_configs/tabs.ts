@@ -6,7 +6,7 @@ export const settingsTabs = [
     title: "Personal",
   },
   {
-    href: AppRoute.settings.profiles,
-    title: "Profiles",
+    href: AppRoute.settings.themes,
+    title: "Themes",
   },
 ];
