@@ -7,10 +7,10 @@ type Props = {
 };
 const Layout = ({ children }: Props) => {
   return (
-    <div className="flex flex-row gap-x-4">
+    <div className="flex flex-row gap-x-8">
       <SettingsSideBar />
 
-      <div>{children}</div>
+      {children}
     </div>
   );
 };
