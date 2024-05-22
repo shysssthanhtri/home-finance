@@ -26,15 +26,6 @@ export const TeamDetailDto = z.object(TeamEntity.shape).extend({
 });
 export type TTeamDetailDto = z.infer<typeof TeamDetailDto>;
 
-export const InviteMemberDto = TeamEntity.pick({
-  id: true,
-})
-  .extend({
-    email: z.string().email().nullish(),
-  })
-  .and(TeamMemberSchema.pick({ role: true }));
-export type TInviteMemberDto = z.infer<typeof InviteMemberDto>;
-
 export const SetActiveTeamDto = TeamEntity.pick({
   id: true,
 });

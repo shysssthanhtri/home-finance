@@ -63,14 +63,17 @@ export const requestJoinTeamRouter = createTRPCRouter({
           (
             await requestJoinTeamService.getRequestsJoinTeamByTeamIdUserId(
               input.teamId,
-              input.teamId,
+              userId,
               tx,
             )
           ).length
         ) {
           throw new Error("User has already requested");
         }
-        await teamService.joinTeam(userId, input, tx);
+        if (await teamService.isUserInTeam(userId, input.teamId, tx)) {
+          throw new Error("User has already been in team");
+        }
+        await requestJoinTeamService.create(userId, input, tx);
         return {};
       });
     }),

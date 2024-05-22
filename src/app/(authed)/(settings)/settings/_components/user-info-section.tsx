@@ -60,7 +60,6 @@ export const UserInfoSection = ({ user }: Props) => {
           size="sm"
           isLoading={isPending}
           onClick={() => {
-            // formRef.current?.requestSubmit();
             ref.current?.submit();
           }}
         >

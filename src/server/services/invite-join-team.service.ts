@@ -1,25 +1,26 @@
-import { type TCreateRequestJoinTeamDto } from "@/domain/dtos/team";
+import { type TeamMemberRole } from "@prisma/client";
+
 import { type TTeamEntity } from "@/domain/entities/team.entity";
 import { type TUserEntity } from "@/domain/entities/user.entity";
 import { type Transaction } from "@/server/db";
 
-const getRequestsJoinTeam = async (
-  teamId: TTeamEntity["id"],
+const getInvitesJoinTeam = async (
+  userId: TUserEntity["id"],
   transaction: Transaction,
 ) => {
-  return transaction.requestJoinTeam.findMany({
+  return transaction.inviteJoinTeam.findMany({
     where: {
-      teamId,
+      userId,
     },
   });
 };
 
-const acceptRequestJoinTeam = async (
+const acceptInviteJoinTeam = async (
   teamId: TTeamEntity["id"],
   userId: TUserEntity["id"],
   transaction: Transaction,
 ) => {
-  const request = await transaction.requestJoinTeam.findFirstOrThrow({
+  const invite = await transaction.inviteJoinTeam.findFirstOrThrow({
     where: {
       teamId,
       userId,
@@ -29,10 +30,10 @@ const acceptRequestJoinTeam = async (
     data: {
       userId,
       teamId,
-      role: request.role,
+      role: invite.role,
     },
   });
-  await transaction.requestJoinTeam.delete({
+  await transaction.inviteJoinTeam.delete({
     where: {
       teamId_userId: {
         teamId,
@@ -43,12 +44,12 @@ const acceptRequestJoinTeam = async (
   return relationship;
 };
 
-const rejectRequestJoinTeam = async (
+const rejectInviteJoinTeam = async (
   teamId: TTeamEntity["id"],
   userId: TUserEntity["id"],
   transaction: Transaction,
 ) => {
-  return transaction.requestJoinTeam.delete({
+  return transaction.inviteJoinTeam.delete({
     where: {
       teamId_userId: {
         teamId,
@@ -58,12 +59,12 @@ const rejectRequestJoinTeam = async (
   });
 };
 
-const getRequestsJoinTeamByTeamIdUserId = async (
+const getInvitesJoinTeamByTeamIdUserId = async (
   teamId: TTeamEntity["id"],
   userId: TUserEntity["id"],
   transaction: Transaction,
 ) => {
-  return transaction.requestJoinTeam.findMany({
+  return transaction.inviteJoinTeam.findMany({
     where: {
       teamId,
       userId,
@@ -71,24 +72,25 @@ const getRequestsJoinTeamByTeamIdUserId = async (
   });
 };
 
-const create = async (
+const createInvitesJoinTeam = async (
+  teamId: TTeamEntity["id"],
   userId: TUserEntity["id"],
-  dto: TCreateRequestJoinTeamDto,
+  role: TeamMemberRole,
   transaction: Transaction,
 ) => {
-  return transaction.requestJoinTeam.create({
+  return transaction.inviteJoinTeam.create({
     data: {
-      teamId: dto.teamId,
-      role: dto.role,
       userId,
+      teamId,
+      role,
     },
   });
 };
 
-export const requestJoinTeamService = {
-  getRequestsJoinTeam,
-  acceptRequestJoinTeam,
-  rejectRequestJoinTeam,
-  create,
-  getRequestsJoinTeamByTeamIdUserId,
+export const inviteJoinTeamService = {
+  getInvitesJoinTeam,
+  acceptInviteJoinTeam,
+  rejectInviteJoinTeam,
+  getInvitesJoinTeamByTeamIdUserId,
+  createInvitesJoinTeam,
 };

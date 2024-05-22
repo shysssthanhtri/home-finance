@@ -1,6 +1,5 @@
 import { TeamMemberRole } from "@prisma/client";
 
-import { type TCreateRequestJoinTeamDto } from "@/domain/dtos/team";
 import { type TRemoveMemberDto } from "@/domain/dtos/team/remove-member.dto";
 import { type TUpdateMemberRoleDto } from "@/domain/dtos/team/update-member-role.dto";
 import {
@@ -49,20 +48,6 @@ const createTeam = async (
     },
   });
   return team;
-};
-
-const joinTeam = async (
-  userId: TUserEntity["id"],
-  dto: TCreateRequestJoinTeamDto,
-  transaction: Transaction,
-) => {
-  return transaction.requestJoinTeam.create({
-    data: {
-      teamId: dto.teamId,
-      role: dto.role,
-      userId,
-    },
-  });
 };
 
 const updateMemberRole = async (
@@ -271,6 +256,33 @@ const getTeams = async (
   });
 };
 
+const getTeamsByIds = async (
+  ids: TTeamEntity["id"][],
+  transaction: Transaction,
+) => {
+  return transaction.team.findMany({
+    where: {
+      id: {
+        in: ids,
+      },
+    },
+  });
+};
+
+const isUserInTeam = async (
+  userId: TUserEntity["id"],
+  teamId: TTeamEntity["id"],
+  transaction: Transaction,
+) => {
+  const member = await transaction.teamMember.findFirst({
+    where: {
+      teamId,
+      userId,
+    },
+  });
+  return !!member;
+};
+
 export const teamService = {
   //  CREATE
   createPersonalTeam,
@@ -282,8 +294,9 @@ export const teamService = {
   checkUserCan,
   getActiveTeam,
   getTeams,
+  getTeamsByIds,
+  isUserInTeam,
   //  UPDATE
-  joinTeam,
   updateTeam,
   updateMemberRole,
   setActiveTeam,

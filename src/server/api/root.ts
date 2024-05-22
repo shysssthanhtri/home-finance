@@ -1,3 +1,4 @@
+import { inviteJoinTeamRouter } from "@/server/api/routers/invite-join-team";
 import { postRouter } from "@/server/api/routers/post";
 import { requestJoinTeamRouter } from "@/server/api/routers/request-join-team";
 import { teamRouter } from "@/server/api/routers/team";
@@ -15,6 +16,7 @@ export const appRouter = createTRPCRouter({
   user: userRouter,
   team: teamRouter,
   requestJoinTeam: requestJoinTeamRouter,
+  inviteJoinTeam: inviteJoinTeamRouter,
   transaction: transactionRouter,
 });
 

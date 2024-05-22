@@ -36,7 +36,7 @@ export const TeamInfo = ({ team }: Props) => {
   });
 
   return (
-    <Card className="w-full pt-4 sm:w-[500px]">
+    <Card className={"flex-grow pt-4"}>
       <CardContent>
         <TeamInfoForm
           team={team}

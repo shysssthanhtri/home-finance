@@ -5,7 +5,6 @@ import { RemoveMemberDto } from "@/domain/dtos/team/remove-member.dto";
 import { UpdateMemberRoleDto } from "@/domain/dtos/team/update-member-role.dto";
 import {
   CreateTeamDto,
-  InviteMemberDto,
   SetActiveTeamDto,
   TeamDetailDto,
   TeamEntity,
@@ -72,24 +71,6 @@ export const teamRouter = createTRPCRouter({
 
         const team = await teamService.updateTeam(userId, input, tx);
         return teamService.getTeamInfo(team.id, tx);
-      });
-    }),
-
-  inviteMember: protectedProcedure
-    .input(InviteMemberDto)
-    .output(OkResponseDto)
-    .mutation(async ({ ctx, input }) => {
-      const userId = ctx.session.user.id;
-      const teamId = input.id;
-
-      return ctx.db.$transaction(async (tx) => {
-        await teamService.checkUserCan(
-          userId,
-          teamId,
-          TeamMemberRole.ADMIN,
-          tx,
-        );
-        return {};
       });
     }),
 
