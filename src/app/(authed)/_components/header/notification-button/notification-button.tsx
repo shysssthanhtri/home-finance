@@ -1,6 +1,7 @@
 import { Bell, BellDot, CircleOff } from "lucide-react";
 import React, { type ReactNode } from "react";
 
+import { getInviteJoinTeamNotifications } from "@/app/(authed)/_components/header/notification-button/get-invite-join-team-notification";
 import { getRequestJoinTeamNotifications } from "@/app/(authed)/_components/header/notification-button/get-request-join-team-notification";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -21,6 +22,9 @@ export const NotificationButton = async () => {
 
   const requestJoinTeams = await getRequestJoinTeamNotifications(activeTeam.id);
   notifications.push(...requestJoinTeams);
+
+  const invitesJoinTeam = await getInviteJoinTeamNotifications();
+  notifications.push(...invitesJoinTeam);
 
   const hasNotification = !!notifications.length;
 

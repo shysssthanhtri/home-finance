@@ -38,7 +38,7 @@ export const inviteJoinTeamRouter = createTRPCRouter({
 
         return invites.map<TInviteJoinTeamInfoDto>((r) => ({
           ...r,
-          teamName: teamNameDict[r.userId] ?? "",
+          teamName: teamNameDict[r.teamId] ?? "",
         }));
       });
     }),
