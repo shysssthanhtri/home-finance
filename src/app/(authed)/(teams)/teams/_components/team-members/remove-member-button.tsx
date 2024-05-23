@@ -1,20 +1,10 @@
 "use client";
 
-import { Loader2, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import { AlertWrapper } from "@/components/alert-wrapper";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import {
@@ -49,35 +39,18 @@ export const RemoveMemberButton = ({ teamId, memberId }: Props) => {
   });
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 rounded-full p-1">
-          <X />
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel disabled={isPending}>No</AlertDialogCancel>
-          <AlertDialogAction
-            disabled={isPending}
-            onClick={() =>
-              mutate({
-                teamId,
-                userId: memberId,
-              })
-            }
-          >
-            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Yes
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <AlertWrapper
+      loading={isPending}
+      onYes={() =>
+        mutate({
+          teamId,
+          userId: memberId,
+        })
+      }
+    >
+      <Button variant="ghost" className="h-8 w-8 rounded-full p-1">
+        <X />
+      </Button>
+    </AlertWrapper>
   );
 };

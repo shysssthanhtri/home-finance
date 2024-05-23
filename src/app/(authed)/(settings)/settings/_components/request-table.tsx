@@ -40,6 +40,16 @@ export const RequestTable = ({ requests }: Props) => {
             </TableCell>
           </TableRow>
         ))}
+        {!requests.length && (
+          <TableRow>
+            <TableCell
+              className="text-center font-medium text-gray-500"
+              colSpan={3}
+            >
+              Empty
+            </TableCell>
+          </TableRow>
+        )}
       </TableBody>
     </Table>
   );

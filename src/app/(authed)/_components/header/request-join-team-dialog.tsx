@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React, { useRef } from "react";
 
 import { JoinTeamRequestForm } from "@/app/(authed)/_components/header/forms/join-team-request-form";
@@ -21,6 +22,7 @@ type Props = {
   onOpenChange?: (open: boolean) => void;
 };
 export const RequestJoinTeamDialog = ({ open, onOpenChange }: Props) => {
+  const router = useRouter();
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -32,6 +34,7 @@ export const RequestJoinTeamDialog = ({ open, onOpenChange }: Props) => {
           title: "Sent",
           variant: "successful",
         });
+        router.refresh();
       },
       onError: (err) => {
         toast({
