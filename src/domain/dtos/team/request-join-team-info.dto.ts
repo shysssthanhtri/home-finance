@@ -8,5 +8,6 @@ export const RequestJoinTeamInfoDto = RequestJoinTeamSchema.pick({
   role: true,
 }).extend({
   userName: z.string().nullish(),
+  teamName: z.string().nullish(),
 });
 export type TRequestJoinTeamInfoDto = z.infer<typeof RequestJoinTeamInfoDto>;

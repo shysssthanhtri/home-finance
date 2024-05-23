@@ -9,4 +9,8 @@ export const settingsTabs = [
     href: AppRoute.settings.themes,
     title: "Themes",
   },
+  {
+    href: AppRoute.settings.requestsJoinTeam,
+    title: "Requests join team",
+  },
 ];

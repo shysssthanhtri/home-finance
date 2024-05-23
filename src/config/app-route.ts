@@ -7,6 +7,7 @@ export const AppRoute = {
   settings: {
     personal: "/settings/personal",
     themes: "/settings/themes",
+    requestsJoinTeam: "/settings/requests-join-team",
   },
 
   //  NEXT_AUTH

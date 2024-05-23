@@ -6,15 +6,12 @@ import {
   CreateRequestJoinTeamDto,
   RequestJoinTeamInfoDto,
   TeamIdDto,
-  type TRequestJoinTeamInfoDto,
 } from "@/domain/dtos/team";
 import { AcceptRequestJoinTeamDto } from "@/domain/dtos/team/accept-request-join-team.dto";
 import { RejectRequestJoinTeamDto } from "@/domain/dtos/team/reject-request-join-team.dto";
-import { type TUserEntity } from "@/domain/entities/user.entity";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { requestJoinTeamService } from "@/server/services/request-join-team.service";
 import { teamService } from "@/server/services/team.service";
-import { userService } from "@/server/services/user.service";
 
 export const requestJoinTeamRouter = createTRPCRouter({
   getRequests: protectedProcedure
@@ -30,26 +27,11 @@ export const requestJoinTeamRouter = createTRPCRouter({
           TeamMemberRole.VIEWER,
           tx,
         );
-        const requests = await requestJoinTeamService.getRequestsJoinTeam(
-          teamId,
+        const requests = await requestJoinTeamService.getRequestsJoinTeamInfo(
+          { teamId },
           tx,
         );
-
-        const userNames = await userService.getNamesByIds(
-          requests.map((r) => r.userId),
-          tx,
-        );
-        const userNameDict = userNames.reduce<
-          Record<TUserEntity["id"], TUserEntity["name"]>
-        >((prev, curr) => {
-          prev[curr.id] = curr.name;
-          return prev;
-        }, {});
-
-        return requests.map<TRequestJoinTeamInfoDto>((r) => ({
-          ...r,
-          userName: userNameDict[r.userId],
-        }));
+        return requests;
       });
     }),
 
@@ -114,6 +96,34 @@ export const requestJoinTeamRouter = createTRPCRouter({
         await requestJoinTeamService.rejectRequestJoinTeam(
           input.teamId,
           input.userId,
+          tx,
+        );
+        return {};
+      });
+    }),
+
+  getMyRequests: protectedProcedure
+    .output(z.array(RequestJoinTeamInfoDto))
+    .query(async ({ ctx }) => {
+      const userId = ctx.session.user.id;
+      return ctx.db.$transaction(async (tx) => {
+        const requests = await requestJoinTeamService.getRequestsJoinTeamInfo(
+          { userId },
+          tx,
+        );
+        return requests;
+      });
+    }),
+
+  rejectMyRequest: protectedProcedure
+    .input(RejectRequestJoinTeamDto)
+    .output(OkResponseDto)
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      return ctx.db.$transaction(async (tx) => {
+        await requestJoinTeamService.rejectRequestJoinTeam(
+          input.teamId,
+          userId,
           tx,
         );
         return {};
