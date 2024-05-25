@@ -12,6 +12,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { buttonVariants } from "@/components/ui/button";
 
 type Props = {
   children: React.ReactNode;
@@ -32,7 +33,11 @@ export const AlertWrapper = (props: Props) => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={loading}>No</AlertDialogCancel>
-          <AlertDialogAction disabled={loading} onClick={onYes}>
+          <AlertDialogAction
+            disabled={loading}
+            onClick={onYes}
+            className={buttonVariants({ variant: "destructive" })}
+          >
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Yes
           </AlertDialogAction>

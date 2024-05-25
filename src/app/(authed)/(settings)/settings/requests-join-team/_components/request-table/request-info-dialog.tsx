@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Separator } from "@/components/ui/separator";
 import { type TRequestJoinTeamInfoDto } from "@/domain/dtos/team";
 
 type Props = {
@@ -26,6 +27,7 @@ export const RequestInfoDialog = ({ children, request }: Props) => {
         <DialogHeader>
           <DialogTitle>Request info</DialogTitle>
         </DialogHeader>
+        <Separator />
         <RequestInfoForm request={request} />
         <DialogFooter>
           <CancelRequestButton teamId={request.teamId} />

@@ -2,7 +2,7 @@
 
 import React, { useMemo } from "react";
 
-import { MemberDialog } from "@/app/(authed)/(teams)/teams/_components/team-members/member-dialog";
+import { MemberDialog } from "@/app/(authed)/(teams)/teams/_components/member-table/member-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { CardNoHeader } from "@/components/ui/card";
@@ -20,14 +20,12 @@ import {
   type TTeamDetailDto,
   type TTeamEntity,
 } from "@/domain/entities/team.entity";
-import { type TUserEntity } from "@/domain/entities/user.entity";
 
 type Props = {
-  user: TUserEntity;
   team: TTeamEntity;
   members: TTeamDetailDto["members"];
 };
-export const MemberTable = ({ user, team, members }: Props) => {
+export const MemberTable = ({ team, members }: Props) => {
   const pcVer = useMemo(
     () => (
       <CardNoHeader className="hidden sm:block">
@@ -41,7 +39,7 @@ export const MemberTable = ({ user, team, members }: Props) => {
           </TableHeader>
           <TableBody>
             {members.map((member) => (
-              <MemberDialog key={member.id}>
+              <MemberDialog key={member.id} member={member} team={team}>
                 <TableRow>
                   <TableCell className="flex items-center gap-x-4">
                     <Avatar className="h-8 w-8">
@@ -63,7 +61,7 @@ export const MemberTable = ({ user, team, members }: Props) => {
         </Table>
       </CardNoHeader>
     ),
-    [members],
+    [members, team],
   );
 
   const mobileVer = useMemo(
@@ -78,7 +76,7 @@ export const MemberTable = ({ user, team, members }: Props) => {
           </TableHeader>
           <TableBody>
             {members.map((member) => (
-              <MemberDialog key={member.id}>
+              <MemberDialog key={member.id} member={member} team={team}>
                 <TableRow>
                   <TableCell className="flex items-center gap-x-4">
                     <Avatar className="h-8 w-8">
@@ -102,7 +100,7 @@ export const MemberTable = ({ user, team, members }: Props) => {
         </Table>
       </CardNoHeader>
     ),
-    [members],
+    [members, team],
   );
 
   return (

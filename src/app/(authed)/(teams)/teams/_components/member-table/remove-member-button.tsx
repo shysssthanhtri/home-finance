@@ -1,6 +1,5 @@
 "use client";
 
-import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -16,8 +15,9 @@ import { api } from "@/trpc/react";
 type Props = {
   teamId: TTeamEntity["id"];
   memberId: TTeamDetailDto["members"][0]["id"];
+  disabled?: boolean;
 };
-export const RemoveMemberButton = ({ teamId, memberId }: Props) => {
+export const RemoveMemberButton = ({ teamId, memberId, disabled }: Props) => {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -48,8 +48,8 @@ export const RemoveMemberButton = ({ teamId, memberId }: Props) => {
         })
       }
     >
-      <Button variant="ghost" className="h-8 w-8 rounded-full p-1">
-        <X />
+      <Button variant="destructive" size="sm" disabled={disabled}>
+        Remove
       </Button>
     </AlertWrapper>
   );
