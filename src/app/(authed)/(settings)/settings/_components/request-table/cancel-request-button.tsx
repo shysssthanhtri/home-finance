@@ -6,17 +6,13 @@ import React from "react";
 import { AlertWrapper } from "@/components/alert-wrapper";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  type TTeamDetailDto,
-  type TTeamEntity,
-} from "@/domain/entities/team.entity";
+import { type TTeamEntity } from "@/domain/entities/team.entity";
 import { api } from "@/trpc/react";
 
 type Props = {
   teamId: TTeamEntity["id"];
-  memberId: TTeamDetailDto["members"][0]["id"];
 };
-export const CancelRequestButton = ({ teamId, memberId }: Props) => {
+export const CancelRequestButton = ({ teamId }: Props) => {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -45,12 +41,11 @@ export const CancelRequestButton = ({ teamId, memberId }: Props) => {
       onYes={() =>
         mutate({
           teamId,
-          userId: memberId,
         })
       }
     >
-      <Button variant="outline" size="sm">
-        Cancel
+      <Button variant="destructive" size="sm">
+        Cancel request
       </Button>
     </AlertWrapper>
   );

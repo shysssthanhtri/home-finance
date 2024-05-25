@@ -116,7 +116,7 @@ export const requestJoinTeamRouter = createTRPCRouter({
     }),
 
   rejectMyRequest: protectedProcedure
-    .input(RejectRequestJoinTeamDto)
+    .input(RejectRequestJoinTeamDto.pick({ teamId: true }))
     .output(OkResponseDto)
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
