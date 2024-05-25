@@ -1,5 +1,7 @@
-import { z } from "zod";
+import { type z } from "zod";
 
+import { TeamEntity } from "@/domain/entities/team.entity";
+import { UserEntity } from "@/domain/entities/user.entity";
 import { RequestJoinTeamSchema } from "@/schemas/_generated";
 
 export const RequestJoinTeamInfoDto = RequestJoinTeamSchema.pick({
@@ -7,7 +9,7 @@ export const RequestJoinTeamInfoDto = RequestJoinTeamSchema.pick({
   userId: true,
   role: true,
 }).extend({
-  userName: z.string().nullish(),
-  teamName: z.string().nullish(),
+  team: TeamEntity.pick({ name: true }),
+  user: UserEntity.pick({ name: true, email: true, image: true }),
 });
 export type TRequestJoinTeamInfoDto = z.infer<typeof RequestJoinTeamInfoDto>;

@@ -65,7 +65,7 @@ export const RequestJoinTeamNotification = ({ request }: Props) => {
     <Card>
       <CardHeader className="space-y-2 p-2 sm:p-4">
         <CardTitle className="text-xs sm:text-sm">
-          {request.userName} want to join.
+          {request.user.name} want to join.
         </CardTitle>
         <CardDescription className="space-x-2 text-right">
           <Button

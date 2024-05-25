@@ -31,7 +31,7 @@ export const RequestInfoForm = ({ request }: Props) => {
       <form className="space-y-4">
         <FormField
           control={form.control}
-          name="teamName"
+          name="team.name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Team name</FormLabel>
@@ -77,8 +77,7 @@ export const RequestInfoForm = ({ request }: Props) => {
 };
 
 const formSchema = RequestJoinTeamInfoDto.pick({
-  teamName: true,
-  userName: true,
+  team: true,
   role: true,
   teamId: true,
 });

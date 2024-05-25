@@ -1,6 +1,7 @@
 import React from "react";
 
 import { InviteMemberButton } from "@/app/(authed)/(teams)/teams/_components/invite-member-button";
+import { InviteTable } from "@/app/(authed)/(teams)/teams/_components/invite-table";
 import { MemberTable } from "@/app/(authed)/(teams)/teams/_components/member-table";
 import { TeamInfo } from "@/app/(authed)/(teams)/teams/_components/team-info";
 import { api } from "@/trpc/server";
@@ -15,6 +16,7 @@ const Page = async () => {
         <InviteMemberButton team={team} />
       </div>
       <MemberTable team={team} members={team.members} />
+      {!!invites.length && <InviteTable team={team} invites={invites} />}
     </div>
   );
 };

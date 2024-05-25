@@ -112,24 +112,13 @@ const getRequestsJoinTeamInfo = async (
       teamId: options.teamId,
       userId: options.userId,
     },
+    include: {
+      team: { select: { name: true } },
+      user: { select: { name: true, email: true, image: true } },
+    },
   });
 
-  const [users, teams] = await Promise.all([
-    tx.user.findMany({
-      where: { id: { in: requests.map((r) => r.userId) } },
-      select: { id: true, name: true },
-    }),
-    tx.team.findMany({
-      where: { id: { in: requests.map((r) => r.teamId) } },
-      select: { id: true, name: true },
-    }),
-  ]);
-
-  return requests.map<TRequestJoinTeamInfoDto>((r) => ({
-    ...r,
-    userName: users.find((u) => u.id === r.userId)?.name,
-    teamName: teams.find((u) => u.id === r.teamId)?.name,
-  }));
+  return requests;
 };
 
 export const requestJoinTeamService = {

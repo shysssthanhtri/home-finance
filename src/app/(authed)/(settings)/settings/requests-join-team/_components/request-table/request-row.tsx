@@ -13,7 +13,7 @@ export const RequestRow = ({ request }: Props) => {
   return (
     <RequestInfoDialog request={request}>
       <TableRow>
-        <TableCell className="font-medium">{request.teamName}</TableCell>
+        <TableCell className="font-medium">{request.team.name}</TableCell>
         <TableCell>{teamMemberRoleDisplay[request.role]}</TableCell>
       </TableRow>
     </RequestInfoDialog>

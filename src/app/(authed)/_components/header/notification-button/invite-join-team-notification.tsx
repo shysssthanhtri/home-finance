@@ -66,7 +66,7 @@ export const InviteJoinTeamNotification = ({ invite }: Props) => {
     <Card>
       <CardHeader className="space-y-2 p-2 sm:p-4">
         <CardTitle className="text-xs sm:text-sm">
-          You are invited to join the team {invite.teamName}
+          You are invited to join the team {invite.team.name}
         </CardTitle>
         <CardDescription className="space-x-2 text-right">
           <Button
