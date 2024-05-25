@@ -8,6 +8,7 @@ import {
   type UserInfoFormRef,
 } from "@/app/(authed)/(settings)/settings/_forms/user-info-form";
 import { Button, ButtonLoading } from "@/components/ui/button";
+import { CardNoHeader } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { type TUserEntity } from "@/domain/entities/user.entity";
 import { api } from "@/trpc/react";
@@ -38,7 +39,7 @@ export const UserInfoSection = ({ user }: Props) => {
   });
 
   return (
-    <div className="space-y-4">
+    <CardNoHeader contentClassName="space-y-4">
       <UserInfoForm
         user={user}
         isPending={isPending}
@@ -66,6 +67,6 @@ export const UserInfoSection = ({ user }: Props) => {
           Save
         </ButtonLoading>
       </div>
-    </div>
+    </CardNoHeader>
   );
 };

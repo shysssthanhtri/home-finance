@@ -60,7 +60,11 @@ const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("p-4 sm:p-6 pt-0 sm:pt-0", className)} {...props} />
+  <div
+    ref={ref}
+    className={cn("p-4 pt-0 sm:p-6 sm:pt-0", className)}
+    {...props}
+  />
 ));
 CardContent.displayName = "CardContent";
 
@@ -76,6 +80,16 @@ const CardFooter = React.forwardRef<
 ));
 CardFooter.displayName = "CardFooter";
 
+const CardNoHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & { contentClassName?: string }
+>(({ className, children, contentClassName, ...props }, ref) => (
+  <Card ref={ref} className={cn("pt-4 sm:pt-6", className)} {...props}>
+    <CardContent className={contentClassName}>{children}</CardContent>
+  </Card>
+));
+CardNoHeader.displayName = "CardNoHeader";
+
 export {
   Card,
   CardHeader,
@@ -83,4 +97,5 @@ export {
   CardTitle,
   CardDescription,
   CardContent,
+  CardNoHeader,
 };
