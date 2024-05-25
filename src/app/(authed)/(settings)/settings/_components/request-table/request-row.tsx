@@ -12,7 +12,7 @@ type Props = {
 export const RequestRow = ({ request }: Props) => {
   return (
     <RequestInfoDialog request={request}>
-      <TableRow key={[request.teamId, request.userId].join(",")}>
+      <TableRow>
         <TableCell className="font-medium">{request.teamName}</TableCell>
         <TableCell>{teamMemberRoleDisplay[request.role]}</TableCell>
       </TableRow>

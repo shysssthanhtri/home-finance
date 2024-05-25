@@ -1,15 +1,13 @@
 import React from "react";
 
 import { InviteMemberButton } from "@/app/(authed)/(teams)/teams/_components/invite-member-button";
-import { InviteTable } from "@/app/(authed)/(teams)/teams/_components/invite-table";
 import { TeamInfo } from "@/app/(authed)/(teams)/teams/_components/team-info";
-import {
-  TeamMembers,
-  TeamMembersSp,
-} from "@/app/(authed)/(teams)/teams/_components/team-members";
+import { MemberTable } from "@/app/(authed)/(teams)/teams/_components/team-members/member-table";
+import { getCurrentUser } from "@/server/auth";
 import { api } from "@/trpc/server";
 
 const Page = async () => {
+  const curUser = await getCurrentUser();
   const team = await api.team.getActiveTeam();
   const invites = await api.inviteJoinTeam.getInvitesByTeamId({ id: team.id });
   return (
@@ -18,9 +16,7 @@ const Page = async () => {
         <TeamInfo team={team} />
         <InviteMemberButton team={team} />
       </div>
-      <TeamMembers members={team.members} team={team} />
-      <TeamMembersSp members={team.members} team={team} />
-      {!!invites.length && <InviteTable invites={invites} />}
+      <MemberTable user={curUser} team={team} members={team.members} />
     </div>
   );
 };
