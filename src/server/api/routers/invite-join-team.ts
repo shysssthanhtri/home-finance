@@ -2,14 +2,11 @@ import { TeamMemberRole } from "@prisma/client";
 import { z } from "zod";
 
 import { OkResponseDto } from "@/domain/dtos/response.dto";
+import { TeamIdDto } from "@/domain/dtos/team";
 import { AcceptInviteJoinTeamDto } from "@/domain/dtos/team/accept-invite-join-team.dto";
 import { CreateInviteJoinTeamDto } from "@/domain/dtos/team/create-invite-join-team.dto";
-import {
-  InviteJoinTeamInfoDto,
-  type TInviteJoinTeamInfoDto,
-} from "@/domain/dtos/team/invite-join-team-info.dto";
+import { InviteJoinTeamInfoDto } from "@/domain/dtos/team/invite-join-team-info.dto";
 import { RejectInviteJoinTeamDto } from "@/domain/dtos/team/reject-invite-join-team.dto";
-import { type TTeamEntity } from "@/domain/entities/team.entity";
 import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
 import { inviteJoinTeamService } from "@/server/services/invite-join-team.service";
 import { teamService } from "@/server/services/team.service";
@@ -20,26 +17,7 @@ export const inviteJoinTeamRouter = createTRPCRouter({
     .query(async ({ ctx }) => {
       const userId = ctx.session.user.id;
       return ctx.db.$transaction(async (tx) => {
-        const invites = await inviteJoinTeamService.getInvitesJoinTeam(
-          userId,
-          tx,
-        );
-
-        const teams = await teamService.getTeamsByIds(
-          invites.map((i) => i.teamId),
-          tx,
-        );
-        const teamNameDict = teams.reduce<
-          Record<TTeamEntity["id"], TTeamEntity["name"]>
-        >((prev, curr) => {
-          prev[curr.id] = curr.name;
-          return prev;
-        }, {});
-
-        return invites.map<TInviteJoinTeamInfoDto>((r) => ({
-          ...r,
-          teamName: teamNameDict[r.teamId] ?? "",
-        }));
+        return inviteJoinTeamService.getInvitesJoinTeamInfo({ userId }, tx);
       });
     }),
 
@@ -109,6 +87,23 @@ export const inviteJoinTeamRouter = createTRPCRouter({
           tx,
         );
         return {};
+      });
+    }),
+
+  getInvitesByTeamId: protectedProcedure
+    .input(TeamIdDto)
+    .output(z.array(InviteJoinTeamInfoDto))
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const teamId = input.id;
+      return ctx.db.$transaction(async (tx) => {
+        await teamService.checkUserCan(
+          userId,
+          teamId,
+          TeamMemberRole.VIEWER,
+          tx,
+        );
+        return inviteJoinTeamService.getInvitesJoinTeamInfo({ teamId }, tx);
       });
     }),
 });

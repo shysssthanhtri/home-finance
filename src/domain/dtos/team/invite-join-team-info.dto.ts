@@ -7,6 +7,8 @@ export const InviteJoinTeamInfoDto = InviteJoinTeamSchema.pick({
   userId: true,
   role: true,
 }).extend({
-  teamName: z.string(),
+  teamName: z.string().nullish(),
+  userName: z.string().nullish(),
+  userEmail: z.string().nullish(),
 });
 export type TInviteJoinTeamInfoDto = z.infer<typeof InviteJoinTeamInfoDto>;

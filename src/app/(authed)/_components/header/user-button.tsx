@@ -31,8 +31,11 @@ export const UserButton = async () => {
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-[200px]">
+      <DropdownMenuContent>
         <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
+        <DropdownMenuLabel className="pt-0 text-sm text-gray-500">
+          {user.email}
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <Link className="w-full" href={AppRoute.settings.personal}>
