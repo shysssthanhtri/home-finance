@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { RequestRow } from "@/app/(authed)/(settings)/settings/_components/request-table/request-row";
+import { RequestRow } from "@/app/(authed)/(settings)/settings/requests-join-team/_components/request-table/request-row";
 import { CardNoHeader } from "@/components/ui/card";
 import {
   Table,

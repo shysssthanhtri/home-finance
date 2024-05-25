@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ThemePickerDynamic } from "@/app/(authed)/(settings)/settings/_components/theme-picker/dynamic-theme-picker";
+import { ThemePickerDynamic } from "@/app/(authed)/(settings)/settings/themes/_components/theme-picker/dynamic-theme-picker";
 import { Separator } from "@/components/ui/separator";
 
 const Page = () => {

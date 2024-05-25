@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-import { RequestInfoDialog } from "@/app/(authed)/(settings)/settings/_components/request-table/request-info-dialog";
+import { RequestInfoDialog } from "@/app/(authed)/(settings)/settings/requests-join-team/_components/request-table/request-info-dialog";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { teamMemberRoleDisplay } from "@/config/team-member-role";
 import { type TRequestJoinTeamInfoDto } from "@/domain/dtos/team";

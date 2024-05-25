@@ -1,6 +1,6 @@
 import React from "react";
 
-import { UserInfoSection } from "@/app/(authed)/(settings)/settings/_components/user-info-section";
+import { UserInfoSection } from "@/app/(authed)/(settings)/settings/personal/components/user-info-section";
 import { Separator } from "@/components/ui/separator";
 import { getCurrentUser } from "@/server/auth";
 

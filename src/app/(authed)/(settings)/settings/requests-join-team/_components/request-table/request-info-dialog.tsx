@@ -2,7 +2,8 @@
 
 import React from "react";
 
-import { CancelRequestButton } from "@/app/(authed)/(settings)/settings/_components/request-table/cancel-request-button";
+import { CancelRequestButton } from "@/app/(authed)/(settings)/settings/requests-join-team/_components/request-table/cancel-request-button";
+import { RequestInfoForm } from "@/app/(authed)/(settings)/settings/requests-join-team/_components/request-table/request-info-form";
 import {
   Dialog,
   DialogContent,
@@ -11,7 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { teamMemberRoleDisplay } from "@/config/team-member-role";
 import { type TRequestJoinTeamInfoDto } from "@/domain/dtos/team";
 
 type Props = {
@@ -26,18 +26,7 @@ export const RequestInfoDialog = ({ children, request }: Props) => {
         <DialogHeader>
           <DialogTitle>Request info</DialogTitle>
         </DialogHeader>
-        <div className="space-y-2">
-          <div className="flex space-x-2">
-            <div className="font-medium">Team name:</div>
-            <div className="text-gray-600">{request.teamName}</div>
-          </div>
-          <div className="flex space-x-2">
-            <div className="font-medium">Role:</div>
-            <div className="text-gray-600">
-              {teamMemberRoleDisplay[request.role]}
-            </div>
-          </div>
-        </div>
+        <RequestInfoForm request={request} />
         <DialogFooter>
           <CancelRequestButton teamId={request.teamId} />
         </DialogFooter>

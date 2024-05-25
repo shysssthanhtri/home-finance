@@ -1,6 +1,6 @@
 import React from "react";
 
-import { RequestTable } from "@/app/(authed)/(settings)/settings/_components/request-table/request-table";
+import { RequestTable } from "@/app/(authed)/(settings)/settings/requests-join-team/_components/request-table/request-table";
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/trpc/server";
 

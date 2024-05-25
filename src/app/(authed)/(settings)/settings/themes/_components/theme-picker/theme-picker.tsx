@@ -3,7 +3,7 @@
 import { useTheme } from "next-themes";
 import React from "react";
 
-import { ThemeThumbnail } from "@/app/(authed)/(settings)/settings/_components/theme-picker/theme-thumbnail";
+import { ThemeThumbnail } from "@/app/(authed)/(settings)/settings/themes/_components/theme-picker/theme-thumbnail";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Theme } from "@/config/theme";
 
