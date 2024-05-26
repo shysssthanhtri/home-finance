@@ -94,7 +94,6 @@ export const TransactionDialog = ({
             })
           }
         />
-        <Separator />
         <DialogFooter>
           <ButtonLoading
             size="sm"

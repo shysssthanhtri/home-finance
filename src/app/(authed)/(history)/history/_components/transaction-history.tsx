@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 import React, { useCallback, useState } from "react";
 
 import { AddTransactionButton } from "@/app/(authed)/_components/add-transaction-button";
-import TransactionTable from "@/app/(authed)/(history)/history/_components/transaction-table";
+import { TransactionTable } from "@/app/(authed)/(history)/history/_components/transaction-table";
 import { DatePickerWithRange } from "@/components/date-range-picker";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { type TTeamEntity } from "@/domain/entities/team.entity";

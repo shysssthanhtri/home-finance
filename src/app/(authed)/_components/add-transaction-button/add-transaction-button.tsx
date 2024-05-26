@@ -19,8 +19,8 @@ export const AddTransactionButton = ({
 }: Props) => {
   return (
     <AddTransactionDialog teamId={teamId} onSuccess={onSuccess}>
-      <Button className={cn("w-full space-x-2", className)}>
-        <Plus />
+      <Button className={cn("w-full space-x-2", className)} size="sm">
+        <Plus size={18} />
         <span>Add transaction</span>
       </Button>
     </AddTransactionDialog>
