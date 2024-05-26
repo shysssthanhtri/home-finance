@@ -51,7 +51,7 @@ export const NotificationButton = async () => {
           {!hasNotification && <Bell size={22} />}
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-[300px]">
+      <SheetContent className="w-1/4 min-w-[200px] space-y-4">
         <SheetHeader className="mb-4">
           <SheetTitle className="text-left">Your notifications</SheetTitle>
           <Separator />

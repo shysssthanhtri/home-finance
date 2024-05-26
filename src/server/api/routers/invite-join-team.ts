@@ -4,6 +4,7 @@ import { z } from "zod";
 import { OkResponseDto } from "@/domain/dtos/response.dto";
 import { TeamIdDto } from "@/domain/dtos/team";
 import { AcceptInviteJoinTeamDto } from "@/domain/dtos/team/accept-invite-join-team.dto";
+import { CancelInviteJoinTeamDto } from "@/domain/dtos/team/cancel-invite-join-team.dto";
 import { CreateInviteJoinTeamDto } from "@/domain/dtos/team/create-invite-join-team.dto";
 import { InviteJoinTeamInfoDto } from "@/domain/dtos/team/invite-join-team-info.dto";
 import { RejectInviteJoinTeamDto } from "@/domain/dtos/team/reject-invite-join-team.dto";
@@ -104,6 +105,28 @@ export const inviteJoinTeamRouter = createTRPCRouter({
           tx,
         );
         return inviteJoinTeamService.getInvitesJoinTeamInfo({ teamId }, tx);
+      });
+    }),
+
+  cancelInvite: protectedProcedure
+    .input(CancelInviteJoinTeamDto)
+    .output(OkResponseDto)
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const teamId = input.teamId;
+      return ctx.db.$transaction(async (tx) => {
+        await teamService.checkUserCan(
+          userId,
+          teamId,
+          TeamMemberRole.ADMIN,
+          tx,
+        );
+        await inviteJoinTeamService.rejectInviteJoinTeam(
+          input.teamId,
+          input.userId,
+          tx,
+        );
+        return {};
       });
     }),
 });

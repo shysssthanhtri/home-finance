@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
+import { teamMemberRoleDisplay } from "@/config/team-member-role";
 import { type TInviteJoinTeamInfoDto } from "@/domain/dtos/team/invite-join-team-info.dto";
 import { api as clientApi } from "@/trpc/react";
 
@@ -66,7 +67,8 @@ export const InviteJoinTeamNotification = ({ invite }: Props) => {
     <Card>
       <CardHeader className="space-y-2 p-2 sm:p-4">
         <CardTitle className="text-xs sm:text-sm">
-          You are invited to join the team {invite.team.name}
+          You are invited to join the team {invite.team.name} as{" "}
+          {teamMemberRoleDisplay[invite.role]}.
         </CardTitle>
         <CardDescription className="space-x-2 text-right">
           <Button

@@ -16,7 +16,7 @@ const Page = async () => {
         <InviteMemberButton team={team} />
       </div>
       <MemberTable team={team} members={team.members} />
-      {!!invites.length && <InviteTable team={team} invites={invites} />}
+      {!!invites.length && <InviteTable invites={invites} />}
     </div>
   );
 };

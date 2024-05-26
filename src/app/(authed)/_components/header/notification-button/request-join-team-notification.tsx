@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
+import { teamMemberRoleDisplay } from "@/config/team-member-role";
 import { type TRequestJoinTeamInfoDto } from "@/domain/dtos/team";
 import { api as clientApi } from "@/trpc/react";
 
@@ -65,7 +66,8 @@ export const RequestJoinTeamNotification = ({ request }: Props) => {
     <Card>
       <CardHeader className="space-y-2 p-2 sm:p-4">
         <CardTitle className="text-xs sm:text-sm">
-          {request.user.name} want to join.
+          {request.user.name} want to join as{" "}
+          {teamMemberRoleDisplay[request.role]}.
         </CardTitle>
         <CardDescription className="space-x-2 text-right">
           <Button
