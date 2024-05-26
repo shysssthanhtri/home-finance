@@ -53,6 +53,16 @@ export const TransactionTable = ({ transactions, onSuccess }: Props) => {
               <TableCell>{dateFormatter(transaction.time)}</TableCell>
             </TableRow>
           ))}
+          {!transactions.length && (
+            <TableRow>
+              <TableCell
+                colSpan={4}
+                className="text-center text-sm text-gray-500"
+              >
+                Empty
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
       <TransactionDialog

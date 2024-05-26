@@ -73,8 +73,8 @@ const getTransactionsInDuration = async (
   dto: TGetTransactionInDurationDto,
   tx: Transaction,
 ) => {
-  const start = startOfDay(dto.from);
-  const end = endOfDay(dto.to);
+  const start = startOfDay(dto.duration.from);
+  const end = endOfDay(dto.duration.to);
   const transactions = await tx.transaction.findMany({
     where: {
       teamId: dto.teamId,
