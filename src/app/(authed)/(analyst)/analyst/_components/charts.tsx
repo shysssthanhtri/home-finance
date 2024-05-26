@@ -12,7 +12,7 @@ type Props = {
   team: TTeamEntity;
 };
 export const Charts = ({ team }: Props) => {
-  const [date, setDate] = useState<{ from?: Date; to?: Date }>({
+  const [date, setDate] = useState<{ from: Date; to: Date }>({
     from: startOfMonth(
       add(new Date(), {
         months: -3,
@@ -28,18 +28,14 @@ export const Charts = ({ team }: Props) => {
           date={date}
           onDateChange={(value) => {
             setDate({
-              from: value?.from,
-              to: value?.to,
+              from: value?.from ?? new Date(),
+              to: value?.to ?? new Date(),
             });
           }}
         />
       </CardHeader>
-      <CardContent className="grid grid-cols-2 gap-4 [&>div]:h-[300px]">
-        <MonthlyAmountCard
-          team={team}
-          start={date.from ?? new Date()}
-          end={date.to ?? new Date()}
-        />
+      <CardContent className="grid grid-cols-2 gap-4 [&>div]:h-[350px]">
+        <MonthlyAmountCard team={team} start={date.from} end={date.to} />
       </CardContent>
     </Card>
   );

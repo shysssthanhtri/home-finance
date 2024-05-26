@@ -24,9 +24,26 @@ export const MonthlyAmountChart = ({ data }: Props) => {
         }))}
       >
         <CartesianGrid strokeDasharray="6 6" />
-        <XAxis dataKey="month" />
-        <YAxis tickFormatter={(value) => `${value / 1_000_000}tr`} />
-        <Tooltip<number, ""> formatter={(value) => value / 1_000_000} />
+        <XAxis
+          dataKey="month"
+          stroke="#888888"
+          fontSize={12}
+          tickLine={false}
+          axisLine={false}
+        />
+        <YAxis
+          tickFormatter={(value) => `${value / 1_000_000}tr`}
+          stroke="#888888"
+          fontSize={12}
+          tickLine={false}
+          axisLine={false}
+        />
+        <Tooltip<number, "">
+          formatter={(value) => `${value / 1_000_000}`}
+          wrapperStyle={{
+            backgroundColor: "yellow",
+          }}
+        />
         <Legend />
         <Line type="monotone" dataKey="in" stroke="#82ca9d" unit="tr" />
         <Line type="monotone" dataKey="out" stroke="red" unit="tr" />
