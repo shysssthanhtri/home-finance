@@ -1,6 +1,5 @@
 "use client";
 
-import { TransactionType } from "@prisma/client";
 import React, { useState } from "react";
 
 import { TransactionDialog } from "@/app/(authed)/(history)/history/_components/transaction-dialog";
@@ -12,6 +11,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { transactionTypeDisplay } from "@/config/transaction-type";
 import { type TTransactionEntity } from "@/domain/entities/transaction.entity";
 import { dateFormatter } from "@/lib/date-formatter";
 import { vndFormatter } from "@/lib/vnd-formatter";
@@ -30,6 +30,7 @@ export const TransactionTable = ({ transactions, onSuccess }: Props) => {
           <TableRow>
             <TableHead>Title</TableHead>
             <TableHead>Description</TableHead>
+            <TableHead>Type</TableHead>
             <TableHead>Amount</TableHead>
             <TableHead>Time</TableHead>
           </TableRow>
@@ -39,16 +40,12 @@ export const TransactionTable = ({ transactions, onSuccess }: Props) => {
             <TableRow
               key={transaction.id}
               onClick={() => setTransaction(transaction)}
-              className={
-                transaction.type === TransactionType.IN
-                  ? "bg-green-50"
-                  : "bg-red-50"
-              }
             >
               <TableCell>{transaction.title}</TableCell>
               <TableCell className="text-gray-500">
                 {transaction.description}
               </TableCell>
+              <TableCell>{transactionTypeDisplay[transaction.type]}</TableCell>
               <TableCell>{vndFormatter(transaction.amount)}</TableCell>
               <TableCell>{dateFormatter(transaction.time)}</TableCell>
             </TableRow>

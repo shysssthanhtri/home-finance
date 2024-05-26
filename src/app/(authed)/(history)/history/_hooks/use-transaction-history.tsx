@@ -1,5 +1,6 @@
 "use client";
 
+import { TransactionType } from "@prisma/client";
 import { endOfDay, startOfMonth } from "date-fns";
 import { useCallback, useState } from "react";
 
@@ -18,6 +19,7 @@ export const useTransactionHistory = ({ teamId }: Props) => {
       from: startOfMonth(new Date()),
       to: endOfDay(new Date()),
     },
+    types: [TransactionType.IN, TransactionType.OUT],
   });
 
   const { data: transactions = [], isPending } =

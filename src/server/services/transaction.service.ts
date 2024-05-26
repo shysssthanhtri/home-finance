@@ -82,6 +82,9 @@ const getTransactionsInDuration = async (
         gte: start,
         lte: end,
       },
+      type: {
+        in: dto.types,
+      },
     },
     orderBy: {
       time: "desc",
