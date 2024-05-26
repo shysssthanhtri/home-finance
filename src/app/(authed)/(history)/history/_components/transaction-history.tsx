@@ -21,7 +21,7 @@ export const TransactionHistory = ({ team }: Props) => {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0">
+      <CardHeader className="flex flex-col items-center justify-between gap-y-2 space-y-0 sm:flex-row">
         <DatePickerWithRange
           date={options.duration}
           onDateChange={(value) => {
@@ -33,17 +33,22 @@ export const TransactionHistory = ({ team }: Props) => {
               },
             }));
           }}
+          className="w-full sm:w-1/4"
         />
-        <div className="flex items-center gap-x-2">
+        <div className="flex w-full flex-col items-center gap-2 sm:w-fit sm:flex-row">
           <FilterSheet options={options} setOptions={setOptions}>
-            <Button size="sm" className="w-[200px]" variant="outline">
+            <Button
+              size="sm"
+              className="w-full sm:w-[200px]"
+              variant="secondary"
+            >
               <Filter className="mr-2" size={18} />
               Filter
             </Button>
           </FilterSheet>
           <AddTransactionButton
             teamId={team.id}
-            className="w-[200px]"
+            className="w-full sm:w-[200px]"
             onSuccess={refetch}
           />
         </div>
