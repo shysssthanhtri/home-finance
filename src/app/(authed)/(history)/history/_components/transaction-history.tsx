@@ -1,9 +1,9 @@
 "use client";
 
-import { Filter, Loader2 } from "lucide-react";
+import { Filter, Loader2, Plus } from "lucide-react";
 import React from "react";
 
-import { AddTransactionButton } from "@/app/(authed)/_components/add-transaction-button";
+import { AddTransactionDialog } from "@/app/(authed)/_components/add-transaction-button/add-transaction-dialog";
 import { FilterSheet } from "@/app/(authed)/(history)/history/_components/filter-sheet";
 import { TransactionTable } from "@/app/(authed)/(history)/history/_components/transaction-table";
 import { useTransactionHistory } from "@/app/(authed)/(history)/history/_hooks/use-transaction-history";
@@ -37,20 +37,15 @@ export const TransactionHistory = ({ team }: Props) => {
         />
         <div className="flex w-full flex-col items-center gap-2 sm:w-fit sm:flex-row">
           <FilterSheet options={options} setOptions={setOptions}>
-            <Button
-              size="sm"
-              className="w-full sm:w-[200px]"
-              variant="secondary"
-            >
-              <Filter className="mr-2" size={18} />
-              Filter
+            <Button size="sm" variant="outline">
+              <Filter size={18} />
             </Button>
           </FilterSheet>
-          <AddTransactionButton
-            teamId={team.id}
-            className="w-full sm:w-[200px]"
-            onSuccess={refetch}
-          />
+          <AddTransactionDialog teamId={team.id} onSuccess={refetch}>
+            <Button size="sm">
+              <Plus size={18} />
+            </Button>
+          </AddTransactionDialog>
         </div>
       </CardHeader>
       <CardContent>
