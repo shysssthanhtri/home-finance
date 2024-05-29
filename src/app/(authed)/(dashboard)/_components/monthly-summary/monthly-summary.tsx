@@ -36,7 +36,7 @@ export const MonthlySummary = async ({ teamId }: Props) => {
     type: TransactionType.OUT,
   });
   return (
-    <div className="flex flex-col gap-y-4">
+    <div className="flex gap-x-4">
       <MoneySummaryCard
         label="Outcome"
         amount={outcome.amount}
@@ -44,6 +44,7 @@ export const MonthlySummary = async ({ teamId }: Props) => {
         message="from last month"
         icon={<CircleMinus className="text-destructive" size={16} />}
         shouldDecrease
+        className="basis-1/5"
       />
       <MoneySummaryCard
         label="Income"
@@ -51,6 +52,7 @@ export const MonthlySummary = async ({ teamId }: Props) => {
         lastAmount={incomeLastMonth.amount}
         message="from last month"
         icon={<CirclePlus className="text-primary" size={16} />}
+        className="basis-1/5"
       />
       <MoneySummaryCard
         label="Save"
@@ -67,6 +69,7 @@ export const MonthlySummary = async ({ teamId }: Props) => {
             size={16}
           />
         }
+        className="basis-1/5"
       />
     </div>
   );
