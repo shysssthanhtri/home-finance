@@ -84,13 +84,18 @@ export const MemberTable = ({ team, members }: Props) => {
                       <AvatarFallback>N/A</AvatarFallback>
                     </Avatar>
                     <div>
-                      <div className="text-base font-medium">{member.name}</div>
+                      <div className="text-sm font-medium">{member.name}</div>
                       <div className="text-xs text-gray-500 sm:text-sm">
                         {member.email}
                       </div>
-                      <Badge variant="outline" className="mt-2">
-                        {teamMemberRoleDisplay[member.role]}
-                      </Badge>
+                      <div className="mt-2 space-x-2">
+                        <Badge variant="outline">
+                          {teamMemberRoleDisplay[member.role]}
+                        </Badge>
+                        {team.belongToUserId === member.id && (
+                          <Badge variant="outline">Owner</Badge>
+                        )}
+                      </div>
                     </div>
                   </TableCell>
                 </TableRow>

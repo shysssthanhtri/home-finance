@@ -24,6 +24,7 @@ import {
   type TTeamDetailDto,
   type TTeamEntity,
 } from "@/domain/entities/team.entity";
+import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 
 type Props = {
@@ -74,7 +75,12 @@ export const MemberDialog = ({ team, member, children }: Props) => {
           isPending={isPending}
           ref={ref}
         />
-        <DialogFooter className="gap-y-2">
+        <DialogFooter
+          className={cn(
+            "flex-row justify-end gap-x-2",
+            team.belongToUserId === member.id && "hidden",
+          )}
+        >
           <RemoveMemberButton
             teamId={team.id}
             memberId={member.id}
