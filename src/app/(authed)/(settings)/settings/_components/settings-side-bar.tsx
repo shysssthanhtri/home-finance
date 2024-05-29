@@ -26,7 +26,7 @@ export const SettingsSideBar = (props: Props) => {
             pathname === tab.href
               ? "bg-muted hover:bg-muted"
               : "hover:bg-transparent hover:underline",
-            "justify-start",
+            "justify-start text-xs sm:text-sm",
           )}
         >
           {tab.title}

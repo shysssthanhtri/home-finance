@@ -5,11 +5,7 @@ import { api } from "@/trpc/server";
 
 const Page = async () => {
   const team = await api.team.getActiveTeam();
-  return (
-    <div className="space-y-4 sm:space-y-6">
-      <TransactionHistory team={team} />
-    </div>
-  );
+  return <TransactionHistory team={team} />;
 };
 
 export default Page;
