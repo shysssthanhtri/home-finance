@@ -55,7 +55,7 @@ export const InviteMemberButton = ({ team }: Props) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="w-full space-x-2 sm:w-1/4">
+        <Button className="w-full space-x-2 sm:w-1/4" size="sm">
           <UserPlus className="h-4 w-4" />
           <span>Invite new member</span>
         </Button>
