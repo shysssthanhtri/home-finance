@@ -31,7 +31,7 @@ export const TransactionHistory = ({ team }: Props) => {
             }))
           }
         />
-        <div className="flex w-full flex-col items-center gap-2 sm:w-fit sm:flex-row">
+        <div className="flex w-full flex-row items-center justify-end gap-2 sm:w-fit">
           <FilterSheet options={options} setOptions={setOptions}>
             <Button size="sm" variant="outline">
               <Filter size={18} />
