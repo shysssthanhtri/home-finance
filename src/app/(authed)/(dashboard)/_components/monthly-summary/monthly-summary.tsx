@@ -36,7 +36,7 @@ export const MonthlySummary = async ({ teamId }: Props) => {
     type: TransactionType.OUT,
   });
   return (
-    <div className="flex gap-x-4">
+    <div className="flex flex-col gap-4 sm:flex-row">
       <MoneySummaryCard
         label="Outcome"
         amount={outcome.amount}

@@ -9,14 +9,14 @@ import { api } from "@/trpc/server";
 const Page = async () => {
   const team = await api.team.getActiveTeam();
   return (
-    <div className="hidden space-y-4 sm:block">
+    <div className="space-y-4">
       <MonthlySummary teamId={team.id} />
-      <div className="flex flex-row gap-6">
-        <div className="basis-1/2 space-y-6">
+      <div className="flex flex-row gap-4">
+        <div className="hidden basis-2/5 space-y-4 sm:block">
           <MonthlyChart team={team} />
         </div>
-        <div className="h-fit w-full basis-1/2 space-y-6">
-          <AddTransactionButton teamId={team.id} />
+        <div className="basis-1/1 h-fit w-full space-y-4 sm:basis-3/5">
+          <AddTransactionButton teamId={team.id} className="w-full" />
           <TransactionList team={team} />
         </div>
       </div>
