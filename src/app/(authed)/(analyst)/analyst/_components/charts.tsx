@@ -34,7 +34,7 @@ export const Charts = ({ team }: Props) => {
           }}
         />
       </CardHeader>
-      <CardContent className="grid grid-cols-2 gap-4 [&>div]:h-[350px]">
+      <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2 [&>div]:h-[200px] sm:[&>div]:h-[350px]">
         <MonthlyAmountCard team={team} start={date.from} end={date.to} />
       </CardContent>
     </Card>
