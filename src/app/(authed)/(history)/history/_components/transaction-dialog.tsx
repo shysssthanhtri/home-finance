@@ -94,7 +94,7 @@ export const TransactionDialog = ({
             })
           }
         />
-        <DialogFooter>
+        <DialogFooter className="flex-row justify-end gap-x-4">
           <ButtonLoading
             size="sm"
             onClick={() => {

@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 
 import { TransactionDialog } from "@/app/(authed)/(history)/history/_components/transaction-dialog";
+import { type TransactionTableProps } from "@/app/(authed)/(history)/history/_components/transaction-table/props";
 import {
   Table,
   TableBody,
@@ -16,11 +17,10 @@ import { type TTransactionEntity } from "@/domain/entities/transaction.entity";
 import { dateFormatter } from "@/lib/date-formatter";
 import { vndFormatter } from "@/lib/vnd-formatter";
 
-type Props = {
-  transactions: TTransactionEntity[];
-  onSuccess?: () => void;
-};
-export const TransactionTable = ({ transactions, onSuccess }: Props) => {
+export const TransactionTablePC = ({
+  transactions,
+  onSuccess,
+}: TransactionTableProps) => {
   const [transaction, setTransaction] = useState<TTransactionEntity>();
 
   return (
@@ -41,8 +41,10 @@ export const TransactionTable = ({ transactions, onSuccess }: Props) => {
               key={transaction.id}
               onClick={() => setTransaction(transaction)}
             >
-              <TableCell>{transaction.title}</TableCell>
-              <TableCell className="text-gray-500">
+              <TableCell className="max-w-[200px] truncate">
+                {transaction.title}
+              </TableCell>
+              <TableCell className="max-w-[200px] truncate text-gray-500">
                 {transaction.description}
               </TableCell>
               <TableCell>{transactionTypeDisplay[transaction.type]}</TableCell>
