@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize, reopened]
     branches:
       - main
@@ -13,6 +13,7 @@ jobs:
   CI:
     name: Checking code quality
     runs-on: ubuntu-latest
+    environment: Production
 
     strategy:
       matrix:
