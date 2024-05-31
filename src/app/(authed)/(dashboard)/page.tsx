@@ -7,7 +7,9 @@ import { TransactionList } from "@/app/(authed)/(dashboard)/_components/transact
 import { api } from "@/trpc/server";
 
 const Page = async () => {
+  console.log("Load dashboard 1");
   const team = await api.team.getActiveTeam();
+  console.log("Load dashboard 2");
   return (
     <div className="space-y-4">
       <MonthlySummary teamId={team.id} />
