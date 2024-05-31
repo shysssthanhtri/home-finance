@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "build": "next build",
+    "db:generate": "prisma generate && pnpm lint:fix",
     "db:push": "prisma db push && pnpm lint:fix",
     "db:studio": "prisma studio",
     "dev": "next dev",
-    "postinstall": "prisma generate && pnpm lint:fix",
+    "postinstall": "pnpm db:generate",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "type-check": "tsc --noEmit",
